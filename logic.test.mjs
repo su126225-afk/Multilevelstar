@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseBlock, serializeBlock, prepare, grade, isCorrect, ieltsBand, multilevelScore, buildBoard, parseOptions, parseTime, fmtTime, rich } from '../js/logic.js';
+import { xpTimeline, totalXp, levelInfo, streakInfo, dailyChallenge, weekInfo, achievements, progressSummary, buildStudentStats, typeBreakdown, XP } from '../js/logic.js';
 
 test('parseBlock handles every question type', () => {
   const shared = parseOptions('A) one\nB) two\nC) three');
@@ -81,4 +82,76 @@ test('time helpers and rich text escaping', () => {
   assert.equal(fmtTime(3725), '1:02:05');
   assert.ok(!rich('<script>alert(1)</script>').includes('<script>'));
   assert.ok(rich('hi **there**').includes('<strong>there</strong>'));
+});
+
+// ───────── gamification (derived from stored results) ─────────
+const R = (day, o = {}) => ({ id: o.id || `r${day}${o.test_id || 't'}`, test_id: 't1', section: 'reading', format: 'multilevel', student_name: 'Ana', group_code: 'G', correct: 20, total: 35, percent: 57.1, created_at: `2026-10-${String(day).padStart(2, '0')}T10:00:00`, ...o });
+const NOW = new Date('2026-10-12T12:00:00');
+
+test('xp: first clear beats repeats, quality bonus, daily cap', () => {
+  const [a, b] = xpTimeline([R(1, { id: 'a', percent: 85, correct: 30 }), R(2, { id: 'b', percent: 85, correct: 30 })]);
+  assert.equal(a.xp, 30 * XP.perCorrect + XP.firstClear + XP.high);
+  assert.ok(a.first && !b.first);
+  assert.equal(b.xp, Math.round(30 * XP.perCorrect * XP.repeatFactor) + XP.repeatClear + XP.high);
+  assert.ok(b.xp < a.xp);
+  const many = Array.from({ length: 30 }, (_, i) => R(3, { id: 'x' + i, test_id: 'u' + i, correct: 35, percent: 100 }));
+  assert.equal(totalXp(many), XP.dailyCap);
+  assert.equal(totalXp([]), 0);
+});
+
+test('levels grow with xp', () => {
+  assert.equal(levelInfo(0).level, 1);
+  assert.equal(levelInfo(50).level, 2);
+  assert.equal(levelInfo(200).level, 3);
+  const l = levelInfo(125);
+  assert.equal(l.level, 2); assert.equal(l.into, 75); assert.equal(l.span, 150); assert.equal(l.pct, 50);
+});
+
+test('streaks: consecutive days, one forgiven gap, broken when stale', () => {
+  const s = streakInfo([R(10), R(11), R(12)], NOW);
+  assert.deepEqual([s.current, s.longest, s.doneToday], [3, 3, true]);
+  assert.equal(streakInfo([R(8), R(10), R(11)], NOW).current, 3);            // one missed day forgiven
+  assert.equal(streakInfo([R(6), R(8), R(10), R(11)], NOW).current, 3);      // second gap is not
+  assert.equal(streakInfo([R(1), R(2)], NOW).current, 0);                    // stale
+  assert.equal(streakInfo([R(1), R(2)], NOW).longest, 2);
+  assert.equal(streakInfo([R(11)], NOW).current, 1);                          // yesterday still counts
+  assert.deepEqual(streakInfo([], NOW), { current: 0, longest: 0, doneToday: false });
+});
+
+test('daily challenge and weekly goal use real attempts only', () => {
+  assert.equal(dailyChallenge([], NOW).done, false);
+  const c = dailyChallenge([R(12)], NOW);
+  assert.ok(c.title && typeof c.done === 'boolean');
+  assert.equal(weekInfo([R(12), R(12, { id: 'q' })], NOW).count, 2);
+  assert.equal(weekInfo([R(1)], NOW).count, 0);
+});
+
+test('achievements unlock from real activity', () => {
+  const none = achievements([], NOW);
+  assert.ok(none.every(a => !a.earned));
+  const rs = [R(5, { id: 'a', percent: 50 }), R(6, { id: 'b', percent: 90, test_id: 't2' }), R(7, { id: 'c', percent: 88, test_id: 't3' }), R(8, { id: 'd', percent: 91, test_id: 't4' }), R(9, { id: 'e', percent: 40, test_id: 't5' })];
+  const got = Object.fromEntries(achievements(rs, NOW).map(a => [a.id, a.earned]));
+  assert.equal(got.first, true); assert.equal(got.best, true); assert.equal(got.accuracy, true);
+  assert.equal(got.streak7, false); assert.equal(got.reading, false); assert.equal(got.listening, false);
+  assert.equal(got.weekly, true); // 5 attempts in Mon 5 – Sun 11 Oct… day 5 is a Monday
+});
+
+test('summary and student stats', () => {
+  const rs = [R(5, { id: 'a', percent: 40 }), R(6, { id: 'b', percent: 50 }), R(7, { id: 'c', percent: 60 }), R(8, { id: 'd', percent: 90 }), R(9, { id: 'e', student_name: 'Bo' })];
+  const sm = progressSummary(rs.filter(r => r.student_name === 'Ana'), NOW);
+  assert.equal(sm.attempts, 4); assert.equal(sm.best.id, 'd'); assert.equal(sm.level.level >= 1, true);
+  const st = buildStudentStats(rs);
+  const ana = st.find(s => s.name === 'Ana'), bo = st.find(s => s.name === 'Bo');
+  assert.equal(ana.improvement, Math.round(((50 + 60 + 90) / 3 - (40 + 50 + 60) / 3) * 10) / 10);
+  assert.equal(bo.improvement, null);
+});
+
+test('typeBreakdown groups graded answers by question type', () => {
+  const t = { format: 'multilevel', section: 'reading', data: { parts: [{ blocks: [{ questions: [
+    { type: 'tfng', text: 'a', answer: 'True' }, { type: 'tfng', text: 'b', answer: 'False' }, { type: 'mcq', text: 'c', options: [{ label: 'A', text: 'x' }, { label: 'B', text: 'y' }], answer: 'A' }] }] }] } };
+  const g = grade(t, { 1: 'True', 2: 'True', 3: 'A' });
+  const b = typeBreakdown(t, g.details);
+  const tf = b.find(x => x.type === 'tfng');
+  assert.deepEqual([tf.correct, tf.total, tf.pct], [1, 2, 50]);
+  assert.equal(b[0].type, 'tfng'); // weakest first
 });

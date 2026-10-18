@@ -23,13 +23,16 @@ function renderNav(path) {
   const link = (href, label, extra = '') => `<a href="${href}" class="${path === href.slice(1) || (href !== '#/' && path.startsWith(href.slice(1))) ? 'active' : ''}">${label}${extra}</a>`;
   $('#nav').innerHTML = `<div class="wrap">
     <a class="brand" href="#/"><span class="logo">${icon('spark', 20)}</span>${esc(CONFIG.brand)}</a>
-    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}</nav>
+    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}${link('#/me', 'Profile')}</nav>
     <div class="navright">
       <a class="icon-btn" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.telegramChannel)}">${icon('send', 18)}</a>
       <button class="icon-btn" data-act="theme" title="Theme">${icon(document.documentElement.dataset.theme === 'light' ? 'moon' : 'sun', 18)}</button>
       ${st ? `<a class="studentchip" href="#/me"><span class="av">${esc(initials(st.name))}</span>${esc(st.name.split(' ')[0])}</a>`
         : '<button class="btn primary sm" data-act="signin">Start free</button>'}
     </div></div>`;
+  const b = (href, label, ic) => { const on = href === '#/' ? path === '/' : path.startsWith(href.slice(1)); return `<a href="${href}" class="${on ? 'active' : ''}" ${on ? 'aria-current="page"' : ''}>${icon(ic, 20)}<span>${label}</span></a>`; };
+  const bn = $('#bnav');
+  if (bn) bn.innerHTML = b('#/', 'Home', 'home') + b('#/practice/reading', 'Reading', 'book') + b('#/practice/listening', 'Listening', 'headphones') + b('#/leaderboard', 'Ranking', 'trophy') + b('#/me', 'Profile', 'user');
   $('#footBrand').innerHTML = `© ${new Date().getFullYear()} ${esc(CONFIG.brand)} · <a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${esc(CONFIG.telegramChannel)}</a>${store.mode === 'local' ? ' · <span class="badge draft">Demo mode</span>' : ''}`;
 }
 

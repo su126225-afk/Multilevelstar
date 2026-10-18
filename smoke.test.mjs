@@ -128,4 +128,54 @@ test('admin editor page renders for a bundled test and for a new test', async ()
   assert.equal($$('.ed-part').length, 1);
 });
 
+test('home shows real progress for the signed-in student', async () => {
+  await nav('#/'); await waitFor(() => $('.pstats'));
+  assert.match($('.welcome').textContent, /Test Student|Test/);
+  assert.equal($('.pstat b').textContent.trim(), '3');             // 3 different tests completed
+  assert.equal($$('.bdg').length, 7);
+  assert.match($('.badgegrid .bdg.on').textContent, /First Test Completed/);
+  assert.ok($$('.rrow').length >= 1, 'recent results listed');
+  assert.match($('.daily').textContent, /challenge/i);
+});
+
+test('result page: XP, estimate wording and performance by type', async () => {
+  await nav('#/me'); await waitFor(() => $('.kv'));
+  assert.ok($$('.bdg').length === 7 && $('.xpbar'));
+  const rev = $('a[href^="#/result/"]'); assert.ok(rev, 'history has a Review link');
+  w.location.hash = rev.getAttribute('href'); await waitFor(() => $('.ring'));
+  await waitFor(() => $('.banner.xp'));
+  assert.match($('.banner.xp').textContent, /\+\d+ XP/);
+  assert.match($('.estimate').textContent, /unofficial estimate/i);
+  assert.ok($$('.tbar').length >= 1, 'question-type bars');
+  assert.ok($('.reco'), 'recommendation');
+});
+
+test('leaderboard can rank by XP', async () => {
+  await nav('#/leaderboard'); await waitFor(() => $('#lbBody table'));
+  click($('[data-act=lbRank][data-v=xp]')); await waitFor(() => /XP/.test($('#lbBody thead').textContent));
+  assert.match($('#lbBody').textContent, /Test Student/);
+  assert.match($('.you-pos').textContent, /#1/);
+});
+
+test('runner: flag a question, move between parts with Next / Previous', async () => {
+  const t = bundle.find(x => x.title === 'Multilevel Reading 15');
+  await nav('#/run/' + t.id); await waitFor(() => $('.runner'));
+  const flag = $('[data-act=flag]'); assert.ok(flag, 'flag button rendered');
+  const n = flag.dataset.n;
+  click(flag);
+  assert.equal(flag.getAttribute('aria-pressed'), 'true');
+  assert.ok($(`.dot.flag[data-n="${n}"]`), 'flagged dot in the navigator');
+  assert.ok($('.ptab.on[data-i="0"]'));
+  assert.ok($('[data-act=partStep][data-d="-1"]').disabled, 'Previous disabled on the first part');
+  click($('[data-act=partStep][data-d="1"]'));
+  await waitFor(() => $('.ptab.on[data-i="1"]'));
+  click($('[data-act=partStep][data-d="-1"]'));
+  await waitFor(() => $('.ptab.on[data-i="0"]'));
+  assert.equal($(`[data-act=flag][data-n="${n}"]`).getAttribute('aria-pressed'), 'true', 'flag survives re-render');
+  const last = $$('.ptab').length - 1;
+  click($(`.ptab[data-i="${last}"]`)); await waitFor(() => $('.ptab.on[data-i="' + last + '"]'));
+  assert.match($('#rfoot').textContent, /Review & submit/);
+  assert.ok($$('[data-act=submitTest]').length >= 2, 'last part offers Review & submit');
+});
+
 test('no uncaught errors during the walk-through', () => { assert.deepEqual(errors, []); });

@@ -29,6 +29,13 @@ const P = {
   chart: '<path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/>',
   send: '<path d="M21.9 4.6 18.7 20c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-4.9 9-8.1L6 12.3l-4.8-1.5L20.6 3z"/>',
   logout: '<path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/>',
+  fire: '<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.2 2-4 .2 1.5 1 2.2 2 2.4C10.5 9 11 6 12 3z"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  flag: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  home: '<path d="M4 11l8-7 8 7M6 10v10h12V10"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
 };
 export const icon = (n, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n] || ''}</svg>`;
 
@@ -108,12 +115,12 @@ export function lineChart(pts, { w = 520, h = 220, min = 0, max = 100, ticks = [
   const grid = ticks.map(t => `<line x1="${pad.l}" x2="${w - pad.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="currentColor" stroke-opacity=".12"/><text x="${pad.l - 8}" y="${Y(t) + 4}" text-anchor="end">${fmt(t)}</text>`).join('');
   const last = pts[pts.length - 1];
   return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Progress chart">
-    <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5b6cff" stop-opacity=".35"/><stop offset="1" stop-color="#5b6cff" stop-opacity="0"/></linearGradient></defs>
+    <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#7657FF" stop-opacity=".35"/><stop offset="1" stop-color="#7657FF" stop-opacity="0"/></linearGradient></defs>
     ${grid}
     <path d="${d} L${X(pts.length - 1)},${pad.t + ih} L${X(0)},${pad.t + ih} Z" fill="url(#${id})"/>
-    <path d="${d}" fill="none" stroke="#7c8cff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.y)}" r="${i === pts.length - 1 ? 5.5 : 3.2}" fill="#7c8cff"/>`).join('')}
-    <circle cx="${X(pts.length - 1)}" cy="${Y(last.y)}" r="10" fill="#7c8cff" opacity=".2"/>
+    <path d="${d}" fill="none" stroke="#9a85ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map((p, i) => `<circle cx="${X(i)}" cy="${Y(p.y)}" r="${i === pts.length - 1 ? 5.5 : 3.2}" fill="#9a85ff"/>`).join('')}
+    <circle cx="${X(pts.length - 1)}" cy="${Y(last.y)}" r="10" fill="#9a85ff" opacity=".2"/>
   </svg>`;
 }
 
