@@ -16,7 +16,7 @@ const local = {
   async init() {
     if (LS.get('seeded')) return;
     let tests = [];
-    try { const r = await fetch('data/tests.json'); if (r.ok) tests = (await r.json()).tests || []; } catch { /* no bundle */ }
+    try { const r = await fetch('tests.json'); if (r.ok) tests = (await r.json()).tests || []; } catch { /* no bundle */ }
     const now = Date.now();
     LS.set('tests', tests.map((t, i) => ({ published: true, ...t, created_at: new Date(now - i * 1000).toISOString() })));
     LS.set('groups', [{ code: 'DEMO', name: 'Demo group' }]);

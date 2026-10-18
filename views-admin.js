@@ -72,7 +72,7 @@ actions.delTest = async el => {
 };
 actions.importBundle = async () => {
   let bundle;
-  try { const r = await fetch('data/tests.json'); if (!r.ok) throw new Error(); bundle = (await r.json()).tests; } catch { return toast('data/tests.json was not found next to index.html', 'bad'); }
+  try { const r = await fetch('tests.json'); if (!r.ok) throw new Error(); bundle = (await r.json()).tests; } catch { return toast('tests.json was not found next to index.html', 'bad'); }
   if (!(await confirmBox('Import bundled tests?', `${bundle.length} tests will be added (existing ones with the same id are updated).`, 'Import'))) return;
   try {
     for (let i = 0; i < bundle.length; i += 4) await store.saveTests(bundle.slice(i, i + 4));
