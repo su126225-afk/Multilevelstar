@@ -1,0 +1,12 @@
+{
+  "name": "english-with-usmonov-practice",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-force-exit tests/logic.test.mjs tests/smoke.test.mjs",
+    "import": "node tools/import-simulators.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0"
+  }
+}
