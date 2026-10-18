@@ -29,10 +29,14 @@ async function gemini(model: string, key: string, prompt: string) {
   });
 }
 
+const body0 = (t: unknown) => String(t || '').trim().split(/\s+/).filter(Boolean).length;
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS });
   try {
-    const { kind, prompt, text, group } = await req.json();
+    const { kind, prompt, text, group, min_words, max_words } = await req.json();
+    const minW = Number(min_words) || 0, maxW = Number(max_words) || 0;
+    const words = body0(text);
     if (!RUBRIC[kind]) return json({ error: 'Unknown writing type' }, 400);
     const body = String(text || '').trim();
     if (body.split(/\s+/).length < 20) return json({ error: 'Write at least 20 words first.' }, 400);
@@ -50,6 +54,8 @@ Deno.serve(async (req) => {
 ${RUBRIC[kind]}
 TASK GIVEN TO THE STUDENT:
 """${String(prompt || '').slice(0, 3000)}"""
+REQUIRED LENGTH: ${minW ? (maxW ? `${minW}-${maxW} words` : `at least ${minW} words`) : 'not specified'}. The student wrote ${words} words.
+If the answer is shorter than the minimum or longer than the maximum, say so clearly and lower Task Achievement / the overall score accordingly (a few words over is a small issue; far over or under is a real penalty, as in the real exam).
 STUDENT'S ANSWER:
 """${body}"""
 

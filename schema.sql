@@ -117,6 +117,8 @@ create table if not exists activity (
   primary key (group_code, student_name, day)
 );
 
+alter table writing_tasks add column if not exists max_words int not null default 0;
+
 alter table writing_tasks       enable row level security;
 alter table writing_submissions enable row level security;
 alter table activity            enable row level security;
@@ -157,3 +159,44 @@ grant execute on function add_activity(text, text, int) to anon, authenticated;
 
 drop policy if exists activity_read on activity;
 create policy activity_read on activity for select using (true);
+
+-- ═══════════ VOCABULARY MARATHON ═══════════
+create table if not exists vocab_sets (
+  id          uuid primary key default gen_random_uuid(),
+  title       text not null,
+  topics      text not null default '',
+  mc_count    int  not null default 25,
+  open_count  int  not null default 15,
+  seconds     int  not null default 480,
+  published   boolean not null default true,
+  words       jsonb not null,
+  created_at  timestamptz not null default now()
+);
+create table if not exists vocab_results (
+  id           uuid primary key default gen_random_uuid(),
+  set_id       uuid references vocab_sets(id) on delete set null,
+  set_title    text not null,
+  student_name text not null,
+  group_code   text not null,
+  mc           int not null,
+  open         int not null,
+  score        int not null,
+  total        int not null,
+  percent      numeric not null,
+  time_sec     int,
+  created_at   timestamptz not null default now()
+);
+create index if not exists vocab_results_set_idx on vocab_results(set_id);
+alter table vocab_sets    enable row level security;
+alter table vocab_results enable row level security;
+drop policy if exists vsets_read on vocab_sets;
+create policy vsets_read on vocab_sets for select using (published or auth.role() = 'authenticated');
+drop policy if exists vsets_write on vocab_sets;
+create policy vsets_write on vocab_sets for all to authenticated using (true) with check (true);
+drop policy if exists vres_read on vocab_results;
+create policy vres_read on vocab_results for select using (true);
+drop policy if exists vres_insert on vocab_results;
+create policy vres_insert on vocab_results for insert to anon, authenticated
+  with check (check_group(group_code) is not null and percent between 0 and 100);
+drop policy if exists vres_delete on vocab_results;
+create policy vres_delete on vocab_results for delete to authenticated using (true);

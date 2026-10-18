@@ -7,6 +7,7 @@ import { fmtHours } from './activity.js';
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
 export const KINDS = { task1: 'IELTS Task 1', task2: 'IELTS Task 2', multilevel: 'Multilevel' };
+export const limitText = t => t.max_words > t.min_words ? `${t.min_words}–${t.max_words} words` : `at least ${t.min_words} words`;
 export const countWords = t => (String(t).trim().match(/[A-Za-z0-9’'-]+/g) || []).length;
 
 const SAMPLES = [
@@ -61,7 +62,7 @@ export async function writingEditor(root, id) {
     <div class="wgrid mt">
       <div class="panel"><span class="badge ${t.kind === 'multilevel' ? 'multi' : 'ielts'}">${KINDS[t.kind]}</span><h2 style="margin:10px 0">${esc(t.title)}</h2>
         ${t.image_url ? `<img class="plan" src="${esc(t.image_url)}" alt="Task image">` : ''}<div style="white-space:pre-wrap;line-height:1.7">${esc(t.prompt)}</div>
-        <p class="muted mt" style="font-size:13px">Write at least ${t.min_words} words.</p></div>
+        <p class="mt" style="font-size:14px"><b>Word limit:</b> ${limitText(t)}</p></div>
       <div><textarea id="wtext" class="inp wtext" placeholder="Start writing here…" spellcheck="true" data-in="wtext">${esc(draft)}</textarea>
         <div class="row between wrapx mt"><div class="wcount" id="wcount"></div>
           <button class="btn primary" data-act="wCheck" id="wbtn">${icon('spark', 16)} Check with AI</button></div>
@@ -70,20 +71,23 @@ export async function writingEditor(root, id) {
 }
 inputs.wtext = () => {
   if (!WR) return;
-  const ta = $('#wtext'), n = countWords(ta.value), min = WR.task.min_words;
+  const ta = $('#wtext'), n = countWords(ta.value), min = WR.task.min_words, max = WR.task.max_words || 0;
   try { localStorage.setItem(WR.key, ta.value); } catch { /* ignore */ }
-  const c = $('#wcount'); if (c) c.innerHTML = `<b style="color:${n >= min ? 'var(--ok)' : 'inherit'}">${n}</b> / ${min} words`;
+  const c = $('#wcount'); if (c) {
+    const over = max && n > max, color = over ? 'var(--bad)' : n >= min ? 'var(--ok)' : 'inherit';
+    c.innerHTML = `<b style="color:${color}">${n}</b> words · limit ${limitText(WR.task)}${over ? ` · <span style="color:var(--bad)">${n - max} over the limit</span>` : ''}`;
+  }
 };
 actions.wCheck = async () => {
   if (!WR || WR.busy) return;
   const text = $('#wtext').value, words = countWords(text), st = S.student, t = WR.task;
   if (words < 20) return toast('Write at least 20 words first', 'bad');
-  if (words < t.min_words * 0.5 && !(await confirmBox('Very short answer', `You wrote ${words} words, the task asks for ${t.min_words}. Check anyway?`, 'Check'))) return;
+  if (words < t.min_words * 0.5 && !(await confirmBox('Very short answer', `You wrote ${words} words, the task asks for ${limitText(t)}. Check anyway?`, 'Check'))) return;
   WR.busy = true;
   const btn = $('#wbtn'), out = $('#wout');
   btn.disabled = true; out.innerHTML = '<div class="loading">AI is reading your writing… (10–30 seconds)</div>';
   try {
-    const fb = await store.checkWriting({ kind: t.kind, prompt: t.prompt, text, group: st.group });
+    const fb = await store.checkWriting({ kind: t.kind, prompt: t.prompt, text, group: st.group, min_words: t.min_words, max_words: t.max_words || 0 });
     out.innerHTML = feedbackHTML(fb);
     out.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try {
@@ -109,9 +113,9 @@ export const sample = SAMPLES;
 export async function writingTab(body) {
   const [tasks, subs] = await Promise.all([store.listWritingTasks(), store.listWritings()]);
   body.innerHTML = `<div class="row between wrapx" style="margin-bottom:14px"><b>${tasks.length} writing tasks</b>
-      <div class="row">${tasks.length ? '' : '<button class="btn sm" data-act="wSamples">Add 3 sample tasks</button>'}<button class="btn primary sm" data-act="wEdit" data-id="">${icon('plus', 16)} New task</button></div></div>
-    ${tasks.length ? `<div class="tablewrap"><table><thead><tr><th>Title</th><th>Type</th><th>Min words</th><th>Status</th><th class="r"></th></tr></thead><tbody>
-      ${tasks.map(t => `<tr><td><b>${esc(t.title)}</b></td><td><span class="badge">${KINDS[t.kind]}</span></td><td>${t.min_words}</td><td>${t.published ? '<span class="badge ok">Published</span>' : '<span class="badge draft">Draft</span>'}</td>
+      <div class="row">${tasks.length ? '' : '<button class="btn sm" data-act="wSamples">Add 3 sample tasks</button>'}<button class="btn sm" data-act="wBundle">Import Multilevel Writing Sets 1–3</button><button class="btn primary sm" data-act="wEdit" data-id="">${icon('plus', 16)} New task</button></div></div>
+    ${tasks.length ? `<div class="tablewrap"><table><thead><tr><th>Title</th><th>Type</th><th>Words</th><th>Status</th><th class="r"></th></tr></thead><tbody>
+      ${tasks.map(t => `<tr><td><b>${esc(t.title)}</b></td><td><span class="badge">${KINDS[t.kind]}</span></td><td>${limitText(t)}</td><td>${t.published ? '<span class="badge ok">Published</span>' : '<span class="badge draft">Draft</span>'}</td>
         <td class="r"><button class="btn sm" data-act="wEdit" data-id="${t.id}">${icon('edit', 14)} Edit</button> <button class="btn sm danger" data-act="wDel" data-id="${t.id}">${icon('trash', 14)}</button></td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">No tasks yet.</div>'}
     <h2 class="ptitle mt2" style="font-size:22px">Student submissions</h2>
     <div class="mt">${subs.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Group</th><th>Task</th><th>Words</th><th>AI score</th><th class="r"></th></tr></thead><tbody>
@@ -121,6 +125,14 @@ export async function writingTab(body) {
 }
 const refreshW = () => writingTab(writingTab.body);
 actions.wSamples = async () => { for (const s of SAMPLES) await store.saveWritingTask({ id: uid(), published: true, image_url: '', ...s }); refreshW(); };
+actions.wBundle = async () => {
+  let list = [];
+  try { const r = await fetch('writing.json'); if (!r.ok) throw new Error(); list = (await r.json()).tasks; } catch { return toast('writing.json not found', 'bad'); }
+  const have = new Set((await store.listWritingTasks()).map(t => t.title));
+  let n = 0;
+  for (const t of list) { if (have.has(t.title)) continue; await store.saveWritingTask({ id: uid(), published: true, image_url: '', ...t }); n++; }
+  toast(n ? `${n} tasks added` : 'Already imported', 'ok'); refreshW();
+};
 actions.wOpen = el => { const w = writingTab.subs.find(x => x.id === el.dataset.id); if (w) viewWriting(w); };
 actions.wSubDel = async el => { if (await confirmBox('Delete submission?', 'This cannot be undone.', 'Delete', true)) { await store.deleteWriting(el.dataset.id); refreshW(); } };
 actions.wDel = async el => { if (await confirmBox('Delete task?', 'Past submissions stay.', 'Delete', true)) { await store.deleteWritingTask(el.dataset.id); refreshW(); } };
@@ -131,14 +143,14 @@ actions.wEdit = el => {
     <label class="lbl">Title</label><input class="inp" id="wtTitle" value="${esc(t.title)}">
     <label class="lbl">Task text</label><textarea class="inp" id="wtPrompt" rows="7">${esc(t.prompt)}</textarea>
     <label class="lbl">Image URL (Task 1 chart, optional)</label><input class="inp" id="wtImg" value="${esc(t.image_url)}" placeholder="https://…">
-    <label class="lbl">Minimum words</label><input class="inp" id="wtMin" type="number" min="20" value="${t.min_words}">
+    <div class="row"><div style="flex:1"><label class="lbl">Minimum words</label><input class="inp" id="wtMin" type="number" min="20" value="${t.min_words}"></div><div style="flex:1"><label class="lbl">Maximum words (0 = no maximum)</label><input class="inp" id="wtMax" type="number" min="0" value="${t.max_words || 0}"></div></div>
     <label class="row mt"><input type="checkbox" id="wtPub" ${t.published ? 'checked' : ''}> Published</label>
     <div class="row mt" style="justify-content:flex-end"><button class="btn" data-act="closeModal">Cancel</button><button class="btn primary" data-act="wSave" data-id="${t.id || ''}">Save</button></div>`, true);
 };
 actions.wSave = async el => {
   const title = $('#wtTitle').value.trim(), prompt = $('#wtPrompt').value.trim();
   if (!title || !prompt) return toast('Title and task text are required', 'bad');
-  await store.saveWritingTask({ id: el.dataset.id || uid(), kind: $('#wtKind').value, title, prompt, image_url: $('#wtImg').value.trim(), min_words: Number($('#wtMin').value) || 150, published: $('#wtPub').checked,
+  await store.saveWritingTask({ id: el.dataset.id || uid(), kind: $('#wtKind').value, title, prompt, image_url: $('#wtImg').value.trim(), min_words: Number($('#wtMin').value) || 150, max_words: Number($('#wtMax').value) || 0, published: $('#wtPub').checked,
     ...(writingTab.tasks.find(x => x.id === el.dataset.id)?.created_at ? { created_at: writingTab.tasks.find(x => x.id === el.dataset.id).created_at } : {}) });
   closeModal(); toast('Saved', 'ok'); refreshW();
 };

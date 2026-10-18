@@ -9,6 +9,11 @@ export const CONFIG = {
   teacher: 'Sardor Usmonov',
   telegramChannel: '@EnglishwithUsmonov',
   telegramUrl: 'https://t.me/EnglishwithUsmonov',
+  // O'qituvchining shaxsiy Telegram akkaunti (online kurslar uchun murojaat)
+  telegramPersonal: '@SARDOR_USM0NOV',
+  telegramPersonalUrl: 'https://t.me/SARDOR_USM0NOV',
+  coursesTitle: 'Online courses',
+  coursesText: "IELTS & Multilevel online kurslari. Batafsil ma'lumot va yozilish uchun menga Telegramda yozing.",
 
   supabaseUrl: 'https://gvngtrhhwjodokjftxko.supabase.co',
   supabaseAnonKey: 'sb_publishable_ZLvkVK3dQcFBb6jR2zs10A_sj5w2rWw',

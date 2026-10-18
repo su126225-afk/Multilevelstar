@@ -13,6 +13,8 @@ export const getFs = () => { const v = parseFloat(get('ma_fs', '1')); return Num
 export const getVolume = () => { const v = parseFloat(get('ma_vol', '1')); return Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : 1; };
 export const getSplit = () => { const v = parseFloat(get('ma_split', '0.5')); return Number.isFinite(v) ? Math.min(0.8, Math.max(0.2, v)) : 0.5; };
 export const saveSplit = v => set('ma_split', String(v));
+export const getVSplit = () => { const v = parseFloat(get('ma_vsplit', '0.45')); return Number.isFinite(v) ? Math.min(0.8, Math.max(0.2, v)) : 0.45; };
+export const saveVSplit = v => set('ma_vsplit', String(v));
 
 export function applyPrefs() {
   document.documentElement.style.setProperty('--fs', String(getFs()));
@@ -40,7 +42,7 @@ export function settingsButton({ audio = false } = {}) {
       <div class="setsec"><div class="settitle">Text size</div>
         <div class="sizerow"><button class="btn sm" data-act="fsStep" data-d="-1" aria-label="Smaller text">A−</button><b id="fsval">${fs}%</b><button class="btn sm" data-act="fsStep" data-d="1" aria-label="Larger text">A+</button><button class="btn sm" data-act="fsStep" data-d="0">Reset</button></div></div>
       ${audio ? `<div class="setsec"><div class="settitle">Volume</div><input type="range" class="vol" min="0" max="1" step="0.05" value="${getVolume()}" data-in="vol" aria-label="Volume"></div>` : ''}
-      <div class="setsec muted" style="font-size:12.5px">Tip: select any text in a passage or question to highlight it. Drag the middle bar to resize the two sides.</div>
+      <div class="setsec muted" style="font-size:12.5px">Tip: select any text in a passage or question to highlight it. Drag the bar between the two parts to resize them.</div>
     </div></div>`;
 }
 

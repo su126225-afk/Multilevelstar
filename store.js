@@ -71,6 +71,18 @@ const local = {
     LS.set('wtasks', all); return rec;
   },
   async deleteWritingTask(id) { LS.set('wtasks', LS.get('wtasks', []).filter(t => t.id !== id)); },
+  async listVocabSets({ published } = {}) { const t = LS.get('vsets', []).slice().sort(byNewest); return published ? t.filter(x => x.published) : t; },
+  async getVocabSet(id) { return LS.get('vsets', []).find(t => t.id === id) || null; },
+  async saveVocabSet(t) {
+    const all = LS.get('vsets', []), i = all.findIndex(x => x.id === t.id);
+    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
+    if (i >= 0) all[i] = rec; else all.push(rec);
+    LS.set('vsets', all); return rec;
+  },
+  async deleteVocabSet(id) { LS.set('vsets', LS.get('vsets', []).filter(t => t.id !== id)); },
+  async saveVocabResult(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('vres', []); a.push(rec); LS.set('vres', a); return rec.id; },
+  async listVocabResults() { return LS.get('vres', []).slice().sort(byNewest); },
+  async deleteVocabResult(id) { LS.set('vres', LS.get('vres', []).filter(r => r.id !== id)); },
   aiAvailable: false,
   async checkWriting() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
   async saveWriting(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('wsubs', []); a.push(rec); LS.set('wsubs', a); return rec.id; },
@@ -130,6 +142,17 @@ async function makeCloud() {
     async getWritingTask(id) { return ok(sb.from('writing_tasks').select('*').eq('id', id).maybeSingle()); },
     async saveWritingTask(t) { return ok(sb.from('writing_tasks').upsert(t).select().single()); },
     async deleteWritingTask(id) { await ok(sb.from('writing_tasks').delete().eq('id', id)); },
+    async listVocabSets({ published } = {}) {
+      let q = sb.from('vocab_sets').select('*').order('created_at', { ascending: false });
+      if (published) q = q.eq('published', true);
+      return ok(q);
+    },
+    async getVocabSet(id) { return ok(sb.from('vocab_sets').select('*').eq('id', id).maybeSingle()); },
+    async saveVocabSet(t) { return ok(sb.from('vocab_sets').upsert(t).select().single()); },
+    async deleteVocabSet(id) { await ok(sb.from('vocab_sets').delete().eq('id', id)); },
+    async saveVocabResult(r) { return (await ok(sb.from('vocab_results').insert(r).select('id').single())).id; },
+    async listVocabResults() { return ok(sb.from('vocab_results').select('*').order('created_at', { ascending: false }).limit(5000)); },
+    async deleteVocabResult(id) { await ok(sb.from('vocab_results').delete().eq('id', id)); },
     aiAvailable: true,
     async checkWriting(payload) {
       const { data, error } = await sb.functions.invoke('check-writing', { body: payload });

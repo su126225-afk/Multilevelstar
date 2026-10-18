@@ -1,0 +1,822 @@
+{
+ "sets": [
+  {
+   "title": "Vocabulary Exam — Topics 11–20",
+   "topics": "11–20",
+   "mc_count": 25,
+   "open_count": 15,
+   "seconds": 480,
+   "words": [
+    {
+     "word": "repair",
+     "meaning": "ta'mirlash",
+     "topic": "11"
+    },
+    {
+     "word": "wheel",
+     "meaning": "g'ildirak",
+     "topic": "11"
+    },
+    {
+     "word": "mechanic",
+     "meaning": "mexanik",
+     "topic": "11"
+    },
+    {
+     "word": "puncture",
+     "meaning": "teshik",
+     "topic": "11"
+    },
+    {
+     "word": "cost",
+     "meaning": "narx",
+     "topic": "11"
+    },
+    {
+     "word": "manage",
+     "meaning": "uddasidan chiqmoq",
+     "topic": "11"
+    },
+    {
+     "word": "tool",
+     "meaning": "asbob",
+     "topic": "11"
+    },
+    {
+     "word": "independent",
+     "meaning": "mustaqil",
+     "topic": "11"
+    },
+    {
+     "word": "bill",
+     "meaning": "hisob-faktura",
+     "topic": "12"
+    },
+    {
+     "word": "reduce",
+     "meaning": "kamaytirmoq",
+     "topic": "12"
+    },
+    {
+     "word": "electricity",
+     "meaning": "elektr",
+     "topic": "12"
+    },
+    {
+     "word": "device",
+     "meaning": "qurilma",
+     "topic": "12"
+    },
+    {
+     "word": "charge",
+     "meaning": "zaryadlamoq",
+     "topic": "12"
+    },
+    {
+     "word": "habit",
+     "meaning": "odat",
+     "topic": "12"
+    },
+    {
+     "word": "save",
+     "meaning": "tejash",
+     "topic": "12"
+    },
+    {
+     "word": "notice",
+     "meaning": "payqamoq",
+     "topic": "12"
+    },
+    {
+     "word": "factory",
+     "meaning": "zavod",
+     "topic": "13"
+    },
+    {
+     "word": "production",
+     "meaning": "ishlab chiqarish",
+     "topic": "13"
+    },
+    {
+     "word": "process",
+     "meaning": "jarayon",
+     "topic": "13"
+    },
+    {
+     "word": "machine",
+     "meaning": "mashina",
+     "topic": "13"
+    },
+    {
+     "word": "safety",
+     "meaning": "xavfsizlik",
+     "topic": "13"
+    },
+    {
+     "word": "fascinate",
+     "meaning": "qiziqtirmoq",
+     "topic": "13"
+    },
+    {
+     "word": "career",
+     "meaning": "kasb",
+     "topic": "13"
+    },
+    {
+     "word": "tour",
+     "meaning": "sayohat",
+     "topic": "13"
+    },
+    {
+     "word": "ingredient",
+     "meaning": "ingrediyent",
+     "topic": "14"
+    },
+    {
+     "word": "substitute",
+     "meaning": "o'rinbosar",
+     "topic": "14"
+    },
+    {
+     "word": "recipe",
+     "meaning": "retsept",
+     "topic": "14"
+    },
+    {
+     "word": "discover",
+     "meaning": "topmoq",
+     "topic": "14"
+    },
+    {
+     "word": "alternative",
+     "meaning": "muqobil",
+     "topic": "14"
+    },
+    {
+     "word": "result",
+     "meaning": "natija",
+     "topic": "14"
+    },
+    {
+     "word": "experiment",
+     "meaning": "sinab ko'rmoq",
+     "topic": "14"
+    },
+    {
+     "word": "accident",
+     "meaning": "tasodif",
+     "topic": "14"
+    },
+    {
+     "word": "flood",
+     "meaning": "suv toshqini",
+     "topic": "15"
+    },
+    {
+     "word": "ankle",
+     "meaning": "to'piq",
+     "topic": "15"
+    },
+    {
+     "word": "drain",
+     "meaning": "kanalizatsiya",
+     "topic": "15"
+    },
+    {
+     "word": "stuck",
+     "meaning": "qolib qolmoq",
+     "topic": "15"
+    },
+    {
+     "word": "pass",
+     "meaning": "o'tmoq",
+     "topic": "15"
+    },
+    {
+     "word": "carry",
+     "meaning": "ko'tarmoq",
+     "topic": "15"
+    },
+    {
+     "word": "wet",
+     "meaning": "ho'l",
+     "topic": "15"
+    },
+    {
+     "word": "laugh",
+     "meaning": "kulmoq",
+     "topic": "15"
+    },
+    {
+     "word": "donate",
+     "meaning": "xayriya qilmoq",
+     "topic": "16"
+    },
+    {
+     "word": "shelf",
+     "meaning": "javon",
+     "topic": "16"
+    },
+    {
+     "word": "catalogue",
+     "meaning": "katalog",
+     "topic": "16"
+    },
+    {
+     "word": "sort",
+     "meaning": "tartiblamoq",
+     "topic": "16"
+    },
+    {
+     "word": "community",
+     "meaning": "jamoa",
+     "topic": "16"
+    },
+    {
+     "word": "access",
+     "meaning": "kirish imkoniyati",
+     "topic": "16"
+    },
+    {
+     "word": "free",
+     "meaning": "bepul",
+     "topic": "16"
+    },
+    {
+     "word": "organise",
+     "meaning": "tashkil qilmoq",
+     "topic": "16"
+    },
+    {
+     "word": "order",
+     "meaning": "buyurtma bermoq",
+     "topic": "17"
+    },
+    {
+     "word": "deliver",
+     "meaning": "yetkazib berish",
+     "topic": "17"
+    },
+    {
+     "word": "wrong",
+     "meaning": "noto'g'ri",
+     "topic": "17"
+    },
+    {
+     "word": "refund",
+     "meaning": "pulni qaytarish",
+     "topic": "17"
+    },
+    {
+     "word": "contact",
+     "meaning": "bog'lanmoq",
+     "topic": "17"
+    },
+    {
+     "word": "patient",
+     "meaning": "sabr-toqatli",
+     "topic": "17"
+    },
+    {
+     "word": "resolution",
+     "meaning": "yechim",
+     "topic": "17"
+    },
+    {
+     "word": "frustrating",
+     "meaning": "asabiylashtiruvchi",
+     "topic": "17"
+    },
+    {
+     "word": "exhibit",
+     "meaning": "eksponat",
+     "topic": "18"
+    },
+    {
+     "word": "collection",
+     "meaning": "to'plam",
+     "topic": "18"
+    },
+    {
+     "word": "century",
+     "meaning": "asr",
+     "topic": "18"
+    },
+    {
+     "word": "ancient",
+     "meaning": "qadimiy",
+     "topic": "18"
+    },
+    {
+     "word": "guide",
+     "meaning": "gid",
+     "topic": "18"
+    },
+    {
+     "word": "curious",
+     "meaning": "qiziquvchan",
+     "topic": "18"
+    },
+    {
+     "word": "label",
+     "meaning": "yorliq",
+     "topic": "18"
+    },
+    {
+     "word": "history",
+     "meaning": "tarix",
+     "topic": "18"
+    },
+    {
+     "word": "join",
+     "meaning": "qo'shilmoq",
+     "topic": "19"
+    },
+    {
+     "word": "pace",
+     "meaning": "sur'at",
+     "topic": "19"
+    },
+    {
+     "word": "improve",
+     "meaning": "yaxshilamoq",
+     "topic": "19"
+    },
+    {
+     "word": "distance",
+     "meaning": "masofa",
+     "topic": "19"
+    },
+    {
+     "word": "motivate",
+     "meaning": "rag'batlantirmoq",
+     "topic": "19"
+    },
+    {
+     "word": "progress",
+     "meaning": "taraqqiyot",
+     "topic": "19"
+    },
+    {
+     "word": "challenge",
+     "meaning": "sinov",
+     "topic": "19"
+    },
+    {
+     "word": "routine",
+     "meaning": "tartib",
+     "topic": "19"
+    },
+    {
+     "word": "key",
+     "meaning": "kalit",
+     "topic": "20"
+    },
+    {
+     "word": "locked out",
+     "meaning": "eshik oldida qolib ketmoq",
+     "topic": "20"
+    },
+    {
+     "word": "spare",
+     "meaning": "zaxira",
+     "topic": "20"
+    },
+    {
+     "word": "locksmith",
+     "meaning": "slesar",
+     "topic": "20"
+    },
+    {
+     "word": "panic",
+     "meaning": "vahima",
+     "topic": "20"
+    },
+    {
+     "word": "search",
+     "meaning": "qidirmoq",
+     "topic": "20"
+    },
+    {
+     "word": "retrace",
+     "meaning": "qayta ko'rib chiqmoq",
+     "topic": "20"
+    },
+    {
+     "word": "relief",
+     "meaning": "xotirjamlik",
+     "topic": "20"
+    }
+   ]
+  },
+  {
+   "title": "Vocabulary Exam — Topics 41–50",
+   "topics": "41–50",
+   "mc_count": 25,
+   "open_count": 15,
+   "seconds": 480,
+   "words": [
+    {
+     "word": "lost",
+     "meaning": "yo'qolgan",
+     "topic": "41"
+    },
+    {
+     "word": "collar",
+     "meaning": "yoqa",
+     "topic": "41"
+    },
+    {
+     "word": "poster",
+     "meaning": "plakat",
+     "topic": "41"
+    },
+    {
+     "word": "search",
+     "meaning": "qidirmoq",
+     "topic": "41"
+    },
+    {
+     "word": "recognise",
+     "meaning": "tanib olmoq",
+     "topic": "41"
+    },
+    {
+     "word": "grateful",
+     "meaning": "minnatdor",
+     "topic": "41"
+    },
+    {
+     "word": "neighbourhood",
+     "meaning": "mahalla",
+     "topic": "41"
+    },
+    {
+     "word": "relief",
+     "meaning": "xotirjamlik",
+     "topic": "41"
+    },
+    {
+     "word": "council",
+     "meaning": "kengash",
+     "topic": "42"
+    },
+    {
+     "word": "representative",
+     "meaning": "vakil",
+     "topic": "42"
+    },
+    {
+     "word": "suggest",
+     "meaning": "taklif qilmoq",
+     "topic": "42"
+    },
+    {
+     "word": "vote",
+     "meaning": "ovoz bermoq",
+     "topic": "42"
+    },
+    {
+     "word": "decision",
+     "meaning": "qaror",
+     "topic": "42"
+    },
+    {
+     "word": "issue",
+     "meaning": "muammo",
+     "topic": "42"
+    },
+    {
+     "word": "change",
+     "meaning": "o'zgarish",
+     "topic": "42"
+    },
+    {
+     "word": "responsibility",
+     "meaning": "mas'uliyat",
+     "topic": "42"
+    },
+    {
+     "word": "photograph",
+     "meaning": "fotosurat",
+     "topic": "43"
+    },
+    {
+     "word": "recognise",
+     "meaning": "tanib olmoq",
+     "topic": "43"
+    },
+    {
+     "word": "generation",
+     "meaning": "avlod",
+     "topic": "43"
+    },
+    {
+     "word": "album",
+     "meaning": "albom",
+     "topic": "43"
+    },
+    {
+     "word": "relative",
+     "meaning": "qarindosh",
+     "topic": "43"
+    },
+    {
+     "word": "story",
+     "meaning": "hikoya",
+     "topic": "43"
+    },
+    {
+     "word": "preserve",
+     "meaning": "saqlamoq",
+     "topic": "43"
+    },
+    {
+     "word": "curious",
+     "meaning": "qiziquvchan",
+     "topic": "43"
+    },
+    {
+     "word": "volunteer",
+     "meaning": "ko'ngilli",
+     "topic": "44"
+    },
+    {
+     "word": "primary school",
+     "meaning": "boshlang'ich maktab",
+     "topic": "44"
+    },
+    {
+     "word": "patience",
+     "meaning": "sabr",
+     "topic": "44"
+    },
+    {
+     "word": "explain",
+     "meaning": "tushuntirmoq",
+     "topic": "44"
+    },
+    {
+     "word": "encourage",
+     "meaning": "rag'batlantirmoq",
+     "topic": "44"
+    },
+    {
+     "word": "reward",
+     "meaning": "mukofot",
+     "topic": "44"
+    },
+    {
+     "word": "struggle",
+     "meaning": "qiynalmoq",
+     "topic": "44"
+    },
+    {
+     "word": "progress",
+     "meaning": "taraqqiyot",
+     "topic": "44"
+    },
+    {
+     "word": "road trip",
+     "meaning": "avtomobil sayohati",
+     "topic": "45"
+    },
+    {
+     "word": "route",
+     "meaning": "yo'nalish",
+     "topic": "45"
+    },
+    {
+     "word": "breakdown",
+     "meaning": "nosozlik",
+     "topic": "45"
+    },
+    {
+     "word": "petrol",
+     "meaning": "benzin",
+     "topic": "45"
+    },
+    {
+     "word": "patience",
+     "meaning": "sabr",
+     "topic": "45"
+    },
+    {
+     "word": "adventure",
+     "meaning": "sarguzasht",
+     "topic": "45"
+    },
+    {
+     "word": "flat tyre",
+     "meaning": "g'ildirak teshilishi",
+     "topic": "45"
+    },
+    {
+     "word": "arrive",
+     "meaning": "yetib kelmoq",
+     "topic": "45"
+    },
+    {
+     "word": "frost",
+     "meaning": "qirov",
+     "topic": "46"
+    },
+    {
+     "word": "layer",
+     "meaning": "qatlam",
+     "topic": "46"
+    },
+    {
+     "word": "thermal",
+     "meaning": "issiqlik saqlovchi",
+     "topic": "46"
+    },
+    {
+     "word": "commute",
+     "meaning": "ishga yo'l",
+     "topic": "46"
+    },
+    {
+     "word": "condition",
+     "meaning": "sharoit",
+     "topic": "46"
+    },
+    {
+     "word": "adapt",
+     "meaning": "moslashmoq",
+     "topic": "46"
+    },
+    {
+     "word": "routine",
+     "meaning": "tartib",
+     "topic": "46"
+    },
+    {
+     "word": "season",
+     "meaning": "fasl",
+     "topic": "46"
+    },
+    {
+     "word": "role",
+     "meaning": "rol",
+     "topic": "47"
+    },
+    {
+     "word": "rehearse",
+     "meaning": "mashq qilmoq",
+     "topic": "47"
+    },
+    {
+     "word": "memorise",
+     "meaning": "yodlamoq",
+     "topic": "47"
+    },
+    {
+     "word": "stage",
+     "meaning": "sahna",
+     "topic": "47"
+    },
+    {
+     "word": "audience",
+     "meaning": "tomoshabinlar",
+     "topic": "47"
+    },
+    {
+     "word": "nervous",
+     "meaning": "asabiy",
+     "topic": "47"
+    },
+    {
+     "word": "performance",
+     "meaning": "ijro",
+     "topic": "47"
+    },
+    {
+     "word": "applause",
+     "meaning": "qarsak",
+     "topic": "47"
+    },
+    {
+     "word": "unexpected",
+     "meaning": "kutilmagan",
+     "topic": "48"
+    },
+    {
+     "word": "prepare",
+     "meaning": "tayyorlanmoq",
+     "topic": "48"
+    },
+    {
+     "word": "panic",
+     "meaning": "vahima",
+     "topic": "48"
+    },
+    {
+     "word": "rely on",
+     "meaning": "tayanmoq",
+     "topic": "48"
+    },
+    {
+     "word": "knowledge",
+     "meaning": "bilim",
+     "topic": "48"
+    },
+    {
+     "word": "result",
+     "meaning": "natija",
+     "topic": "48"
+    },
+    {
+     "word": "trust",
+     "meaning": "ishonmoq",
+     "topic": "48"
+    },
+    {
+     "word": "review",
+     "meaning": "ko'rib chiqmoq",
+     "topic": "48"
+    },
+    {
+     "word": "renovate",
+     "meaning": "ta'mirlash",
+     "topic": "49"
+    },
+    {
+     "word": "paint",
+     "meaning": "bo'yamoq",
+     "topic": "49"
+    },
+    {
+     "word": "furniture",
+     "meaning": "mebel",
+     "topic": "49"
+    },
+    {
+     "word": "rearrange",
+     "meaning": "qayta joylashtirmoq",
+     "topic": "49"
+    },
+    {
+     "word": "design",
+     "meaning": "dizayn",
+     "topic": "49"
+    },
+    {
+     "word": "budget",
+     "meaning": "byudjet",
+     "topic": "49"
+    },
+    {
+     "word": "before and after",
+     "meaning": "oldin va keyin",
+     "topic": "49"
+    },
+    {
+     "word": "transform",
+     "meaning": "o'zgartirmoq",
+     "topic": "49"
+    },
+    {
+     "word": "festival",
+     "meaning": "festival",
+     "topic": "50"
+    },
+    {
+     "word": "stall",
+     "meaning": "savdo joyi",
+     "topic": "50"
+    },
+    {
+     "word": "taste",
+     "meaning": "tatib ko'rmoq",
+     "topic": "50"
+    },
+    {
+     "word": "traditional",
+     "meaning": "an'anaviy",
+     "topic": "50"
+    },
+    {
+     "word": "recipe",
+     "meaning": "retsept",
+     "topic": "50"
+    },
+    {
+     "word": "discover",
+     "meaning": "topmoq",
+     "topic": "50"
+    },
+    {
+     "word": "crowd",
+     "meaning": "olomon",
+     "topic": "50"
+    },
+    {
+     "word": "region",
+     "meaning": "mintaqa",
+     "topic": "50"
+    }
+   ]
+  }
+ ]
+}

@@ -3,7 +3,7 @@ import { CONFIG } from './config.js';
 import { esc, rich, richGaps, prepare, grade, buildBoard, gamify, levelOf, xpFor, typeStats, fmtTime, fmtDate, fmtDateTime, testMeta } from './logic.js';
 import { mySeconds, fmtHours } from './activity.js';
 import { feedbackHTML, KINDS } from './views-writing.js';
-import { settingsButton, applyPrefs, getSplit, saveSplit } from './prefs.js';
+import { settingsButton, applyPrefs, getSplit, saveSplit, getVSplit, saveVSplit } from './prefs.js';
 import * as HL from './highlight.js';
 import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials } from './ui.js';
 
@@ -62,6 +62,8 @@ export async function home(root) {
         <div class="foot">${pts.length ? 'The line redraws every time you submit a test. Bands and levels are estimates, not official results.' : 'Your progress chart starts with your first test.'}</div>
       </div>
     </section>
+
+    <section class="section">${coursesCard()}</section>
 
     <section class="section">
       <h2 class="stitle">The whole exam. One section at a time.</h2>
@@ -306,6 +308,7 @@ export async function runTest(root, id) {
   root.innerHTML = `<div class="runner">
     <div class="run-top"><button class="icon-btn" data-act="exitTest" title="Exit">${icon('x', 18)}</button><h2>${esc(test.title)}</h2>
       <div class="timer" id="timer">${icon('clock', 18)}<span id="tv">${listening ? '0:00' : fmtTime(total)}</span></div>
+      <a class="btn sm coursebtn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} — ${esc(CONFIG.telegramPersonal)}">${icon('send', 15)}<span>${esc(CONFIG.coursesTitle)}</span></a>
       ${settingsButton({ audio: listening })}<button class="btn primary" data-act="submitTest">Submit</button></div>
     ${globalAudio ? `<div class="audiobar"><button class="btn sm primary" id="abtn" data-act="audioToggle">${icon('play', 16)} Start recording</button>
         <div class="astatus" id="astatus">Press start when your headphones are ready</div><div class="aprog"><i id="aprog"></i></div><span class="atime" id="atime">0:00</span></div>` : ''}
@@ -362,6 +365,8 @@ function drawPart() {
   main.innerHTML = left + (hasLeft && hasQPane ? '<div class="resizer" id="resizer" role="separator" aria-orientation="vertical" title="Drag to resize"></div>' : '') + right;
   main.style.setProperty('--split', getSplit() + 'fr');
   main.style.setProperty('--split2', (1 - getSplit()) + 'fr');
+  main.style.setProperty('--vsplit', getVSplit() + 'fr');
+  main.style.setProperty('--vsplit2', (1 - getVSplit()) + 'fr');
   paintAll();
 }
 
@@ -373,7 +378,7 @@ function paintAll() {
   $$('#rmain .pane').forEach(el => HL.paint(el, RUN.hl[hlKey(el)] || []));
 }
 function hidePop() { $('#hlpop')?.remove(); }
-document.addEventListener('mouseup', e => {
+const onSelectEnd = (delay = 0) => e => {
   if (!RUN || e.target.closest('#hlpop')) return;
   setTimeout(() => {
     const sel = window.getSelection();
@@ -397,26 +402,30 @@ document.addEventListener('mouseup', e => {
       sel.removeAllRanges(); hidePop(); HL.paint(pane, RUN.hl[k]); RUN.persist();
     });
     document.body.appendChild(pop);
-  }, 0);
-});
+  }, delay);
+};
+document.addEventListener('mouseup', onSelectEnd(0));
+document.addEventListener('touchend', onSelectEnd(350));
 document.addEventListener('mousedown', e => { if (!e.target.closest('#hlpop')) hidePop(); });
 
-// ---- draggable divider ----
+// ---- draggable divider (vertical bar on desktop, horizontal bar on phones) ----
 document.addEventListener('pointerdown', e => {
   const h = e.target.closest('#resizer'); if (!h) return;
   e.preventDefault();
   const main = $('#rmain'), box = main.getBoundingClientRect();
+  const stacked = !!window.matchMedia?.('(max-width:960px)').matches;
   h.setPointerCapture?.(e.pointerId);
   main.classList.add('dragging');
   const move = ev => {
-    const f = Math.min(0.8, Math.max(0.2, (ev.clientX - box.left) / box.width));
-    main.style.setProperty('--split', f + 'fr'); main.style.setProperty('--split2', (1 - f) + 'fr');
+    const f = Math.min(0.8, Math.max(0.2, stacked ? (ev.clientY - box.top) / box.height : (ev.clientX - box.left) / box.width));
+    const [a, b] = stacked ? ['--vsplit', '--vsplit2'] : ['--split', '--split2'];
+    main.style.setProperty(a, f + 'fr'); main.style.setProperty(b, (1 - f) + 'fr');
     main.dataset.split = f;
   };
   const up = () => {
     main.classList.remove('dragging');
     document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up);
-    if (main.dataset.split) saveSplit(Number(main.dataset.split));
+    if (main.dataset.split) (stacked ? saveVSplit : saveSplit)(Number(main.dataset.split));
   };
   document.addEventListener('pointermove', move); document.addEventListener('pointerup', up);
 });
@@ -505,6 +514,11 @@ async function finish(st, auto) {
 }
 
 // ═════════════════════ RESULT ═════════════════════
+function coursesCard(cls = '') {
+  return `<div class="courses ${cls}"><div class="ci">${icon('spark', 22)}</div><div class="ct"><h3>${esc(CONFIG.coursesTitle)}</h3><p>${esc(CONFIG.coursesText)}</p></div>
+    <a class="btn primary" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">${icon('send', 15)} ${esc(CONFIG.telegramPersonal)}</a></div>`;
+}
+
 export async function resultView(root, id) {
   loading(root);
   let rec = null;
@@ -527,6 +541,7 @@ export async function resultView(root, id) {
       ${rec.saved === false ? '<p class="err">This result was not saved to the leaderboard.</p>' : ''}
       <div class="ctas" style="justify-content:center"><a class="btn primary" href="#/test/${rec.test_id}">Try again</a><a class="btn" href="#/practice/${rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
       <p class="note"><a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 14)} ${esc(CONFIG.telegramChannel)}</a></p>
+      ${coursesCard('small')}
     </div>
     <div>${(() => {
       const mineAll = myResults(results).filter(r => r.id !== id), mine0 = S.student && sameStudent(rec);

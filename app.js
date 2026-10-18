@@ -6,12 +6,16 @@ import { $, actions, inputs, icon, S, requireStudent, initials, toast } from './
 import * as V from './views-student.js';
 import * as A from './views-admin.js';
 import * as W from './views-writing.js';
+import * as VC from './views-vocab.js';
 import { startActivity } from './activity.js';
 
 const routes = [
   [/^\/?$/, V.home],
   [/^\/practice\/(reading|listening)$/, V.practice],
   [/^\/speaking$/, V.speaking],
+  [/^\/vocab$/, VC.vocabList],
+  [/^\/vocab\/board$/, VC.vocabBoard],
+  [/^\/vocab\/run\/([\w-]+)$/, VC.vocabRun],
   [/^\/writing$/, W.writingList],
   [/^\/writing\/([\w-]+)$/, W.writingEditor],
   [/^\/leaderboard$/, V.leaderboard],
@@ -28,14 +32,15 @@ function renderNav(path) {
   const link = (href, label, extra = '') => `<a href="${href}" class="${path === href.slice(1) || (href !== '#/' && path.startsWith(href.slice(1))) ? 'active' : ''}">${label}${extra}</a>`;
   $('#nav').innerHTML = `<div class="wrap">
     <a class="brand" href="#/"><span class="logo">${icon('spark', 20)}</span>${esc(CONFIG.brand)}</a>
-    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/writing', 'Writing')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}${st ? link('#/me', 'Profile') : ''}</nav>
+    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/writing', 'Writing')}${link('#/vocab', 'Vocabulary')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}${st ? link('#/me', 'Profile') : ''}</nav>
     <div class="navright">
+      <a class="icon-btn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} · ${esc(CONFIG.telegramPersonal)}">${icon('user', 18)}</a>
       <a class="icon-btn" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.telegramChannel)}">${icon('send', 18)}</a>
       <button class="icon-btn" data-act="theme" title="Theme">${icon(document.documentElement.dataset.theme !== 'dark' ? 'moon' : 'sun', 18)}</button>
       ${st ? `<a class="studentchip" href="#/me"><span class="av">${esc(initials(st.name))}</span>${esc(st.name.split(' ')[0])}</a>`
         : '<button class="btn primary sm" data-act="signin">Start free</button>'}
     </div></div>`;
-  $('#footBrand').innerHTML = `© ${new Date().getFullYear()} ${esc(CONFIG.brand)} · <a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${esc(CONFIG.telegramChannel)}</a>${store.mode === 'local' ? ' · <span class="badge draft">Demo mode</span>' : ''}`;
+  $('#footBrand').innerHTML = `© ${new Date().getFullYear()} ${esc(CONFIG.brand)} · <a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${esc(CONFIG.telegramChannel)}</a> · <a href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">${esc(CONFIG.telegramPersonal)}</a>${store.mode === 'local' ? ' · <span class="badge draft">Demo mode</span>' : ''}`;
 }
 
 let navToken = 0;
