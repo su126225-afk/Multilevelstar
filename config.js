@@ -11,7 +11,7 @@ export const CONFIG = {
   telegramUrl: 'https://t.me/EnglishwithUsmonov',
 
   supabaseUrl: 'https://gvngtrhhwjodokjftxko.supabase.co',
-  supabaseAnonKey: '',
+  supabaseAnonKey: 'sb_publishable_ZLvkVK3dQcFBb6jR2zs10A_sj5w2rWw',
 
   // Faqat DEMO rejimida o'qituvchi paroli (Supabase ulanganda ishlatilmaydi)
   localAdminPassword: 'admin123',
