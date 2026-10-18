@@ -53,11 +53,11 @@ export async function vocabRun(root, id) {
     ss.set(KEY(id), run);
   }
   V = { set, ...run, busy: false };
-  document.body.classList.add('running');
+  document.body.classList.add('running', 'vscroll');
   window.onbeforeunload = e => { if (!V?.done) { e.preventDefault(); e.returnValue = ''; } };
   drawRun(root);
   V.tm = setInterval(tick, 1000); tick();
-  S.cleanup = () => { clearInterval(V?.tm); window.onbeforeunload = null; document.body.classList.remove('running'); };
+  S.cleanup = () => { clearInterval(V?.tm); window.onbeforeunload = null; document.body.classList.remove('running', 'vscroll'); };
 }
 function drawRun(root) {
   const { att, answers, set } = V;
@@ -66,7 +66,7 @@ function drawRun(root) {
   const opQ = att.open.map((o, i) => `<div class="vopen"><label for="o${i}"><span class="muted">${i + 1}.</span> <b>${esc(o.meaning)}</b> <small class="muted">Topic ${esc(o.topic)}</small></label>
     <input class="inp" id="o${i}" data-in="vopen" data-i="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type the English word" value="${esc(answers.open[i])}"></div>`).join('');
   root.innerHTML = `<div class="vrun"><div class="vhead"><div><b>${esc(set.title)}</b><br><small class="muted">${esc(V.name)}</small></div>
-      <div class="row"><span class="muted" id="vprog"></span><div class="timer" id="vtimer">${icon('clock', 18)}<span id="vt">--:--</span></div></div></div>
+      <div class="row"><button class="icon-btn" data-act="vHome" title="Home">${icon('home', 18)}</button><span class="muted" id="vprog"></span><div class="timer" id="vtimer">${icon('clock', 18)}<span id="vt">--:--</span></div></div></div>
     <div class="vbody"><h3>Part 1 — Multiple choice</h3><p class="muted">Choose the correct Uzbek meaning.</p>${mcQ}
       <h3 class="mt2">Part 2 — Open questions</h3><p class="muted">Read the Uzbek meaning and type the English word or phrase.</p><div class="panel">${opQ}</div>
       <div class="row mt2" style="justify-content:flex-end"><button class="btn" data-act="vExit">Exit</button><button class="btn primary" data-act="vSubmit">Submit exam</button></div></div></div>`;
@@ -85,6 +85,7 @@ function tick() {
   if (left <= 0) finishRun(true);
 }
 actions.vExit = async () => { if (await confirmBox('Leave the exam?', 'Your attempt will be lost.', 'Leave', true)) { ss.del(KEY(V.set.id)); V.done = true; go('#/vocab'); } };
+actions.vHome = async () => { if (await confirmBox('Go to the home page?', 'Your attempt will be lost.', 'Go home', true)) { ss.del(KEY(V.set.id)); V.done = true; go('#/'); } };
 actions.vSubmit = async () => {
   const left = V.att.mc.length + V.att.open.length - answeredN();
   if (left > 0 && !(await confirmBox('Submit now?', `${left} question${left > 1 ? 's are' : ' is'} still empty and will count as wrong.`, 'Submit'))) return;
@@ -98,7 +99,7 @@ async function finishRun(timeUp) {
   const rec = { set_id: V.set.id, set_title: V.set.title, student_name: V.name, group_code: V.group, mc: g.mc, open: g.open, score: g.score, total: g.total, percent: g.percent, time_sec: time };
   let saved = true;
   try { await store.saveVocabResult(rec); } catch (e) { saved = false; console.error(e); }
-  V.done = true; ss.del(KEY(V.set.id)); window.onbeforeunload = null; document.body.classList.remove('running');
+  V.done = true; ss.del(KEY(V.set.id)); window.onbeforeunload = null; document.body.classList.remove('running', 'vscroll');
   let rank = null;
   try { const rows = marathonBoard(await store.listVocabResults()); const i = rows.findIndex(r => r.group === V.group && r.name.toLowerCase() === V.name.toLowerCase()); rank = i >= 0 ? { n: i + 1, of: rows.length, pts: rows[i].points } : null; } catch { /* ignore */ }
   drawResult(g, { timeUp, saved, rank, time });

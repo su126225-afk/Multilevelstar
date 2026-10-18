@@ -58,7 +58,7 @@ export async function writingEditor(root, id) {
   const key = 'ma_wr_' + id;
   WR = { task: t, key, start: Date.now(), busy: false };
   const draft = (() => { try { return localStorage.getItem(key) || ''; } catch { return ''; } })();
-  root.innerHTML = `<div class="wrap page"><a class="muted" href="#/writing">← Back to writing</a>
+  root.innerHTML = `<div class="wrap page"><div class="row"><a class="btn sm" href="#/">${icon('home', 15)} Home</a><a class="btn sm" href="#/writing">← All writing tasks</a></div>
     <div class="wgrid mt">
       <div class="panel"><span class="badge ${t.kind === 'multilevel' ? 'multi' : 'ielts'}">${KINDS[t.kind]}</span><h2 style="margin:10px 0">${esc(t.title)}</h2>
         ${t.image_url ? `<img class="plan" src="${esc(t.image_url)}" alt="Task image">` : ''}<div style="white-space:pre-wrap;line-height:1.7">${esc(t.prompt)}</div>

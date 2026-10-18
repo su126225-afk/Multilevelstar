@@ -306,7 +306,7 @@ export async function runTest(root, id) {
   window.onbeforeunload = () => (st.done ? undefined : 'Your test is in progress.');
 
   root.innerHTML = `<div class="runner">
-    <div class="run-top"><button class="icon-btn" data-act="exitTest" title="Exit">${icon('x', 18)}</button><h2>${esc(test.title)}</h2>
+    <div class="run-top"><button class="icon-btn" data-act="exitTest" title="Exit test">${icon('x', 18)}</button><button class="icon-btn" data-act="exitHome" title="Home">${icon('home', 18)}</button><h2>${esc(test.title)}</h2>
       <div class="timer" id="timer">${icon('clock', 18)}<span id="tv">${listening ? '0:00' : fmtTime(total)}</span></div>
       <a class="btn sm coursebtn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} — ${esc(CONFIG.telegramPersonal)}">${icon('send', 15)}<span>${esc(CONFIG.coursesTitle)}</span></a>
       ${settingsButton({ audio: listening })}<button class="btn primary" data-act="submitTest">Submit</button></div>
@@ -451,6 +451,10 @@ actions.paneTab = el => { const m = $('#rmain'); if (!m) return; m.classList.tog
 actions.exitTest = async () => {
   if (!(await confirmBox('Leave the test?', 'Your answers will not be saved.', 'Leave', true))) return;
   const t = RUN?.test; sessionStorage.removeItem('ma_run_' + t?.id); if (RUN) RUN.done = true; go('#/practice/' + (t?.section || 'reading'));
+};
+actions.exitHome = async () => {
+  if (!(await confirmBox('Go to the home page?', 'Your answers in this test will not be saved.', 'Go home', true))) return;
+  const t = RUN?.test; if (t) sessionStorage.removeItem('ma_run_' + t.id); if (RUN) RUN.done = true; go('#/');
 };
 actions.submitTest = async () => {
   const st = RUN; if (!st) return;

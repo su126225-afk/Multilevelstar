@@ -445,3 +445,6 @@ mark.hl{color:inherit;border-radius:3px;padding:0}
 .vrev{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--border);font-size:14px}
 .vrev.ok svg{color:var(--ok,#34d399)}.vrev.bad svg{color:var(--bad,#ff6b6b)}.vrev .good{color:var(--ok,#34d399);font-weight:600}.vrev .strike{text-decoration:line-through}
 @media (max-width:560px){.vopts{grid-template-columns:1fr}}
+
+body.running.vscroll{overflow:auto}
+.vhead .icon-btn{flex:none}
