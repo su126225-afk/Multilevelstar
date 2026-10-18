@@ -1,0 +1,58 @@
+{
+ "tasks": [
+  {
+   "kind": "multilevel",
+   "title": "Set 1 · Task 1.1 — Message to a colleague",
+   "min_words": 50,
+   "prompt": "You received this message from your employer:\n\nDear Colleague,\n\nWe are considering a change to working hours. From next month, the office may switch to a four-day week, with each working day lasting ten hours instead of eight. We believe this could give staff a longer weekend, but we know it may not suit everyone, especially those with family commitments. Before we decide, we would like to hear your views. How would this change affect you? What alternative would you suggest?\n\nBest regards,\nHead of Human Resources\n\nTask 1.1\nWrite a message to a colleague telling them about the proposed change, explaining how you feel about it, and saying what you would prefer. Write about 50 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 1 · Task 1.2 — Email to HR",
+   "min_words": 120,
+   "prompt": "You received this message from your employer:\n\nDear Colleague,\n\nWe are considering a change to working hours. From next month, the office may switch to a four-day week, with each working day lasting ten hours instead of eight. We believe this could give staff a longer weekend, but we know it may not suit everyone, especially those with family commitments. Before we decide, we would like to hear your views. How would this change affect you? What alternative would you suggest?\n\nBest regards,\nHead of Human Resources\n\nTask 1.2\nWrite an email to the Head of Human Resources explaining how the four-day week would affect you and suggesting an alternative arrangement. Write 120–150 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 1 · Task 2 — Online discussion",
+   "min_words": 180,
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people prefer to work for a large company, while others think a small company is a better place to work. Which do you think is better?\n\nPost your response, giving reasons and examples. Write 180–200 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 2 · Task 1.1 — Message to a neighbour",
+   "min_words": 50,
+   "prompt": "You received this message from your local council:\n\nDear Resident,\n\nWe are planning to remove the number 14 bus route that runs through your neighbourhood and replace the road space with a cycle lane. The council believes this will reduce traffic and pollution, but we realise some residents depend on the bus. Before a final decision is made, we invite residents to share their opinions. How would losing the bus affect you? What other solutions could we consider?\n\nYours sincerely,\nTransport Department\n\nTask 1.1\nWrite a message to a neighbour telling them about the plan, explaining how you feel about it, and suggesting what could be done instead. Write about 50 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 2 · Task 1.2 — Letter to the council",
+   "min_words": 120,
+   "prompt": "You received this message from your local council:\n\nDear Resident,\n\nWe are planning to remove the number 14 bus route that runs through your neighbourhood and replace the road space with a cycle lane. The council believes this will reduce traffic and pollution, but we realise some residents depend on the bus. Before a final decision is made, we invite residents to share their opinions. How would losing the bus affect you? What other solutions could we consider?\n\nYours sincerely,\nTransport Department\n\nTask 1.2\nWrite a letter to the Transport Department explaining how removing the bus route would affect you and suggesting alternative solutions. Write 120–150 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 2 · Task 2 — Online discussion",
+   "min_words": 180,
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people believe cars should be banned from city centres, while others think this is unrealistic. What is your opinion?\n\nPost your response, giving reasons and examples. Write 180–200 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 3 · Task 1.1 — Message to a classmate",
+   "min_words": 50,
+   "prompt": "You received this message from the principal of your college:\n\nDear Student,\n\nWe are planning to close the college cafeteria at the end of this term and replace it with vending machines and a small coffee corner. The cafeteria has been losing money, and this would allow us to use the space for a new study area. We understand many students use the cafeteria every day, so we would like your feedback. How would this affect you? What would you suggest instead?\n\nKind regards,\nThe Principal\n\nTask 1.1\nWrite a message to a classmate telling them about the plan, explaining how you feel about it, and suggesting what students could do. Write about 50 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 3 · Task 1.2 — Letter to the principal",
+   "min_words": 120,
+   "prompt": "You received this message from the principal of your college:\n\nDear Student,\n\nWe are planning to close the college cafeteria at the end of this term and replace it with vending machines and a small coffee corner. The cafeteria has been losing money, and this would allow us to use the space for a new study area. We understand many students use the cafeteria every day, so we would like your feedback. How would this affect you? What would you suggest instead?\n\nKind regards,\nThe Principal\n\nTask 1.2\nWrite a letter to the principal explaining how closing the cafeteria would affect you and suggesting alternative solutions. Write 120–150 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Set 3 · Task 2 — Online discussion",
+   "min_words": 180,
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people think all students should be required to do volunteer work as part of their education. Do you agree or disagree?\n\nPost your response, giving reasons and examples. Write 180–200 words."
+  }
+ ]
+}
