@@ -1,6 +1,10 @@
 import { store } from './store.js';
 import { CONFIG } from './config.js';
-import { esc, rich, richGaps, prepare, grade, buildBoard, fmtTime, fmtDate, fmtDateTime, testMeta } from './logic.js';
+import { esc, rich, richGaps, prepare, grade, buildBoard, gamify, levelOf, xpFor, typeStats, fmtTime, fmtDate, fmtDateTime, testMeta } from './logic.js';
+import { mySeconds, fmtHours } from './activity.js';
+import { feedbackHTML, KINDS } from './views-writing.js';
+import { settingsButton, applyPrefs, getSplit, saveSplit } from './prefs.js';
+import * as HL from './highlight.js';
 import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials } from './ui.js';
 
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
@@ -22,16 +26,20 @@ export async function home(root) {
   const pts = mine.slice(-12).map(r => ({ y: Number(r.percent) }));
   const demo = [{ y: 38 }, { y: 46 }, { y: 52 }, { y: 61 }, { y: 70 }, { y: 83 }];
   const students = new Set(results.map(r => r.group_code + '|' + String(r.student_name).toLowerCase())).size;
+  const st = S.student, G = gamify(mine);
+  const recent = mine.slice().reverse().slice(0, 4);
+  const first = st ? esc(st.name.split(' ')[0]) : '';
+  const ach = G.achievements;
   root.innerHTML = `
   <div class="wrap">
     <section class="hero">
       <div>
-        <span class="eyebrow"><i></i> Computer-delivered format</span>
-        <h1 class="h1">Get the score<br>you want — <span class="grad-text">on your first try</span></h1>
-        <p class="sub">Practice full Multilevel and IELTS Reading &amp; Listening tests on the screen you will sit the real thing on. Every result is saved and ranked.</p>
+        <span class="eyebrow2">${icon('spark', 14)} ${st ? `Welcome back, <b>${first}</b>` : 'Computer-delivered format'}</span>
+        <h1 class="h1">Your next level<br>starts <span class="grad-text">here.</span></h1>
+        <p class="sub">Practise full Multilevel and IELTS Reading &amp; Listening tests on the screen you will sit the real thing on. Every result is saved, scored and ranked.</p>
         <div class="ctas">
-          <a class="btn primary lg" href="#/practice/reading">${icon('book', 20)} Start Reading</a>
-          <a class="btn lg" href="#/practice/listening">${icon('headphones', 20)} Start Listening</a>
+          <a class="btn primary lg" href="#/practice/reading">${icon('book', 18)} Start a Mock Test</a>
+          <a class="btn lg" href="#/practice/${recent[0]?.section || 'listening'}">${icon('play', 16)} Continue Practising</a>
         </div>
         <div class="herostats">
           <div><b>${tests.length}</b><span>full tests</span></div>
@@ -40,10 +48,18 @@ export async function home(root) {
         </div>
       </div>
       <div class="pcard">
-        <div class="lab">${S.student ? 'Your best result' : 'Score over time'}</div>
-        <div class="bignum">${best ? esc(best.band) : '—'}<small>${best ? (best.format === 'multilevel' ? 'Level' : 'Band') : 'Sign in to track'}</small></div>
+        <div class="row between"><div class="lab">Your progress</div><span class="lvlpill">${icon('spark', 13)} Level ${G.level}</span></div>
+        <div class="xpbar"><i style="width:${Math.round(G.into / G.span * 100)}%"></i></div>
+        <div class="row between xpnote"><span>${G.xp} XP</span><span>${G.toNext} XP to Level ${G.level + 1}</span></div>
+        <div class="bignum">${best ? esc(best.band) : '—'}<small>${best ? (best.format === 'multilevel' ? 'Multilevel' : 'IELTS') : 'Sign in to track'}</small></div>
         ${lineChart(pts.length ? pts : demo, { ticks: [0, 50, 100], fmt: v => v + '%' })}
-        <div class="foot">${pts.length ? 'The line redraws every time you submit a test.' : 'Your progress chart starts with your first test.'}</div>
+        <div class="mini4">
+          <div><b>${G.count}</b><span>Tests completed</span></div>
+          <div><b>${G.count ? Math.round(mine.reduce((a, r) => a + Number(r.percent), 0) / G.count) : 0}%</b><span>Average accuracy</span></div>
+          <div><b>${best ? Math.round(best.percent) + '%' : '—'}</b><span>Personal best</span></div>
+          <div><b>${icon('spark', 16)} ${G.streak}</b><span>Day streak</span></div>
+        </div>
+        <div class="foot">${pts.length ? 'The line redraws every time you submit a test. Bands and levels are estimates, not official results.' : 'Your progress chart starts with your first test.'}</div>
       </div>
     </section>
 
@@ -51,14 +67,30 @@ export async function home(root) {
       <h2 class="stitle">The whole exam. One section at a time.</h2>
       <p class="ssub">Reading, Listening, Speaking — a full test or a single part, exactly as you will see it.</p>
       <div class="grid4">
-        <a class="feature" href="#/practice/reading"><div class="ic">${icon('book', 24)}</div><h3>Reading</h3><p>Passages with gap-fill, matching headings and True / False / Not Given.</p><span class="go">Practice ${icon('arrow', 16)}</span></a>
-        <a class="feature cy" href="#/practice/listening"><div class="ic">${icon('headphones', 24)}</div><h3>Listening</h3><p>One continuous recording, with reading and checking time between parts.</p><span class="go">Practice ${icon('arrow', 16)}</span></a>
-        <a class="feature pk" href="#/speaking"><div class="ic">${icon('mic', 24)}</div><h3>Speaking</h3><p>Coming soon: topic cards and recorded answers.</p><span class="go">Soon ${icon('arrow', 16)}</span></a>
+        <a class="feature" href="#/practice/reading"><div class="ic">${icon('book', 24)}</div><h3>Reading</h3><p>Passages with gap-fill, matching headings and True / False / Not Given. ${tests.filter(t => t.section === 'reading').length} tests.</p><span class="go">Practice ${icon('arrow', 16)}</span></a>
+        <a class="feature cy" href="#/practice/listening"><div class="ic">${icon('headphones', 24)}</div><h3>Listening</h3><p>One continuous recording, with reading and checking time between parts. ${tests.filter(t => t.section === 'listening').length} tests.</p><span class="go">Practice ${icon('arrow', 16)}</span></a>
+        <a class="feature pk" href="#/writing"><div class="ic">${icon('edit', 24)}</div><h3>Writing</h3><p>Write Task 1, Task 2 or Multilevel answers and get instant AI feedback.</p><span class="go">Write ${icon('arrow', 16)}</span></a>
         <a class="feature gd" href="#/leaderboard"><div class="ic">${icon('trophy', 24)}</div><h3>Leaderboard</h3><p>See who is on top in your group and across the academy.</p><span class="go">Open ${icon('arrow', 16)}</span></a>
       </div>
     </section>
 
-    <section class="section" style="padding-top:0">
+    <section class="duo">
+      <div>
+        <div class="panel daily">
+          <div class="row between"><div><div class="lab2">Daily challenge</div><h3>Complete any test today</h3><p class="muted">One full attempt keeps your streak alive.</p></div>
+            <span class="tick ${G.today ? 'on' : ''}">${icon(G.today ? 'check' : 'clock', 20)}</span></div>
+          <div class="row between wk"><span class="muted">This week</span><b>${Math.min(G.week, 5)} / 5 tests</b></div>
+          <div class="meter"><i style="width:${Math.min(100, G.week / 5 * 100)}%"></i></div>
+          <div class="row" style="gap:8px;flex-wrap:wrap">${G.today ? `<span class="badge ok">${icon('check', 12)} Done for today</span>` : '<span class="badge draft">Not done yet</span>'}<span class="badge">${G.streak}-day streak · best ${G.bestStreak}</span></div>
+        </div>
+        <div class="panel mt2"><div class="row between"><div class="lab2">Recent results</div><a class="btn sm" href="#/me">All results</a></div>
+          <div class="recent mt">${recent.length ? recent.map(r => `<a class="rrow" href="#/result/${r.id}"><div><b>${esc(r.test_title)}</b><small>${fmtDateTime(r.created_at)} · ${fmtTime(r.time_sec)}</small></div><div class="r"><b>${esc(r.band)}</b><small>${r.correct} / ${r.total} · ${Math.round(r.percent)}%</small></div></a>`).join('') : '<div class="muted">No attempts yet. Your results will appear here.</div>'}</div></div>
+      </div>
+      <div class="panel"><div class="row between"><div class="lab2">Achievements</div><span class="badge">${ach.filter(a => a.done).length} / ${ach.length}</span></div>
+        <div class="achgrid mt">${ach.map(a => `<div class="ach ${a.done ? 'done' : ''}"><span class="aic">${icon(a.done ? 'check' : 'clock', 16)}</span><b>${a.title}</b><small>${a.text}</small><div class="meter sm"><i style="width:${Math.round(a.have / a.need * 100)}%"></i></div></div>`).join('')}</div></div>
+    </section>
+
+    <section class="section" style="padding-top:40px">
       <div class="row between" style="margin-bottom:16px"><h2 class="ptitle" style="font-size:26px">Top students</h2><a class="btn sm" href="#/leaderboard">Full leaderboard</a></div>
       ${board.length ? boardTable(board, { compact: true }) : '<div class="empty">No results yet. Be the first on the board!</div>'}
     </section>
@@ -141,9 +173,16 @@ function boardTable(rows, { compact = false, single = false, me = true } = {}) {
     : `<th>#</th><th>Student</th><th>Group</th><th>Tests</th><th>Average</th><th>Best</th>${compact ? '' : '<th class="r">Total time</th>'}`;
   return `<div class="tablewrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
+function activeBoard(acts) {
+  const m = new Map();
+  for (const a of acts) { const k = a.group_code + '|' + a.student_name.toLowerCase(); const r = m.get(k) || { name: a.student_name, group: a.group_code, s: 0 }; r.s += a.seconds; m.set(k, r); }
+  const top = [...m.values()].sort((a, b) => b.s - a.s).slice(0, 10);
+  if (!top.length) return '';
+  return `<h2 class="ptitle mt2" style="font-size:24px">Most active students</h2><p class="muted">Total time spent on the site.</p><div class="tablewrap mt"><table><thead><tr><th>#</th><th>Student</th><th>Group</th><th class="r">Time</th></tr></thead><tbody>${top.map((r, i) => `<tr><td>${i + 1}</td><td><b>${esc(r.name)}</b></td><td>${esc(r.group)}</td><td class="r"><b>${fmtHours(r.s)}</b></td></tr>`).join('')}</tbody></table></div>`;
+}
 export async function leaderboard(root) {
   loading(root);
-  const [tests, results] = await Promise.all([store.listTests({ published: true }), store.listResults()]);
+  const [tests, results, acts] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listActivity().catch(() => [])]);
   const groups = [...new Set(results.map(r => r.group_code))].sort();
   root.innerHTML = `<div class="wrap page">
     <h1 class="ptitle">Leaderboard</h1><p class="muted">Each student's best attempt of every test counts. Ranked by average score.</p>
@@ -153,7 +192,7 @@ export async function leaderboard(root) {
       <select class="sel" data-in="lf" data-k="testId" id="lfTest"></select>
       <select class="sel" data-in="lf" data-k="group"><option value="">All groups</option>${groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('')}</select>
       <select class="sel" data-in="lf" data-k="period"><option value="">All time</option><option value="week">This week</option><option value="today">Today</option></select>
-    </div><div id="lbBody"></div></div>`;
+    </div><div id="lbBody"></div>${activeBoard(acts)}</div>`;
   const sync = () => { $$('select[data-in=lf]').forEach(s => { s.value = lf[s.dataset.k]; }); };
   const draw = () => {
     const sel = $('#lfTest');
@@ -175,7 +214,7 @@ inputs.lf = el => { lf[el.dataset.k] = el.value; leaderboard.draw(); };
 export async function me(root) {
   if (!S.student) { const s = await requireStudent(); if (!s) return go('#/'); }
   loading(root);
-  const results = await store.listResults();
+  const [results, act, writings] = await Promise.all([store.listResults(), mySeconds(S.student), store.myWritings(S.student.name, S.student.group).catch(() => [])]);
   const mine = myResults(results);
   const chrono = mine.slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
   const avg = mine.length ? Math.round(mine.reduce((a, r) => a + Number(r.percent), 0) / mine.length * 10) / 10 : 0;
@@ -184,12 +223,14 @@ export async function me(root) {
   root.innerHTML = `<div class="wrap page">
     <div class="row between wrapx"><div class="row"><span class="studentchip" style="padding:8px 16px 8px 8px"><span class="av" style="width:42px;height:42px;font-size:15px">${esc(initials(st.name))}</span><span><b>${esc(st.name)}</b><br><small class="muted">Group ${esc(st.group)}</small></span></span></div>
       <button class="btn sm" data-act="logoutStudent">${icon('logout', 16)} Switch student</button></div>
-    <div class="kv" style="margin-top:22px"><div><b>${mine.length}</b><span>attempts</span></div><div><b>${avg}%</b><span>average score</span></div><div><b>${best ? esc(best.band) : '—'}</b><span>best result</span></div></div>
+    <div class="kv" style="margin-top:22px"><div><b>${mine.length}</b><span>attempts</span></div><div><b>${avg}%</b><span>average score</span></div><div><b>${best ? esc(best.band) : '—'}</b><span>best result</span></div><div><b>${fmtHours(act.total)}</b><span>time on site</span></div></div>
+    ${(() => { const days = Array.from({ length: 14 }, (_, i) => { const d = new Date(Date.now() - (13 - i) * 864e5).toISOString().slice(0, 10); return { d, m: Math.round((act.byDay[d] || 0) / 60) }; }); const mx = Math.max(30, ...days.map(x => x.m)); return `<div class="panel mt2"><div class="lab muted" style="font-size:12px;letter-spacing:.1em;font-weight:700;margin-bottom:10px">MINUTES PER DAY · LAST 14 DAYS</div><div class="bars">${days.map(x => `<div class="bar" title="${x.d}: ${x.m} min"><i style="height:${Math.max(2, x.m / mx * 100)}%"></i><small>${x.d.slice(8)}</small></div>`).join('')}</div></div>`; })()}
     ${chrono.length ? `<div class="panel mt2"><div class="lab muted" style="font-size:12px;letter-spacing:.1em;font-weight:700;margin-bottom:8px">SCORE OVER TIME</div>${lineChart(chrono.slice(-20).map(r => ({ y: Number(r.percent) })), { fmt: v => v + '%' })}</div>` : ''}
     <h2 class="ptitle mt2" style="font-size:24px">History</h2>
     <div class="mt">${mine.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Test</th><th>Score</th><th>Band / Level</th><th>Time</th><th></th></tr></thead><tbody>
       ${mine.map(r => `<tr><td class="muted">${fmtDateTime(r.created_at)}</td><td><b>${esc(r.test_title)}</b></td><td>${r.correct} / ${r.total} (${r.percent}%)</td><td><b>${esc(r.band)}</b></td><td class="muted">${fmtTime(r.time_sec)}</td><td class="r"><a class="btn sm" href="#/result/${r.id}">Review</a></td></tr>`).join('')}
-      </tbody></table></div>` : '<div class="empty">You have not taken any test yet.</div>'}</div></div>`;
+      </tbody></table></div>` : '<div class="empty">You have not taken any test yet.</div>'}</div>
+    <h2 class="ptitle mt2" style="font-size:24px">Writing</h2><div class="mt">${writings.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Task</th><th>Type</th><th>Words</th><th>AI score</th><th></th></tr></thead><tbody>${writings.map(w => `<tr><td class="muted">${fmtDateTime(w.created_at)}</td><td><b>${esc(w.task_title)}</b></td><td>${KINDS[w.kind] || ''}</td><td>${w.words}</td><td><b>${esc(w.band)}</b></td><td class="r"><button class="btn sm" data-act="wView" data-id="${w.id}">Open</button></td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">No writing checked yet. <a href="#/writing">Try one</a>.</div>'}</div></div>`;
 }
 actions.logoutStudent = () => { S.student = null; go('#/'); };
 
@@ -254,9 +295,9 @@ export async function runTest(root, id) {
   const globalAudio = listening && !!test.data?.audio_url;
   const key = 'ma_run_' + id;
   let saved = null; try { saved = JSON.parse(sessionStorage.getItem(key)); } catch { /* none */ }
-  const st = { test, prep, listening, globalAudio, answers: saved?.answers || {}, part: Math.min(saved?.part || 0, prep.parts.length - 1), start: listening ? null : (saved?.start || Date.now()), done: false, auto: -1, mobileLeft: false };
+  const st = { test, prep, listening, globalAudio, answers: saved?.answers || {}, part: Math.min(saved?.part || 0, prep.parts.length - 1), start: listening ? null : (saved?.start || Date.now()), done: false, auto: -1, mobileLeft: false, hl: saved?.hl || {} };
   RUN = st;
-  const persist = () => sessionStorage.setItem(key, JSON.stringify({ answers: st.answers, start: st.start, part: st.part }));
+  const persist = () => sessionStorage.setItem(key, JSON.stringify({ answers: st.answers, start: st.start, part: st.part, hl: st.hl }));
   st.persist = persist;
   const total = test.duration_min * 60;
   document.body.classList.add('running');
@@ -265,7 +306,7 @@ export async function runTest(root, id) {
   root.innerHTML = `<div class="runner">
     <div class="run-top"><button class="icon-btn" data-act="exitTest" title="Exit">${icon('x', 18)}</button><h2>${esc(test.title)}</h2>
       <div class="timer" id="timer">${icon('clock', 18)}<span id="tv">${listening ? '0:00' : fmtTime(total)}</span></div>
-      <button class="btn primary" data-act="submitTest">Submit</button></div>
+      ${settingsButton({ audio: listening })}<button class="btn primary" data-act="submitTest">Submit</button></div>
     ${globalAudio ? `<div class="audiobar"><button class="btn sm primary" id="abtn" data-act="audioToggle">${icon('play', 16)} Start recording</button>
         <div class="astatus" id="astatus">Press start when your headphones are ready</div><div class="aprog"><i id="aprog"></i></div><span class="atime" id="atime">0:00</span></div>` : ''}
     <div class="paneswitch"><button class="chip on" data-act="paneTab" data-v="q">Questions</button><button class="chip" data-act="paneTab" data-v="l">Material</button></div>
@@ -274,11 +315,11 @@ export async function runTest(root, id) {
     ${globalAudio ? `<audio id="aud" preload="auto" src="${esc(test.data.audio_url)}"></audio>` : ''}
   </div>`;
 
-  drawPart(); drawFoot();
+  drawPart(); drawFoot(); applyPrefs();
   if (globalAudio) setupAudio(st);
   clearInterval(st.tm);
   st.tm = setInterval(() => tick(st, total), 250);
-  S.cleanup = () => { clearInterval(st.tm); window.onbeforeunload = null; document.body.classList.remove('running'); $('#aud')?.pause(); $('#gloss')?.remove(); RUN = null; };
+  S.cleanup = () => { clearInterval(st.tm); window.onbeforeunload = null; document.body.classList.remove('running'); $('#aud')?.pause(); $('#gloss')?.remove(); $('#hlpop')?.remove(); RUN = null; };
 }
 
 function tick(st, total) {
@@ -318,8 +359,67 @@ function drawPart() {
   const single = !(hasLeft && hasQPane);
   main.className = 'run-main' + (single ? ' single' : '') + (st.mobileLeft ? ' showleft' : '');
   $('.paneswitch')?.classList.toggle('hide', single);
-  main.innerHTML = left + right;
+  main.innerHTML = left + (hasLeft && hasQPane ? '<div class="resizer" id="resizer" role="separator" aria-orientation="vertical" title="Drag to resize"></div>' : '') + right;
+  main.style.setProperty('--split', getSplit() + 'fr');
+  main.style.setProperty('--split2', (1 - getSplit()) + 'fr');
+  paintAll();
 }
+
+// ---- highlighting ----
+const hlKey = el => st_hlKey(el.classList.contains('left') ? 'l' : 'r');
+const st_hlKey = side => RUN.part + side;
+function paintAll() {
+  if (!RUN) return;
+  $$('#rmain .pane').forEach(el => HL.paint(el, RUN.hl[hlKey(el)] || []));
+}
+function hidePop() { $('#hlpop')?.remove(); }
+document.addEventListener('mouseup', e => {
+  if (!RUN || e.target.closest('#hlpop')) return;
+  setTimeout(() => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) { hidePop(); return; }
+    const r = sel.getRangeAt(0);
+    const pane = (r.commonAncestorContainer.nodeType === 1 ? r.commonAncestorContainer : r.commonAncestorContainer.parentElement)?.closest('#rmain .pane');
+    if (!pane) { hidePop(); return; }
+    hidePop();
+    const rect = r.getBoundingClientRect();
+    const pop = document.createElement('div');
+    pop.id = 'hlpop'; pop.className = 'hlpop';
+    pop.innerHTML = ['yellow', 'green', 'pink'].map(c => `<button class="hlc hl-${c}" data-c="${c}" title="Highlight ${c}" aria-label="Highlight ${c}"></button>`).join('') + '<button class="hlx" data-c="x" title="Remove highlight" aria-label="Remove highlight">✕</button>';
+    pop.style.left = Math.max(8, Math.min(window.innerWidth - 150, rect.left + rect.width / 2 - 70)) + 'px';
+    pop.style.top = Math.max(8, rect.top - 46) + 'px';
+    pop.addEventListener('mousedown', ev => ev.preventDefault());
+    pop.addEventListener('click', ev => {
+      const b = ev.target.closest('[data-c]'); if (!b) return;
+      const { s, e: en } = HL.offsetsOf(pane, r);
+      const k = hlKey(pane), list = RUN.hl[k] || [];
+      RUN.hl[k] = b.dataset.c === 'x' ? HL.cut(list, s, en) : HL.add(list, s, en, b.dataset.c);
+      sel.removeAllRanges(); hidePop(); HL.paint(pane, RUN.hl[k]); RUN.persist();
+    });
+    document.body.appendChild(pop);
+  }, 0);
+});
+document.addEventListener('mousedown', e => { if (!e.target.closest('#hlpop')) hidePop(); });
+
+// ---- draggable divider ----
+document.addEventListener('pointerdown', e => {
+  const h = e.target.closest('#resizer'); if (!h) return;
+  e.preventDefault();
+  const main = $('#rmain'), box = main.getBoundingClientRect();
+  h.setPointerCapture?.(e.pointerId);
+  main.classList.add('dragging');
+  const move = ev => {
+    const f = Math.min(0.8, Math.max(0.2, (ev.clientX - box.left) / box.width));
+    main.style.setProperty('--split', f + 'fr'); main.style.setProperty('--split2', (1 - f) + 'fr');
+    main.dataset.split = f;
+  };
+  const up = () => {
+    main.classList.remove('dragging');
+    document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up);
+    if (main.dataset.split) saveSplit(Number(main.dataset.split));
+  };
+  document.addEventListener('pointermove', move); document.addEventListener('pointerup', up);
+});
 
 function drawFoot() {
   const st = RUN;
@@ -428,7 +528,15 @@ export async function resultView(root, id) {
       <div class="ctas" style="justify-content:center"><a class="btn primary" href="#/test/${rec.test_id}">Try again</a><a class="btn" href="#/practice/${rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
       <p class="note"><a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 14)} ${esc(CONFIG.telegramChannel)}</a></p>
     </div>
-    <div><div class="row between"><h2 class="ptitle" style="font-size:24px">Answer review</h2>
+    <div>${(() => {
+      const mineAll = myResults(results).filter(r => r.id !== id), mine0 = S.student && sameStudent(rec);
+      const gain = xpFor(rec), before = levelOf(mineAll.reduce((a, r) => a + xpFor(r), 0)), after = levelOf(mineAll.reduce((a, r) => a + xpFor(r), 0) + gain);
+      const ts = typeStats(rec.details), weak = ts.slice().sort((a, b) => a.pct - b.pct)[0];
+      return (mine0 ? `<div class="xpban">${icon('spark', 22)}<div><b>+${gain} XP earned${after.level > before.level ? ` · Level ${after.level} reached!` : ''}</b><small>Level ${after.level} · ${after.toNext} XP to the next level</small></div></div>` : '')
+      + (ts.length ? `<div class="panel mt"><h3 style="font-size:20px">Performance by question type</h3><small class="muted">Based on this attempt.</small><div class="perf mt">${ts.map(t => `<div><div class="row between"><span>${esc(t.name)}</span><b>${t.ok} / ${t.total} · ${t.pct}%</b></div><div class="meter ${t.pct >= 80 ? 'ok' : ''}"><i style="width:${t.pct}%"></i></div></div>`).join('')}</div></div>` : '')
+      + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="#/test/${rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
+    })()}
+      <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2>
       <div class="tabs"><button class="chip on" data-act="revFilter" data-v="">All</button><button class="chip" data-act="revFilter" data-v="no">Wrong</button><button class="chip" data-act="revFilter" data-v="blank">Empty</button></div></div>
       <div class="rev" id="rev">${rec.details.map(d => `<div class="rv ${d.ok ? 'ok' : 'no'}" data-k="${d.ok ? 'ok' : d.blank ? 'blank no' : 'no'}"><span class="mk">${icon(d.ok ? 'check' : 'x', 16)}</span><span class="n">${d.n}</span>
         <div class="grow"><div>${d.ok ? esc(d.your) : d.blank ? '<span class="muted">(no answer)</span>' : esc(d.your)}</div>${d.ok ? '' : `<small>Correct answer: <b>${esc(d.right)}</b></small>`}${d.q ? `<small>${esc(d.q.length > 140 ? d.q.slice(0, 140) + '…' : d.q)}</small>` : ''}</div></div>`).join('')}</div></div>

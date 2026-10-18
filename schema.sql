@@ -82,3 +82,78 @@ drop policy if exists "audio teacher write" on storage.objects;
 create policy "audio teacher write" on storage.objects for insert to authenticated with check (bucket_id = 'audio');
 drop policy if exists "audio teacher del" on storage.objects;
 create policy "audio teacher del" on storage.objects for delete to authenticated using (bucket_id = 'audio');
+
+-- ═══════════ WRITING (AI tekshiruv) + FAOLLIK VAQTI ═══════════
+create table if not exists writing_tasks (
+  id         uuid primary key default gen_random_uuid(),
+  kind       text not null check (kind in ('task1','task2','multilevel')),
+  title      text not null,
+  prompt     text not null default '',
+  image_url  text not null default '',
+  min_words  int  not null default 150,
+  published  boolean not null default true,
+  created_at timestamptz not null default now()
+);
+create table if not exists writing_submissions (
+  id           uuid primary key default gen_random_uuid(),
+  task_id      uuid references writing_tasks(id) on delete set null,
+  task_title   text not null,
+  kind         text not null,
+  student_name text not null,
+  group_code   text not null,
+  body         text not null,
+  words        int  not null default 0,
+  band         text not null default '',
+  feedback     jsonb,
+  created_at   timestamptz not null default now()
+);
+create index if not exists wsub_student_idx on writing_submissions(group_code, student_name);
+
+create table if not exists activity (
+  student_name text not null,
+  group_code   text not null,
+  day          date not null,
+  seconds      int  not null default 0,
+  primary key (group_code, student_name, day)
+);
+
+alter table writing_tasks       enable row level security;
+alter table writing_submissions enable row level security;
+alter table activity            enable row level security;
+
+drop policy if exists wtasks_read on writing_tasks;
+create policy wtasks_read on writing_tasks for select using (published or auth.role() = 'authenticated');
+drop policy if exists wtasks_write on writing_tasks;
+create policy wtasks_write on writing_tasks for all to authenticated using (true) with check (true);
+
+-- Insho matnlari shaxsiy: o'quvchi faqat o'zinikini (my_writings orqali), o'qituvchi hammasini ko'radi
+drop policy if exists wsub_insert on writing_submissions;
+create policy wsub_insert on writing_submissions for insert to anon, authenticated
+  with check (check_group(group_code) is not null and length(body) <= 20000);
+drop policy if exists wsub_read on writing_submissions;
+create policy wsub_read on writing_submissions for select to authenticated using (true);
+drop policy if exists wsub_delete on writing_submissions;
+create policy wsub_delete on writing_submissions for delete to authenticated using (true);
+
+create or replace function my_writings(n text, g text) returns setof writing_submissions
+language sql security definer set search_path = public stable as $$
+  select * from writing_submissions
+  where lower(student_name) = lower(trim(n)) and upper(group_code) = upper(trim(g))
+  order by created_at desc limit 100
+$$;
+grant execute on function my_writings(text, text) to anon, authenticated;
+
+-- Faollik: o'quvchi va guruh kodi bo'yicha kunlik soniyalar (har chaqiruvda eng ko'pi 120 s)
+create or replace function add_activity(n text, g text, secs int) returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  if check_group(g) is null then return; end if;
+  insert into activity(student_name, group_code, day, seconds)
+  values (trim(n), upper(trim(g)), current_date, least(greatest(secs,0),120))
+  on conflict (group_code, student_name, day)
+  do update set seconds = activity.seconds + least(greatest(secs,0),120);
+end $$;
+grant execute on function add_activity(text, text, int) to anon, authenticated;
+
+drop policy if exists activity_read on activity;
+create policy activity_read on activity for select using (true);

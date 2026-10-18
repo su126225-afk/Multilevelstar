@@ -1,14 +1,19 @@
+import './prefs.js';
 import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast } from './ui.js';
 import * as V from './views-student.js';
 import * as A from './views-admin.js';
+import * as W from './views-writing.js';
+import { startActivity } from './activity.js';
 
 const routes = [
   [/^\/?$/, V.home],
   [/^\/practice\/(reading|listening)$/, V.practice],
   [/^\/speaking$/, V.speaking],
+  [/^\/writing$/, W.writingList],
+  [/^\/writing\/([\w-]+)$/, W.writingEditor],
   [/^\/leaderboard$/, V.leaderboard],
   [/^\/me$/, V.me],
   [/^\/test\/([\w-]+)$/, V.testIntro],
@@ -23,10 +28,10 @@ function renderNav(path) {
   const link = (href, label, extra = '') => `<a href="${href}" class="${path === href.slice(1) || (href !== '#/' && path.startsWith(href.slice(1))) ? 'active' : ''}">${label}${extra}</a>`;
   $('#nav').innerHTML = `<div class="wrap">
     <a class="brand" href="#/"><span class="logo">${icon('spark', 20)}</span>${esc(CONFIG.brand)}</a>
-    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}</nav>
+    <nav class="navpills">${link('#/', 'Home')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/writing', 'Writing')}${link('#/speaking', 'Speaking', '<span class="soon">Soon</span>')}${link('#/leaderboard', 'Leaderboard')}${st ? link('#/me', 'Profile') : ''}</nav>
     <div class="navright">
       <a class="icon-btn" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.telegramChannel)}">${icon('send', 18)}</a>
-      <button class="icon-btn" data-act="theme" title="Theme">${icon(document.documentElement.dataset.theme === 'light' ? 'moon' : 'sun', 18)}</button>
+      <button class="icon-btn" data-act="theme" title="Theme">${icon(document.documentElement.dataset.theme !== 'dark' ? 'moon' : 'sun', 18)}</button>
       ${st ? `<a class="studentchip" href="#/me"><span class="av">${esc(initials(st.name))}</span>${esc(st.name.split(' ')[0])}</a>`
         : '<button class="btn primary sm" data-act="signin">Start free</button>'}
     </div></div>`;
@@ -66,7 +71,7 @@ document.addEventListener('input', onInput);
 document.addEventListener('change', onInput);
 
 actions.theme = () => {
-  const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
   try { localStorage.setItem('ma_theme', next); } catch { /* ignore */ }
   renderNav((location.hash.slice(1) || '/').split('?')[0]);
@@ -78,6 +83,7 @@ window.addEventListener('hashchange', render);
 (async () => {
   try {
     await initStore();
+    startActivity();
   } catch (e) {
     console.error(e);
     $('#view').innerHTML = `<div class="wrap page"><div class="empty">Could not connect to the database.<br><small>${esc(e.message)}</small></div></div>`;

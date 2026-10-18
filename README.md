@@ -73,6 +73,26 @@ Supabase Free rejasida bitta fayl 50 MB gacha. Fayl yuklash tugmasi faqat Supaba
 - Leaderboard har bir o'quvchining *har bir test bo'yicha eng yaxshi urinishi* o'rtachasi bo'yicha tartiblanadi; section, format, test, guruh va davr (bugun/hafta) bo'yicha filtr bor.
 - **Teacher panel → Results**: filtr, o'chirish, **CSV eksport**.
 
+## 4b. Writing (AI tekshiruv) — Gemini ulash
+
+Writing bo'limi o'quvchi yozgan matnni Google Gemini orqali tekshiradi (band/daraja, xatolar, tavsiyalar). Gemini kaliti **faqat Supabase serverida** saqlanadi, brauzerga yoki GitHub'ga tushmaydi.
+
+1. **Kalit olish:** https://aistudio.google.com/apikey → *Create API key* (bepul). Kalitni hech kimga yubormang.
+2. **Bazani yangilash:** Supabase → *SQL Editor* → `schema.sql` faylining to'liq matnini qayta joylab *Run* qiling (xavfsiz, qayta ishlatsa bo'ladi). Yangi jadvallar paydo bo'ladi: `writing_tasks`, `writing_submissions`, `activity`.
+3. **Funksiya yaratish:** Supabase → *Edge Functions* → *Deploy a new function* → *Via Editor*. Nomi: `check-writing`. Ichiga `check-writing.ts` (strukturali zipda `supabase/functions/check-writing/index.ts`) matnini joylang → *Deploy*.
+4. **Kalitni sirlarga qo'shish:** *Edge Functions → Secrets* → `GEMINI_API_KEY` = sizning kalitingiz. (Ixtiyoriy: `GEMINI_MODEL` = masalan `gemini-3.5-flash-lite`; band bo'lsa funksiya o'zi zaxira modellarga o'tadi.)
+5. Teacher panel → **Writing** → *Add 3 sample tasks* yoki o'zingizning topshiriqlaringizni qo'shing.
+
+Bepul tarifda kunlik limit bor: bir vaqtda ko'p o'quvchi tekshirsa "AI is busy" chiqishi mumkin, bir daqiqadan so'ng qayta urinadi. Faqat to'g'ri guruh kodi kiritgan o'quvchilar AI'dan foydalana oladi.
+
+## 4c. Saytda o'tkazilgan vaqt
+
+Sayt o'quvchi **haqiqatan faol** bo'lgan vaqtni sanaydi (tab ochiq va oxirgi 1 daqiqada sichqoncha/klaviatura harakati bor; test ishlayotganda doim hisoblanadi). O'quvchi o'z sahifasida (*My results*) umumiy soat va oxirgi 14 kun grafigini, teacher panelda (*Students*) hammaning vaqti, faol kunlari, testlari va CSV eksportini ko'radi. Leaderboard ostida "Most active students" jadvali bor.
+
+## 4d. Test paytida qulayliklar
+
+Reading/Listening oynasida: matnni belgilab **highlight** (sariq/yashil/pushti, o'chirish), o'rtadagi chiziqni sudrab **panel o'lchami**, yuqoridagi **☰** menyuda rang (Dark / Light / High contrast), matn o'lchami (80–200 %) va ovoz balandligi. Tanlovlar eslab qolinadi.
+
 ## 5. Telegram orqali kirish (2-bosqich, hali qo'shilmagan)
 Rejasi: o'quvchi "Continue with Telegram" bosadi → bot orqali tasdiqlanadi → server (Supabase Edge Function) botning `getChatMember` orqali @EnglishwithUsmonov kanaliga a'zoligini tekshiradi → faqat a'zolar kiradi.
 Buning uchun kerak: @BotFather orqali bot (token), botni kanalga admin qilish, sayt uchun HTTPS domen (`/setdomain`). Tayyor bo'lganda `js/ui.js` dagi `requireStudent()` ni almashtirish kifoya — qolgan kod o'zgarmaydi.

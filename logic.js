@@ -170,7 +170,7 @@ export function grade(test, answers) {
     const a = answers[q.n];
     const ok = isCorrect(q, a);
     if (ok) correct++;
-    return { n: q.n, q: q.text || '', ok, blank: a == null || String(a).trim() === '', your: show(q, a), right: show(q, q.answer, true) };
+    return { n: q.n, type: q.type, q: q.text || '', ok, blank: a == null || String(a).trim() === '', your: show(q, a), right: show(q, q.answer, true) };
   });
   const total = flat.length;
   const percent = total ? Math.round(correct / total * 1000) / 10 : 0;
@@ -242,3 +242,42 @@ export function setPath(obj, path, val) {
 }
 
 export const csvCell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+
+// ---------- progress: XP, levels, streak, achievements ----------
+export const xpFor = r => 20 + Math.round(Number(r.percent) || 0);
+export const levelStart = n => 75 * n * (n - 1) / 2;            // level 1 starts at 0 XP, 2 at 75, 3 at 225, 4 at 450 …
+export function levelOf(xp) { let n = 1; while (levelStart(n + 1) <= xp) n++; return { level: n, into: xp - levelStart(n), span: levelStart(n + 1) - levelStart(n), toNext: levelStart(n + 1) - xp }; }
+const dayKey = d => { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); };
+export function gamify(mine, now = new Date()) {
+  const rs = mine.slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
+  const xp = rs.reduce((a, r) => a + xpFor(r), 0), lv = levelOf(xp);
+  const days = new Set(rs.map(r => dayKey(r.created_at)));
+  const step = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1);
+  let streak = 0, d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (!days.has(dayKey(d))) d = step(d);
+  while (days.has(dayKey(d))) { streak++; d = step(d); }
+  let bestStreak = 0, run = 0, prev = null;
+  for (const k of [...days].sort()) { const t = new Date(k + 'T00:00:00'); run = prev && Math.round((t - prev) / 864e5) === 1 ? run + 1 : 1; bestStreak = Math.max(bestStreak, run); prev = t; }
+  const weekAgo = now.getTime() - 7 * 864e5;
+  const week = rs.filter(r => new Date(r.created_at).getTime() >= weekAgo).length;
+  const uniq = sec => new Set(rs.filter(r => r.section === sec).map(r => r.test_id)).size;
+  let pb = 0, beat = false; for (const r of rs) { if (pb && r.percent > pb) beat = true; pb = Math.max(pb, r.percent); }
+  const hi = rs.filter(r => r.percent >= 85).length;
+  const A = (id, title, text, have, need, done) => ({ id, title, text, have: Math.min(have, need), need, done: done ?? have >= need });
+  return { xp, ...lv, streak, bestStreak, today: days.has(dayKey(now)), week, best: pb, count: rs.length,
+    achievements: [
+      A('first', 'First Test Completed', 'Finish your first test.', rs.length, 1),
+      A('streak7', 'Seven-Day Streak', 'Practise on 7 days in a row.', bestStreak, 7),
+      A('acc', 'Accuracy Master', 'Score 85% or more three times.', hi, 3),
+      A('listen', 'Listening Specialist', 'Complete 3 different Listening tests.', uniq('listening'), 3),
+      A('read', 'Reading Champion', 'Complete 10 different Reading tests.', uniq('reading'), 10),
+      A('pb', 'Personal Best', 'Beat your own best score.', beat ? 1 : 0, 1),
+      A('week', 'Weekly Goal Achieved', 'Complete 5 tests in one week.', week, 5),
+    ] };
+}
+export const TYPE_NAMES = { fill: 'Gap-fill', mcq: 'Multiple choice', tfng: 'True / False / Not Given', ynng: 'Yes / No / Not Given', match: 'Matching' };
+export function typeStats(details) {
+  const m = new Map();
+  for (const d of details || []) { if (!d.type) continue; const r = m.get(d.type) || { type: d.type, name: TYPE_NAMES[d.type] || d.type, ok: 0, total: 0 }; r.total++; if (d.ok) r.ok++; m.set(d.type, r); }
+  return [...m.values()].map(r => ({ ...r, pct: Math.round(r.ok / r.total * 100) }));
+}

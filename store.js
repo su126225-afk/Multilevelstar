@@ -62,6 +62,28 @@ const local = {
   async listResults() { return LS.get('results', []).slice().sort(byNewest).map(({ details, ...r }) => r); },
   async getResult(id) { return LS.get('results', []).find(r => r.id === id) || null; },
   async deleteResult(id) { LS.set('results', LS.get('results', []).filter(r => r.id !== id)); },
+  async listWritingTasks({ published } = {}) { const t = LS.get('wtasks', []).slice().sort(byNewest); return published ? t.filter(x => x.published) : t; },
+  async getWritingTask(id) { return LS.get('wtasks', []).find(t => t.id === id) || null; },
+  async saveWritingTask(t) {
+    const all = LS.get('wtasks', []), i = all.findIndex(x => x.id === t.id);
+    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
+    if (i >= 0) all[i] = rec; else all.push(rec);
+    LS.set('wtasks', all); return rec;
+  },
+  async deleteWritingTask(id) { LS.set('wtasks', LS.get('wtasks', []).filter(t => t.id !== id)); },
+  aiAvailable: false,
+  async checkWriting() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
+  async saveWriting(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('wsubs', []); a.push(rec); LS.set('wsubs', a); return rec.id; },
+  async myWritings(name, group) { return LS.get('wsubs', []).filter(w => w.student_name.toLowerCase() === name.toLowerCase() && w.group_code.toUpperCase() === group.toUpperCase()).sort(byNewest); },
+  async listWritings() { return LS.get('wsubs', []).slice().sort(byNewest); },
+  async deleteWriting(id) { LS.set('wsubs', LS.get('wsubs', []).filter(w => w.id !== id)); },
+  async addActivity(name, group, secs) {
+    const day = new Date().toISOString().slice(0, 10), a = LS.get('activity', []);
+    const r = a.find(x => x.student_name === name && x.group_code === group && x.day === day);
+    if (r) r.seconds += secs; else a.push({ student_name: name, group_code: group, day, seconds: secs });
+    LS.set('activity', a);
+  },
+  async listActivity() { return LS.get('activity', []); },
   async uploadFile() { throw new Error('Fayl yuklash faqat Supabase ulanganda ishlaydi. Hozircha fayl manzilini (URL) kiriting.'); },
   canUpload: false,
 };
@@ -100,6 +122,28 @@ async function makeCloud() {
     async listResults() { return ok(sb.from('results').select(RESULT_LIST_COLS).order('created_at', { ascending: false }).limit(3000)); },
     async getResult(id) { return ok(sb.from('results').select('*').eq('id', id).maybeSingle()); },
     async deleteResult(id) { await ok(sb.from('results').delete().eq('id', id)); },
+    async listWritingTasks({ published } = {}) {
+      let q = sb.from('writing_tasks').select('*').order('created_at', { ascending: false });
+      if (published) q = q.eq('published', true);
+      return ok(q);
+    },
+    async getWritingTask(id) { return ok(sb.from('writing_tasks').select('*').eq('id', id).maybeSingle()); },
+    async saveWritingTask(t) { return ok(sb.from('writing_tasks').upsert(t).select().single()); },
+    async deleteWritingTask(id) { await ok(sb.from('writing_tasks').delete().eq('id', id)); },
+    aiAvailable: true,
+    async checkWriting(payload) {
+      const { data, error } = await sb.functions.invoke('check-writing', { body: payload });
+      let msg = data?.error;
+      if (error && !msg) { try { msg = (await error.context.json()).error; } catch { msg = error.message; } }
+      if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
+      return data.feedback;
+    },
+    async saveWriting(r) { return (await ok(sb.from('writing_submissions').insert(r).select('id').single())).id; },
+    async myWritings(name, group) { return ok(sb.rpc('my_writings', { n: name, g: group })); },
+    async listWritings() { return ok(sb.from('writing_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
+    async deleteWriting(id) { await ok(sb.from('writing_submissions').delete().eq('id', id)); },
+    async addActivity(name, group, secs) { await sb.rpc('add_activity', { n: name, g: group, secs }); },
+    async listActivity() { return ok(sb.from('activity').select('*').limit(20000)); },
     async uploadFile(file) {
       const ext = (file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '');
       const path = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}.${ext}`;

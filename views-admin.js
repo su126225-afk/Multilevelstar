@@ -1,6 +1,7 @@
 import { store, cloudConfigured } from './store.js';
 import { CONFIG } from './config.js';
 import { esc, parseBlock, parseOptions, serializeBlock, serializeOptions, parseTime, fmtTime, fmtDateTime, testMeta, setPath, csvCell, prepare } from './logic.js';
+import { writingTab, studentsTab } from './views-writing.js';
 import { $, $$, actions, inputs, toast, icon, go, confirmBox, modal, closeModal } from './ui.js';
 
 const adm = { tab: 'tests', rf: { section: '', group: '' } };
@@ -15,12 +16,14 @@ export async function adminHome(root) {
   root.innerHTML = `<div class="wrap page">
     <div class="row between wrapx"><div><h1 class="ptitle">Teacher panel</h1><p class="muted">${store.mode === 'cloud' ? 'Connected to your database.' : 'Demo mode: data is stored only in this browser. Connect Supabase to go live (see README).'}</p></div>
       <button class="btn sm" data-act="adminLogout">${icon('logout', 16)} Log out</button></div>
-    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
+    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results'], ['writing', 'Writing'], ['students', 'Students']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
     <div class="mt2" id="admBody"><div class="loading">Loading…</div></div></div>`;
   const body = $('#admBody');
   try {
     if (adm.tab === 'tests') await testsTab(body);
     else if (adm.tab === 'groups') await groupsTab(body);
+    else if (adm.tab === 'writing') await writingTab(body);
+    else if (adm.tab === 'students') await studentsTab(body);
     else await resultsTab(body);
   } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
 }
