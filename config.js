@@ -15,7 +15,7 @@ export const CONFIG = {
   // Telegram bilan kirish va kanalga a'zolikni majburiy qilish (faqat Supabase ulanganda ishlaydi).
   // Funksiya joylanmaguncha requireChannel: false qoldiring.
   telegramBot: 'multilevelstarbot',
-  requireChannel: true,
+  requireChannel: false,
   coursesTitle: 'Online courses',
   coursesText: "IELTS & Multilevel online kurslari. Batafsil ma'lumot va yozilish uchun menga Telegramda yozing.",
 
