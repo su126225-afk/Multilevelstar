@@ -308,7 +308,8 @@ export async function runTest(root, id) {
   root.innerHTML = `<div class="runner">
     <div class="run-top"><button class="icon-btn" data-act="exitTest" title="Exit test">${icon('x', 18)}</button><button class="icon-btn" data-act="exitHome" title="Home">${icon('home', 18)}</button><h2>${esc(test.title)}</h2>
       <div class="timer" id="timer">${icon('clock', 18)}<span id="tv">${listening ? '0:00' : fmtTime(total)}</span></div>
-      <a class="btn sm coursebtn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} — ${esc(CONFIG.telegramPersonal)}">${icon('send', 15)}<span>${esc(CONFIG.coursesTitle)}</span></a>
+      <a class="icon-btn" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.telegramChannel)}">${icon('send', 18)}</a>
+      <a class="btn sm coursebtn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} — ${esc(CONFIG.telegramPersonal)}">${icon('user', 15)}<span>${esc(CONFIG.coursesTitle)}</span></a>
       ${settingsButton({ audio: listening })}<button class="btn primary" data-act="submitTest">Submit</button></div>
     ${globalAudio ? `<div class="audiobar"><button class="btn sm primary" id="abtn" data-act="audioToggle">${icon('play', 16)} Start recording</button>
         <div class="astatus" id="astatus">Press start when your headphones are ready</div><div class="aprog"><i id="aprog"></i></div><span class="atime" id="atime">0:00</span></div>` : ''}

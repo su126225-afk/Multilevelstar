@@ -200,3 +200,5 @@ create policy vres_insert on vocab_results for insert to anon, authenticated
   with check (check_group(group_code) is not null and percent between 0 and 100);
 drop policy if exists vres_delete on vocab_results;
 create policy vres_delete on vocab_results for delete to authenticated using (true);
+
+alter table vocab_sets add column if not exists code_hash text not null default '';

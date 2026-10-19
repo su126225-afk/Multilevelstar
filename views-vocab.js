@@ -11,6 +11,31 @@ const tabs = on => `<div class="tabs" style="margin-bottom:26px">
   <a class="chip ${on === 'list' ? 'on' : ''}" href="#/vocab">${icon('book', 16)} Exams</a>
   <a class="chip ${on === 'board' ? 'on' : ''}" href="#/vocab/board">${icon('trophy', 16)} Marathon leaderboard</a></div>`;
 
+const sha = async t => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(t).trim().toLowerCase())))].map(b => b.toString(16).padStart(2, '0')).join('');
+const UNLOCK = id => 'ma_vu_' + id;
+
+// Every new attempt starts here: confirm who is taking it and (if the teacher set one) the exam code.
+async function startFlow(id) {
+  const st = S.student || await requireStudent();
+  if (!st) return;
+  const set = await store.getVocabSet(id);
+  if (!set) return toast('Exam not found', 'bad');
+  modal(`<h2>${esc(set.title)}</h2>
+    <p class="muted">${(set.mc_count || 25) + (set.open_count || 15)} questions · ${Math.round((set.seconds || 480) / 60)} minutes. The clock cannot be paused once you start.</p>
+    <div class="panel" style="padding:12px 16px;margin:12px 0"><div class="row between"><span><b>${esc(st.name)}</b><br><small class="muted">Group ${esc(st.group)}</small></span><button class="btn sm" data-act="vSwitch" data-id="${id}">Not you?</button></div></div>
+    ${set.code_hash ? '<label class="lbl">Exam code (from your teacher)</label><input class="inp" id="vCode" type="password" autocomplete="off" autocapitalize="off" placeholder="Enter code">' : ''}
+    <div class="err" id="vErr"></div>
+    <div class="row mt" style="justify-content:flex-end"><button class="btn" data-act="closeModal">Cancel</button><button class="btn primary" data-act="vGo" data-id="${id}">Start exam ${icon('arrow', 16)}</button></div>`);
+  setTimeout(() => $('#vCode')?.focus(), 60);
+  $('#vCode')?.addEventListener('keydown', e => { if (e.key === 'Enter') actions.vGo({ dataset: { id } }); });
+}
+actions.vSwitch = async el => { closeModal(); S.student = null; await requireStudent(); if (S.student) startFlow(el.dataset.id); };
+actions.vGo = async el => {
+  const id = el.dataset.id, set = await store.getVocabSet(id);
+  if (set?.code_hash && await sha($('#vCode')?.value || '') !== set.code_hash) { const e = $('#vErr'); if (e) e.textContent = 'Wrong exam code. Ask your teacher.'; $('#vCode')?.select(); return; }
+  ss.set(UNLOCK(id), Date.now()); closeModal(); go('#/vocab/run/' + id);
+};
+
 // ═════════════ exam list ═════════════
 export async function vocabList(root) {
   loading(root);
@@ -30,10 +55,7 @@ export async function vocabList(root) {
         <button class="btn primary" data-act="vStart" data-id="${s.id}">${b ? 'Try again' : 'Start'} ${icon('arrow', 16)}</button></div>`; }).join('')}</div>`
       : '<div class="empty mt2">No exams yet. Your teacher will add them soon.</div>'}</div>`;
 }
-actions.vStart = async el => {
-  const st = S.student || await requireStudent();
-  if (st) go('#/vocab/run/' + el.dataset.id);
-};
+actions.vStart = el => startFlow(el.dataset.id);
 
 // ═════════════ runner ═════════════
 const KEY = id => 'ma_vx_' + id;
@@ -48,6 +70,11 @@ export async function vocabRun(root, id) {
   if (!set || !set.published && !store.isAdmin()) { root.innerHTML = '<div class="wrap page"><div class="empty">Exam not found.<br><br><a class="btn" href="#/vocab">Back</a></div></div>'; return; }
   let run = ss.get(KEY(id));
   if (!run || run.name !== st.name || run.group !== st.group) {
+    if (!ss.get(UNLOCK(id))) {   // opened by a direct link: go through the start dialog first
+      root.innerHTML = `<div class="wrap page"><div class="empty">${esc(set.title)}<br><br><button class="btn primary" data-act="vStart" data-id="${id}">Start</button> <a class="btn" href="#/vocab">Back</a></div></div>`;
+      return;
+    }
+    ss.del(UNLOCK(id));
     const att = buildAttempt(set);
     run = { att, answers: { mc: att.mc.map(() => null), open: att.open.map(() => '') }, end: Date.now() + (set.seconds || 480) * 1000, start: Date.now(), name: st.name, group: st.group };
     ss.set(KEY(id), run);
@@ -153,8 +180,8 @@ export async function vocabTab(body) {
   const [sets, results] = await Promise.all([store.listVocabSets(), store.listVocabResults()]);
   body.innerHTML = `<div class="row between wrapx" style="margin-bottom:14px"><b>${sets.length} vocabulary exams</b>
       <div class="row"><button class="btn sm" data-act="vBundle">Import sample exams</button><button class="btn primary sm" data-act="vEdit">${icon('plus', 16)} New exam</button></div></div>
-    ${sets.length ? `<div class="tablewrap"><table><thead><tr><th>Title</th><th>Words</th><th>Questions</th><th>Time</th><th>Status</th><th class="r"></th></tr></thead><tbody>
-      ${sets.map(s => `<tr><td><b>${esc(s.title)}</b></td><td>${(s.words || []).length}</td><td>${s.mc_count}+${s.open_count}</td><td>${Math.round(s.seconds / 60)} min</td><td>${s.published ? '<span class="badge ok">Published</span>' : '<span class="badge draft">Draft</span>'}</td>
+    ${sets.length ? `<div class="tablewrap"><table><thead><tr><th>Title</th><th>Words</th><th>Questions</th><th>Time</th><th>Code</th><th>Status</th><th class="r"></th></tr></thead><tbody>
+      ${sets.map(s => `<tr><td><b>${esc(s.title)}</b></td><td>${(s.words || []).length}</td><td>${s.mc_count}+${s.open_count}</td><td>${Math.round(s.seconds / 60)} min</td><td>${s.code_hash ? '🔒' : '—'}</td><td>${s.published ? '<span class="badge ok">Published</span>' : '<span class="badge draft">Draft</span>'}</td>
         <td class="r"><button class="btn sm" data-act="vEdit" data-id="${s.id}">${icon('edit', 14)} Edit</button> <button class="btn sm" data-act="vPub" data-id="${s.id}">${s.published ? 'Unpublish' : 'Publish'}</button> <button class="btn sm danger" data-act="vDel" data-id="${s.id}">${icon('trash', 14)}</button></td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">No exams yet. Import the samples or create one.</div>'}
     <h2 class="ptitle mt2" style="font-size:22px">Recent results</h2>
     <div class="mt">${results.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Group</th><th>Exam</th><th>Score</th><th>Time</th><th class="r"></th></tr></thead><tbody>
@@ -182,6 +209,9 @@ actions.vEdit = el => {
       <div style="flex:1"><label class="lbl">Minutes</label><input class="inp" id="vsMin" type="number" min="1" value="${Math.round(s.seconds / 60)}"></div></div>
     <div class="row"><div style="flex:1"><label class="lbl">Multiple-choice questions</label><input class="inp" id="vsMc" type="number" min="1" value="${s.mc_count}"></div>
       <div style="flex:1"><label class="lbl">Open questions</label><input class="inp" id="vsOp" type="number" min="0" value="${s.open_count}"></div></div>
+    <label class="lbl">Exam code (students must enter it before starting)</label>
+    <input class="inp" id="vsCode" autocomplete="off" placeholder="${s.code_hash ? 'A code is set — leave empty to keep it' : 'Empty = no code'}">
+    ${s.code_hash ? '<label class="row"><input type="checkbox" id="vsNoCode"> Remove the code</label>' : ''}
     <label class="lbl">Words — one per line: english | uzbek | topic number</label>
     <textarea class="inp" id="vsWords" rows="10" placeholder="repair | ta'mirlash | 11">${esc((s.words || []).map(w => `${w.word} | ${w.meaning} | ${w.topic || ''}`).join('\n'))}</textarea>
     <label class="row mt"><input type="checkbox" id="vsPub" ${s.published ? 'checked' : ''}> Published</label>
@@ -193,6 +223,8 @@ actions.vSave = async el => {
   if (!title) return toast('Title is required', 'bad');
   if (words.length < mc + op) return toast(`Need at least ${mc + op} words (you have ${words.length})`, 'bad');
   const old = vocabTab.sets.find(x => x.id === el.dataset.id);
-  await store.saveVocabSet({ ...(old || {}), id: el.dataset.id || uid(), title, topics: $('#vsTopics').value.trim(), mc_count: mc, open_count: op, seconds: (Number($('#vsMin').value) || 8) * 60, published: $('#vsPub').checked, words });
+  const typed = $('#vsCode').value.trim();
+  const code_hash = typed ? await sha(typed) : ($('#vsNoCode')?.checked ? '' : (old?.code_hash || ''));
+  await store.saveVocabSet({ ...(old || {}), code_hash, id: el.dataset.id || uid(), title, topics: $('#vsTopics').value.trim(), mc_count: mc, open_count: op, seconds: (Number($('#vsMin').value) || 8) * 60, published: $('#vsPub').checked, words });
   closeModal(); toast('Saved', 'ok'); refresh();
 };
