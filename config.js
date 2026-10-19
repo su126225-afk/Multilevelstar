@@ -12,6 +12,10 @@ export const CONFIG = {
   // O'qituvchining shaxsiy Telegram akkaunti (online kurslar uchun murojaat)
   telegramPersonal: '@SARDOR_USM0NOV',
   telegramPersonalUrl: 'https://t.me/SARDOR_USM0NOV',
+  // Telegram bilan kirish va kanalga a'zolikni majburiy qilish (faqat Supabase ulanganda ishlaydi).
+  // Funksiya joylanmaguncha requireChannel: false qoldiring.
+  telegramBot: 'multilevelstarbot',
+  requireChannel: true,
   coursesTitle: 'Online courses',
   coursesText: "IELTS & Multilevel online kurslari. Batafsil ma'lumot va yozilish uchun menga Telegramda yozing.",
 

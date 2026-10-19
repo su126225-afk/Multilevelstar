@@ -1,6 +1,25 @@
-# To'liq sayt paketi (eng yangi)
-1. Zipni oching (Extract).
-2. GitHub repo -> Add file -> Upload files -> ichidagi HAMMA fayllarni tashlang -> Commit changes.
-3. Supabase -> SQL Editor -> schema.sql ichidagini to'liq qo'yib Run (xavfsiz, qayta ishlasa bo'ladi).
-4. Edge Functions -> check-writing -> Code: check-writing.ts ni qo'yib Deploy (Verify JWT = OFF).
-5. 1-2 daqiqadan keyin saytda Ctrl+F5.
+# To'liq sayt paketi — Telegram kirish bilan
+
+## 1. GitHub
+Zipni oching -> repo -> Add file -> Upload files -> HAMMA fayllarni tashlang -> Commit changes.
+
+## 2. Supabase: SQL (agar hali qilmagan bo'lsangiz)
+SQL Editor -> schema.sql ichidagini to'liq qo'yib Run.
+
+## 3. Supabase: yangi funksiya tg-auth
+1. Edge Functions -> Deploy a new function -> Via Editor. Nomi: tg-auth (aynan shunday).
+2. Ichiga tg-auth.ts matnini to'liq qo'ying -> Deploy.
+3. Funksiya Settings'ida "Verify JWT" ni O'CHIRING (OFF) va saqlang.
+
+## 4. Supabase: Secrets
+Edge Functions -> Secrets:
+- TELEGRAM_BOT_TOKEN = BotFather bergan token
+- TELEGRAM_CHANNEL = @EnglishwithUsmonov
+
+## 5. Telegramda
+- Kanal @EnglishwithUsmonov -> Administrators -> @multilevelstarbot ni admin qiling.
+- BotFather -> /setdomain -> @multilevelstarbot -> sayt manzilingiz (masalan username.github.io)
+
+## 6. Tekshirish
+Saytda test boshlang: "Sign in with Telegram" chiqadi. A'zo bo'lmasa "Please subscribe first".
+Telegram kirishni vaqtincha o'chirish: config.js da requireChannel: false.

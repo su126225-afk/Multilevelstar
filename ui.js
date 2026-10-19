@@ -1,5 +1,6 @@
 import { esc } from './logic.js';
 import { store } from './store.js';
+import { CONFIG } from './config.js';
 
 export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -69,17 +70,68 @@ export const S = {
   cleanup: null,
 };
 
+export const tgGated = () => store.mode === 'cloud' && !!CONFIG.telegramBot && !!CONFIG.requireChannel;
+let tgPending = null;   // verified Telegram user waiting for the group-code step
+
+function groupStep(prefill = '') {
+  modal(`<h2>Who is taking the test?</h2>
+    <p class="muted">Enter your name and the group code your teacher gave you. Your results will be saved and shown on the leaderboard.</p>
+    <label class="lbl">Full name</label><input class="inp" id="stName" placeholder="e.g. Azizbek Karimov" autocomplete="name" maxlength="60" value="${esc(prefill)}">
+    <label class="lbl">Group code</label><input class="inp" id="stCode" placeholder="e.g. IELTS-7" autocomplete="off" maxlength="30" style="text-transform:uppercase">
+    <div class="err" id="stErr"></div>
+    <div class="row" style="margin-top:8px"><button class="btn primary grow" data-act="studentSubmit" id="stBtn">Continue ${icon('arrow', 18)}</button></div>`);
+  setTimeout(() => (prefill ? $('#stCode') : $('#stName'))?.focus(), 50);
+}
+
+function tgStep() {
+  modal(`<h2>Sign in with Telegram</h2>
+    <p class="muted">${esc(CONFIG.brand)} is free for subscribers of <b>${esc(CONFIG.telegramChannel)}</b>. Sign in with Telegram — we only read your name and check that you are subscribed.</p>
+    <div id="tgBox" style="min-height:54px;margin:18px 0;display:flex;justify-content:center"><span class="muted">Loading Telegram…</span></div>
+    <div class="err" id="stErr"></div>
+    <p class="note" style="text-align:center">Not subscribed yet? <a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 14)} ${esc(CONFIG.telegramChannel)}</a></p>`);
+  window.onTelegramAuth = tgDone;
+  const sc = document.createElement('script');
+  sc.async = true; sc.src = 'https://telegram.org/js/telegram-widget.js?22';
+  sc.dataset.telegramLogin = CONFIG.telegramBot; sc.dataset.size = 'large'; sc.dataset.radius = '10';
+  sc.dataset.onauth = 'onTelegramAuth(user)'; sc.dataset.requestAccess = 'write';
+  sc.onerror = () => { const e = $('#stErr'); if (e) e.textContent = 'Telegram could not be loaded. Check your internet and try again.'; };
+  const box = $('#tgBox'); if (box) { box.innerHTML = ''; box.appendChild(sc); }
+}
+async function tgDone(user) {
+  const err = $('#stErr'); if (err) err.textContent = '';
+  try {
+    const r = await store.tgAuth({ mode: 'login', user });
+    tgPending = { user, ...r };
+    if (r.member) return groupStep(r.name);
+    modal(`<h2>Please subscribe first</h2>
+      <p class="muted">Hi ${esc(r.name || 'there')}! You are not a subscriber of <b>${esc(CONFIG.telegramChannel)}</b> yet. Join the channel, then come back and press the button below.</p>
+      <div class="err" id="stErr"></div>
+      <div class="row" style="margin-top:14px;flex-wrap:wrap"><a class="btn primary" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 16)} Join ${esc(CONFIG.telegramChannel)}</a>
+      <button class="btn" data-act="tgRecheck">I joined — check again</button></div>`);
+  } catch (e) { const el = $('#stErr'); if (el) el.textContent = e.message; }
+}
+actions.tgRecheck = async () => {
+  if (!tgPending) return tgStep();
+  const err = $('#stErr'); if (err) err.textContent = '';
+  try {
+    const r = await store.tgAuth({ mode: 'recheck', id: tgPending.id });
+    if (r.member) { tgPending.member = true; groupStep(tgPending.name); }
+    else if (err) err.textContent = 'Still not subscribed. Join the channel first, then try again.';
+  } catch (e) { if (err) err.textContent = e.message; }
+};
+/** On page load: a logged-in student who unsubscribed from the channel is signed out. */
+export async function recheckMembership() {
+  const st = S.student;
+  if (!tgGated() || !st?.tg?.id) return;
+  try { const r = await store.tgAuth({ mode: 'recheck', id: st.tg.id }); if (r && r.member === false) { S.student = null; toast('Subscribe to ' + CONFIG.telegramChannel + ' to keep using the site', 'bad'); } } catch { /* offline: keep going */ }
+}
+
 export function requireStudent() {
   return new Promise(res => {
-    if (S.student) return res(S.student);
+    if (S.student && (!tgGated() || S.student.tg)) return res(S.student);
     resolvers.student = res;
-    modal(`<h2>Who is taking the test?</h2>
-      <p class="muted">Enter your name and the group code your teacher gave you. Your results will be saved and shown on the leaderboard.</p>
-      <label class="lbl">Full name</label><input class="inp" id="stName" placeholder="e.g. Azizbek Karimov" autocomplete="name" maxlength="60">
-      <label class="lbl">Group code</label><input class="inp" id="stCode" placeholder="e.g. IELTS-7" autocomplete="off" maxlength="30" style="text-transform:uppercase">
-      <div class="err" id="stErr"></div>
-      <div class="row" style="margin-top:8px"><button class="btn primary grow" data-act="studentSubmit" id="stBtn">Continue ${icon('arrow', 18)}</button></div>`);
-    setTimeout(() => $('#stName')?.focus(), 50);
+    if (tgGated()) { tgPending = null; return tgStep(); }
+    groupStep();
   });
 }
 actions.studentSubmit = async () => {
@@ -91,7 +143,7 @@ actions.studentSubmit = async () => {
   try {
     const gname = await store.checkGroup(code);
     if (gname == null) { err.textContent = 'This group code was not found. Ask your teacher.'; btn.disabled = false; return; }
-    S.student = { name, group: code, groupName: gname };
+    S.student = { name, group: code, groupName: gname, ...(tgPending?.member ? { tg: { id: tgPending.id, username: tgPending.username || '' } } : {}) }; tgPending = null;
     const r = resolvers.student; resolvers.student = null;
     closeModal(); r?.(S.student);
   } catch (e) { err.textContent = e.message; btn.disabled = false; }

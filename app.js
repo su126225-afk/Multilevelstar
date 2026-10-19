@@ -2,7 +2,7 @@ import './prefs.js';
 import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
-import { $, actions, inputs, icon, S, requireStudent, initials, toast } from './ui.js';
+import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
 import * as V from './views-student.js';
 import * as A from './views-admin.js';
 import * as W from './views-writing.js';
@@ -89,6 +89,7 @@ window.addEventListener('hashchange', render);
   try {
     await initStore();
     startActivity();
+    recheckMembership();
   } catch (e) {
     console.error(e);
     $('#view').innerHTML = `<div class="wrap page"><div class="empty">Could not connect to the database.<br><small>${esc(e.message)}</small></div></div>`;
