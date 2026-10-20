@@ -135,6 +135,321 @@
      ]
     }
    }
+  },
+  {
+   "title": "Speaking Test 3",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Please tell me about your favourite job.",
+      "Tell me about the weather where you live.",
+      "When do you usually go running?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t3-a.jpg",
+      "speaking-t3-b.jpg"
+     ],
+     "questions": [
+      "Describe these pictures.",
+      "What are some advantages of eating home-made food?",
+      "Why do some people prefer eating fast food?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t3-p2.jpg",
+     "questions": [
+      "Tell me about a time when you were lost.",
+      "What did you do in this situation?",
+      "What or who helped you to find your way?"
+     ]
+    },
+    "p3": {
+     "title": "People should explore space.",
+     "pros": [
+      "Space exploration can lead to new discoveries.",
+      "It drives new technology that helps us.",
+      "It’s important for humanity’s future survival."
+     ],
+     "cons": [
+      "Space exploration is too expensive.",
+      "It causes pollution and harms the environment.",
+      "We should focus on solving Earth’s problems first."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 4",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Tell me about your favourite job.",
+      "Where do you live?",
+      "What do you like to drink?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t4-a.jpg",
+      "speaking-t4-b.jpg"
+     ],
+     "questions": [
+      "What do you see in these pictures?",
+      "What are some advantages of doing dangerous sports?",
+      "Why do some people do sports regularly?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t4-p2.jpg",
+     "questions": [
+      "Describe a time you watched live sport.",
+      "What did you watch?",
+      "Did you like it or not?"
+     ]
+    },
+    "p3": {
+     "title": "Students should be allowed to use their phones during the class.",
+     "pros": [
+      "Phones enhance interactive learning.",
+      "Phones provide quick access to educational resources.",
+      "Phones help students stay organized."
+     ],
+     "cons": [
+      "Phones cause distractions.",
+      "Phones lead to non-educational use.",
+      "Phones reduce student engagement."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 6",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Please tell me about your favourite food.",
+      "Do you like to listen to music?",
+      "How often do you go shopping?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t6-a.jpg",
+      "speaking-t6-b.jpg"
+     ],
+     "questions": [
+      "Describe these pictures.",
+      "What are some benefits of face to face learning over online learning?",
+      "Have you ever taken online classes?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t6-p2.jpg",
+     "questions": [
+      "Describe a place you eat regularly.",
+      "Where is it located?",
+      "What kinds of foods do they offer?"
+     ]
+    },
+    "p3": {
+     "title": "Students should be allowed to take online classes.",
+     "pros": [
+      "Students can learn on a flexible schedule.",
+      "Allows access to classes from anywhere.",
+      "Students can learn at their own pace."
+     ],
+     "cons": [
+      "Less face-to-face interaction can affect social skills.",
+      "Some students might struggle to stay focused.",
+      "Not everyone has good internet or a computer."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 7",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Do you work or study?",
+      "Please describe your hometown a little.",
+      "How often do you eat chocolate?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t7-a.jpg",
+      "speaking-t7-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "Which one do you prefer, public or private transport?",
+      "Why do people want to buy luxury cars?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t7-p2.jpg",
+     "questions": [
+      "Describe an old person you know.",
+      "Who is he/she?",
+      "What kinds of things did he/she do?"
+     ]
+    },
+    "p3": {
+     "title": "Public transport should be free for everyone.",
+     "pros": [
+      "Reduces traffic and pollution.",
+      "Helps people save money.",
+      "Encourages more people to use public transport."
+     ],
+     "cons": [
+      "Could be expensive for the government to maintain.",
+      "Overcrowding may become an issue.",
+      "Might lead to reduced quality of services."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 10",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "How often do you spend time with your friends?",
+      "Do you have a busy life?",
+      "Would you like to learn any foreign languages?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t10-a.jpg",
+      "speaking-t10-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "What are the differences between vertical farming and traditional farming?",
+      "What are the potential benefits of vertical farming?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t10-p2.jpg",
+     "questions": [
+      "Describe a prize you received.",
+      "What is the prize?",
+      "How did you feel about it?"
+     ]
+    },
+    "p3": {
+     "title": "We should stop the sales of fast foods because of their harm.",
+     "pros": [
+      "People will have fewer health issues like obesity and heart disease.",
+      "Less money will be needed to treat health problems caused by unhealthy food.",
+      "Without fast food, people might choose to eat healthier foods."
+     ],
+     "cons": [
+      "Many people who work in fast food could lose their jobs.",
+      "People should be able to choose what they want to eat.",
+      "Fast food is quick and affordable, which helps people with busy schedules or low incomes."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 12",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Do you like eating fish?",
+      "Are you good at making people laugh?",
+      "What do you do when you have free time?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t12-a.jpg",
+      "speaking-t12-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "What are the differences between eating at home and eating at a restaurant?",
+      "Why do people have a meal together?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t12-p2.jpg",
+     "questions": [
+      "Describe a noisy place you went to.",
+      "When did you go?",
+      "What do people do there?"
+     ]
+    },
+    "p3": {
+     "title": "All crimes should be punished severely.",
+     "pros": [
+      "Strong punishments can scare people away from committing crimes.",
+      "It gives justice to victims and helps them feel safe again.",
+      "Harsh punishments show that breaking the law is not acceptable and keeps society in order."
+     ],
+     "cons": [
+      "Severe punishments can overcrowd prisons and stress the justice system.",
+      "Not all crimes are the same, so punishments should fit the crime.",
+      "Some criminals might change for the better with help and support, not just punishment."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Test 14",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Do you like to watch films?",
+      "What is your favourite number?",
+      "How do you keep healthy?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-t14-a.jpg",
+      "speaking-t14-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "What are the differences between modern and religious festivals?",
+      "Can you tell me about some festivals in your country?"
+     ]
+    },
+    "p2": {
+     "image": "speaking-t14-p2.jpg",
+     "questions": [
+      "Describe a meal prepared in your country.",
+      "What is the meal?",
+      "How do you cook it?"
+     ]
+    },
+    "p3": {
+     "title": "People should employ robots instead of people in many professions.",
+     "pros": [
+      "Robots can work all the time without needing breaks, making things faster.",
+      "They can do dangerous jobs, keeping people safe.",
+      "Robots are very accurate, so there will be fewer mistakes."
+     ],
+     "cons": [
+      "Many people could lose their jobs.",
+      "Robots can't think like humans or show emotions, which are important in some jobs.",
+      "Robots can be expensive to buy and take care of."
+     ]
+    }
+   }
   }
  ]
 }
