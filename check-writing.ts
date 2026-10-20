@@ -98,11 +98,12 @@ Reply with JSON only, in exactly this shape:
  "improvements": ["... (most important first, max 5)"],
  "corrections": [{"original": "<exact words from the student's text>", "better": "<corrected words>", "type": "<grammar|spelling|vocabulary|punctuation|style>", "why": "<short reason>"}],
  "improved_version": "<a better version of the student's first paragraph only>",
- "sample_b2": "<a complete model answer for THIS task written at a solid B2 level (clear, accurate, some complex grammar), inside the word limit>",
- "sample_c1": "<a complete model answer for THIS task written at C1 level (wide range of vocabulary, complex structures, smooth linking, consistent register), inside the word limit>",
+ "sample_b2": "<a complete model answer for THIS task at B2 level. Use clear, natural, everyday-academic English that an Uzbek B1-B2 learner can easily understand and learn from: short-to-medium sentences, common words, simple linking words (firstly, however, in addition, as a result). Correct and well organised, inside the word limit>",
+ "sample_c1": "<a complete model answer for THIS task at C1 level but still EASY TO READ: only a little more advanced than the B2 sample, using some good phrases and a few complex sentences, NO rare, literary or showy words, NO very long sentences. A student at B2 should understand almost everything. Inside the word limit>",
+ "vocabulary": [{"word": "<useful English word or phrase for THIS topic>", "uz": "<Uzbek translation>", "example": "<one short simple example sentence>"}],
  "uzbek_tip": "<one short, motivating tip written in Uzbek>"
 }
-Mark EVERY real mistake, in the order it appears in the text (up to 30 corrections). 'original' must be the shortest wrong span (1-5 words) copied CHARACTER FOR CHARACTER from the student's text, and 'better' the corrected span; give each one a 'type'. Never mark something that is correct. Do not invent text the student did not write. Mention if the answer is under the word limit or off-topic.`;
+Give 10-12 topic-specific vocabulary items in "vocabulary" (words and collocations the student could have used for THIS task; mix B1, B2 and a few C1; accurate Uzbek translations in Latin script). Mark EVERY real mistake, in the order it appears in the text (up to 30 corrections). 'original' must be the shortest wrong span (1-5 words) copied CHARACTER FOR CHARACTER from the student's text, and 'better' the corrected span; give each one a 'type'. Never mark something that is correct. Do not invent text the student did not write. Mention if the answer is under the word limit or off-topic.`;
 
     const models = [Deno.env.get('GEMINI_MODEL'), ...FALLBACKS].filter(Boolean) as string[];
     let last = 'No model answered';
