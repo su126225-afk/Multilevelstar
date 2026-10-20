@@ -519,3 +519,17 @@ body.running.vscroll{overflow:auto}
   #modal .printfoot{display:block!important;position:fixed;left:0;right:0;bottom:0;text-align:center;font-size:11px;line-height:1.5;padding:6px 0 0;border-top:1px solid #999}
   #modal .sheet{padding-bottom:48px!important}
 }
+/* print: crisp, high-contrast paper */
+@media print{
+  html,body{background:#fff!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;opacity:1!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important;box-shadow:none!important}
+  #modal .sheet,#modal .sheet *{color:#000!important;font-weight:inherit}
+  #modal .sheet{font-size:13.5px;line-height:1.6}
+  #modal .sheet h2{font-size:22px;font-weight:800}#modal .sheet h3{font-size:16px;font-weight:800;border-bottom:2px solid #000;padding-bottom:3px}
+  #modal .sheet b,#modal .sheet th,#modal .sheet summary{font-weight:800}
+  #modal .muted,#modal small{color:#333!important}
+  #modal .panel{border:1px solid #777!important;border-radius:6px}
+  #modal .ann{border:1.5px solid #555!important}
+  #modal .t-grammar{background:#ffb3b3!important}#modal .t-spelling{background:#ffe27a!important}#modal .t-vocabulary{background:#a9d0ff!important}#modal .t-punctuation{background:#d8b8ff!important}#modal .t-style{background:#a6ebc9!important}
+  #modal th{background:#e8e8e8!important}
+}

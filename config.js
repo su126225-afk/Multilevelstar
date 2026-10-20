@@ -17,7 +17,7 @@ export const CONFIG = {
   telegramBot: 'multilevelstarbot',
   requireChannel: false,
   // Yuklab olinadigan PDF (Writing natijasi) pastki qismidagi ma'lumotlar. Telefon raqamingizni shu yerga yozing.
-  printPhone: '',
+  printPhone: '+998 90 897 97 72',
   printSite: 'https://su126225-afk.github.io/Multilevelstar/',
   coursesTitle: 'Online courses',
   coursesText: "IELTS & Multilevel online kurslari. Batafsil ma'lumot va yozilish uchun menga Telegramda yozing.",
