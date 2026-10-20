@@ -114,7 +114,7 @@ export async function practice(root, section) {
     <div class="tabs" style="margin-bottom:26px">
       <a class="chip ${section === 'listening' ? 'on' : ''}" href="#/practice/listening">${icon('headphones', 16)} Listening</a>
       <a class="chip ${section === 'reading' ? 'on' : ''}" href="#/practice/reading">${icon('book', 16)} Reading</a>
-      <a class="chip" href="#/speaking">${icon('mic', 16)} Speaking <span class="badge draft" style="margin-left:6px">Soon</span></a>
+      <a class="chip" href="#/speaking">${icon('mic', 16)} Speaking</a>
     </div>
     <div class="panel row between wrapx" style="margin-bottom:6px">
       <div class="row"><div class="feature" style="min-height:0;padding:0;border:0;background:none"><div class="ic" style="width:54px;height:54px">${icon(secIcon(section), 26)}</div></div>

@@ -202,3 +202,44 @@ drop policy if exists vres_delete on vocab_results;
 create policy vres_delete on vocab_results for delete to authenticated using (true);
 
 alter table vocab_sets add column if not exists code_hash text not null default '';
+
+-- ═══════════ SPEAKING (AI tekshiruv) ═══════════
+create table if not exists speaking_tests (
+  id         uuid primary key default gen_random_uuid(),
+  title      text not null,
+  published  boolean not null default true,
+  data       jsonb not null,
+  created_at timestamptz not null default now()
+);
+create table if not exists speaking_submissions (
+  id           uuid primary key default gen_random_uuid(),
+  test_id      uuid references speaking_tests(id) on delete set null,
+  test_title   text not null,
+  student_name text not null,
+  group_code   text not null,
+  total        int  not null default 0,
+  level        text not null default '',
+  feedback     jsonb,
+  created_at   timestamptz not null default now()
+);
+create index if not exists ssub_student_idx on speaking_submissions(group_code, student_name);
+alter table speaking_tests       enable row level security;
+alter table speaking_submissions enable row level security;
+drop policy if exists stests_read on speaking_tests;
+create policy stests_read on speaking_tests for select using (published or auth.role() = 'authenticated');
+drop policy if exists stests_write on speaking_tests;
+create policy stests_write on speaking_tests for all to authenticated using (true) with check (true);
+drop policy if exists ssub_insert on speaking_submissions;
+create policy ssub_insert on speaking_submissions for insert to anon, authenticated
+  with check (check_group(group_code) is not null);
+drop policy if exists ssub_read on speaking_submissions;
+create policy ssub_read on speaking_submissions for select to authenticated using (true);
+drop policy if exists ssub_delete on speaking_submissions;
+create policy ssub_delete on speaking_submissions for delete to authenticated using (true);
+create or replace function my_speakings(n text, g text) returns setof speaking_submissions
+language sql security definer set search_path = public stable as $$
+  select * from speaking_submissions
+  where lower(student_name) = lower(trim(n)) and upper(group_code) = upper(trim(g))
+  order by created_at desc limit 100
+$$;
+grant execute on function my_speakings(text, text) to anon, authenticated;

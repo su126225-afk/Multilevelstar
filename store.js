@@ -83,6 +83,20 @@ const local = {
   async saveVocabResult(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('vres', []); a.push(rec); LS.set('vres', a); return rec.id; },
   async listVocabResults() { return LS.get('vres', []).slice().sort(byNewest); },
   async deleteVocabResult(id) { LS.set('vres', LS.get('vres', []).filter(r => r.id !== id)); },
+  async listSpeakingTests({ published } = {}) { const a = LS.get('stests', []).slice().sort(byNewest); return published ? a.filter(x => x.published) : a; },
+  async getSpeakingTest(id) { return LS.get('stests', []).find(x => x.id === id) || null; },
+  async saveSpeakingTest(t) {
+    const all = LS.get('stests', []), i = all.findIndex(x => x.id === t.id);
+    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
+    if (i >= 0) all[i] = rec; else all.push(rec);
+    LS.set('stests', all); return rec;
+  },
+  async deleteSpeakingTest(id) { LS.set('stests', LS.get('stests', []).filter(x => x.id !== id)); },
+  async checkSpeaking() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
+  async saveSpeaking(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('ssubs', []); a.push(rec); LS.set('ssubs', a); return rec.id; },
+  async mySpeakings(name, group) { return LS.get('ssubs', []).filter(w => w.student_name.toLowerCase() === name.toLowerCase() && w.group_code.toUpperCase() === group.toUpperCase()).sort(byNewest); },
+  async listSpeakings() { return LS.get('ssubs', []).slice().sort(byNewest); },
+  async deleteSpeaking(id) { LS.set('ssubs', LS.get('ssubs', []).filter(w => w.id !== id)); },
   async tgAuth() { throw new Error('Telegram login needs Supabase'); },
   aiAvailable: false,
   async checkWriting() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
@@ -154,6 +168,25 @@ async function makeCloud() {
     async saveVocabResult(r) { return (await ok(sb.from('vocab_results').insert(r).select('id').single())).id; },
     async listVocabResults() { return ok(sb.from('vocab_results').select('*').order('created_at', { ascending: false }).limit(5000)); },
     async deleteVocabResult(id) { await ok(sb.from('vocab_results').delete().eq('id', id)); },
+    async listSpeakingTests({ published } = {}) {
+      let q = sb.from('speaking_tests').select('*').order('created_at', { ascending: false });
+      if (published) q = q.eq('published', true);
+      return ok(q);
+    },
+    async getSpeakingTest(id) { return ok(sb.from('speaking_tests').select('*').eq('id', id).maybeSingle()); },
+    async saveSpeakingTest(t) { return ok(sb.from('speaking_tests').upsert(t).select().single()); },
+    async deleteSpeakingTest(id) { await ok(sb.from('speaking_tests').delete().eq('id', id)); },
+    async checkSpeaking(payload) {
+      const { data, error } = await sb.functions.invoke('check-speaking', { body: payload });
+      let msg = data?.error;
+      if (error && !msg) { try { msg = (await error.context.json()).error; } catch { msg = error.message; } }
+      if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
+      return data.feedback;
+    },
+    async saveSpeaking(r) { return (await ok(sb.from('speaking_submissions').insert(r).select('id').single())).id; },
+    async mySpeakings(name, group) { return ok(sb.rpc('my_speakings', { n: name, g: group })); },
+    async listSpeakings() { return ok(sb.from('speaking_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
+    async deleteSpeaking(id) { await ok(sb.from('speaking_submissions').delete().eq('id', id)); },
     async tgAuth(payload) {
       const { data, error } = await sb.functions.invoke('tg-auth', { body: payload });
       let msg = data?.error;

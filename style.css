@@ -460,3 +460,43 @@ body.running.vscroll{overflow:auto}
   .wmain{grid-template-columns:1fr;grid-template-rows:var(--wt,40fr) 14px var(--wb,60fr)}
   .wleft{padding:14px}.wright{padding:10px 12px}
 }
+
+/* ───── Speaking ───── */
+.spparts{display:flex;gap:6px}.spparts span{padding:4px 10px;border-radius:999px;background:var(--panel2);font-size:13px;font-weight:700;color:var(--muted)}
+.spparts span.on{background:var(--primary,#5b6cff);color:#fff}.spparts span.done{background:rgba(52,211,153,.2);color:var(--ok,#34d399)}
+.sprec{color:#ff5d5d;font-weight:800;animation:pulse 1s infinite}
+.spstage{flex:1;min-height:0;overflow:auto;display:grid;place-items:center;padding:18px}
+.spcard{width:100%;max-width:820px}
+.spmeta{color:var(--muted);font-size:14px;margin-bottom:8px}
+.spq-text{font-size:clamp(22px,3.4vw,32px);line-height:1.35;font-weight:600}
+.spqs{margin:6px 0 0 22px;font-size:clamp(18px,2.6vw,24px);line-height:1.5}
+.spimgs{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 16px}.spimgs img{max-height:260px;max-width:100%;border-radius:12px;border:1px solid var(--border);background:#fff}
+.sptable{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:12px}
+.sptable>div{padding:12px 16px;background:var(--panel)}.sptable>div+div{border-left:1px solid var(--border)}.sptable ul{margin:6px 0 0 18px;line-height:1.55}
+.spfoot{padding:10px 18px 14px;border-top:1px solid var(--border);background:var(--bg2)}
+.spbar{height:6px;border-radius:6px;background:var(--panel2);overflow:hidden;margin-bottom:10px}.spbar i{display:block;height:100%;width:0;background:var(--primary,#5b6cff)}
+.spclock{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
+.spphase{font-weight:800;padding:6px 14px;border-radius:999px;background:var(--panel2);min-width:120px;text-align:center}.spphase:empty{visibility:hidden}
+.spphase.speak{background:rgba(255,93,93,.18);color:#ff6b6b}.spphase.think{background:rgba(251,191,36,.18);color:#fbbf24}
+.spq{margin:8px 0}.spq p{margin-top:2px;padding:8px 12px;border-radius:10px;background:var(--panel2);white-space:pre-wrap}
+@media (max-width:700px){.sptable{grid-template-columns:1fr}.sptable>div+div{border-left:0;border-top:1px solid var(--border)}.run-top .spparts span{padding:3px 7px;font-size:12px}}
+
+/* ───── Writing: colour-coded mistakes ───── */
+.annbox{white-space:pre-wrap;line-height:2.15;font-size:16px}
+.ann{display:inline;padding:2px 6px;border-radius:7px;margin:0 1px;cursor:help;color:inherit;border:1px solid transparent;font-style:normal}
+.ann i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-right:5px;opacity:.85}
+.ann s{opacity:.8;margin-right:3px}.ann b{font-weight:700}
+.t-grammar{background:rgba(255,93,93,.18);border-color:rgba(255,93,93,.45)}.t-grammar b{color:#ff8a8a}
+.t-spelling{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.5)}.t-spelling b{color:#fbbf24}
+.t-vocabulary{background:rgba(96,165,250,.2);border-color:rgba(96,165,250,.5)}.t-vocabulary b{color:#7cb7ff}
+.t-punctuation{background:rgba(192,132,252,.2);border-color:rgba(192,132,252,.5)}.t-punctuation b{color:#c9a0ff}
+.t-style{background:rgba(52,211,153,.18);border-color:rgba(52,211,153,.45)}.t-style b{color:#34d399}
+.annlegend{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}.annlegend span{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700}
+.annlegend i{width:10px;height:10px;border-radius:50%;background:currentColor}
+:root[data-theme="light"] .t-grammar b{color:#c62828}:root[data-theme="light"] .t-spelling b{color:#a16207}:root[data-theme="light"] .t-vocabulary b{color:#1d4ed8}:root[data-theme="light"] .t-punctuation b{color:#7e22ce}:root[data-theme="light"] .t-style b{color:#047857}
+@media print{
+  body>*:not(#modal){display:none!important}
+  #modal{position:static!important;display:block!important;background:none!important}
+  #modal .backdrop,.noprint-x .btn,.noprint-x .icon-btn{display:none!important}
+  #modal .sheet{position:static!important;max-height:none!important;overflow:visible!important;width:100%!important;box-shadow:none!important;transform:none!important;margin:0!important}
+}

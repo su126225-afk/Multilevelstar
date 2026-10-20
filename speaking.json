@@ -1,0 +1,140 @@
+{
+ "tests": [
+  {
+   "title": "Speaking Sample 1",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "Please tell me about your best friend.",
+      "Tell me about your country.",
+      "What do you like to do in your free time?"
+     ]
+    },
+    "p12": {
+     "images": [],
+     "questions": [
+      "What do you see in these pictures?",
+      "What are some advantages of walking over driving?",
+      "Why do some people prefer having a car of their own?"
+     ]
+    },
+    "p2": {
+     "image": "",
+     "questions": [
+      "Tell me about a critical decision you have made.",
+      "How has this decision influenced you and your life?",
+      "What factors have the highest impact on the decisions people make?"
+     ]
+    },
+    "p3": {
+     "title": "Citizens should be allowed to carry personal guns.",
+     "pros": [
+      "Guns can help people protect themselves",
+      "They prevent people from becoming victims of crimes like burglary",
+      "Necessary for hunting or target sports"
+     ],
+     "cons": [
+      "Guns are weapons that are used to commit a crime",
+      "Fewer guns will reduce the homicide rate",
+      "Handheld or military guns are not useful for activities like hunting"
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Sample 2",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "How long have you lived in your current area?",
+      "Do you prefer doing sports outdoors or going to a gym?",
+      "Is it better to spend your free time with family or friends?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-s2-a.jpg",
+      "speaking-s2-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "Which travel experience would you prefer, a modern high-speed train or a hot air balloon? Why?",
+      "What are the advantages of traveling in each mode?"
+     ]
+    },
+    "p2": {
+     "image": "",
+     "questions": [
+      "Describe a favorite book or story from your childhood.",
+      "What was the book about?",
+      "Who was the main character?",
+      "Why did you like this book so much?",
+      "Would you recommend it to others today?"
+     ]
+    },
+    "p3": {
+     "title": "Social media does more harm than good for society.",
+     "pros": [
+      "It creates opportunities for global communication and connections.",
+      "It provides a platform for people to share their creativity.",
+      "It is a valuable source for finding niche information and communities."
+     ],
+     "cons": [
+      "It can lead to online harassment and cyberbullying.",
+      "It spreads false information and promotes social isolation.",
+      "People often compare their lives unfavorably with others."
+     ]
+    }
+   }
+  },
+  {
+   "title": "Speaking Sample 3",
+   "published": true,
+   "data": {
+    "p11": {
+     "questions": [
+      "What is your favorite time of the year?",
+      "Do you prefer reading books or listening to music in your free time?",
+      "How important is staying active and doing sports for you?"
+     ]
+    },
+    "p12": {
+     "images": [
+      "speaking-s3-a.jpg",
+      "speaking-s3-b.jpg"
+     ],
+     "questions": [
+      "What can you see in these pictures?",
+      "Which lifestyle would you prefer to lead, living in a busy city or living in a quiet countryside? Why?",
+      "What are the advantages of living in each environment?"
+     ]
+    },
+    "p2": {
+     "image": "",
+     "questions": [
+      "Describe a job or career you would like to pursue in the future.",
+      "Why are you interested in this job?",
+      "What skills or qualifications do you need for it?",
+      "How do you plan to prepare for this career?",
+      "How long do you think it will take to achieve this goal?"
+     ]
+    },
+    "p3": {
+     "title": "Working from home should completely replace traditional office work.",
+     "pros": [
+      "It saves time and costs associated with daily commuting.",
+      "It allows for a better work-life balance and flexible working hours.",
+      "It enables companies to hire talent globally without geographical limits."
+     ],
+     "cons": [
+      "It can lead to feelings of isolation and a lack of social interaction.",
+      "It makes team collaboration, brain-storming, and clear communication harder.",
+      "Distractions at home can negatively affect productivity and discipline."
+     ]
+    }
+   }
+  }
+ ]
+}

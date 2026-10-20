@@ -1,6 +1,6 @@
 // Writing: student pages (task list, editor + AI feedback) and teacher tabs (tasks, submissions, students).
 import { store } from './store.js';
-import { esc, fmtDateTime, csvCell } from './logic.js';
+import { esc, fmtDateTime, csvCell, annotate } from './logic.js';
 import { $, $$, actions, inputs, toast, icon, go, S, requireStudent, confirmBox, modal, closeModal } from './ui.js';
 import { fmtHours } from './activity.js';
 
@@ -17,16 +17,37 @@ const SAMPLES = [
 ];
 
 // ═════════════ feedback card (shared by student page and teacher viewer) ═════════════
-export function feedbackHTML(fb) {
+const TYPES = { grammar: 'Grammar', spelling: 'Spelling', vocabulary: 'Vocabulary', punctuation: 'Punctuation', style: 'Style' };
+const typeOf = c => (TYPES[String(c.type || '').toLowerCase()] ? String(c.type).toLowerCase() : 'style');
+
+/** The student's own text with every mistake marked in colour: "wrong → better" (hover/tap shows why). */
+export function annotatedText(text, corrections) {
+  if (!text || !(corrections || []).length) return '';
+  const segs = annotate(text, corrections);
+  const counts = {};
+  const html = segs.map(g => {
+    if (!g.c) return esc(g.t);
+    const ty = typeOf(g.c); counts[ty] = (counts[ty] || 0) + 1;
+    return `<mark class="ann t-${ty}" tabindex="0" title="${esc(g.c.why || '')}"><i>${TYPES[ty]}</i><s>${esc(g.t)}</s><b>→ ${esc(g.c.better || '')}</b></mark>`;
+  }).join('');
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  return `<h3 class="mt2">Your text, checked <small class="muted">· ${total} mistake${total === 1 ? '' : 's'} marked</small></h3>
+    <div class="annlegend">${Object.keys(TYPES).filter(k => counts[k]).map(k => `<span class="t-${k}"><i></i>${TYPES[k]} ${counts[k]}</span>`).join('')}</div>
+    <div class="panel annbox">${html}</div><p class="note">Tap a coloured mistake to see why. Red = grammar, yellow = spelling, blue = vocabulary, purple = punctuation, green = style.</p>`;
+}
+
+export function feedbackHTML(fb, text = '') {
   if (!fb) return '';
   const list = a => (a || []).length ? `<ul>${a.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p class="muted">—</p>';
   return `<div class="fb">
     <div class="fb-head"><div class="fb-score"><span>${esc(fb.overall ?? '—')}</span><small>overall</small></div><p>${esc(fb.summary || '')}</p></div>
     <div class="fb-crit">${(fb.criteria || []).map(c => `<div class="panel"><div class="row between"><b>${esc(c.name)}</b><span class="badge multi">${esc(c.score)}</span></div><p class="muted" style="font-size:14px;margin-top:6px">${esc(c.comment)}</p></div>`).join('')}</div>
     <div class="fb-two"><div class="panel"><b>${icon('check', 16)} Strengths</b>${list(fb.strengths)}</div><div class="panel"><b>${icon('spark', 16)} Improve next</b>${list(fb.improvements)}</div></div>
-    ${(fb.corrections || []).length ? `<h3 class="mt2">Corrections</h3><div class="tablewrap"><table><thead><tr><th>You wrote</th><th>Better</th><th>Why</th></tr></thead><tbody>
+    ${annotatedText(text, fb.corrections)}
+    ${(fb.corrections || []).length ? `<h3 class="mt2">All corrections</h3><div class="tablewrap"><table><thead><tr><th>You wrote</th><th>Better</th><th>Why</th></tr></thead><tbody>
       ${fb.corrections.map(c => `<tr><td class="fb-bad">${esc(c.original)}</td><td class="fb-good">${esc(c.better)}</td><td class="muted">${esc(c.why)}</td></tr>`).join('')}</tbody></table></div>` : ''}
     ${fb.improved_version ? `<h3 class="mt2">Improved first paragraph</h3><div class="panel" style="white-space:pre-wrap">${esc(fb.improved_version)}</div>` : ''}
+    ${fb.sample_answer ? `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} See sample answer</summary><div style="white-space:pre-wrap;margin-top:10px;line-height:1.7">${esc(fb.sample_answer)}</div></details>` : ''}
     ${fb.uzbek_tip ? `<p class="mt" style="font-weight:600">💡 ${esc(fb.uzbek_tip)}</p>` : ''}</div>`;
 }
 
@@ -113,9 +134,9 @@ actions.wCheck = async () => {
   const btn = $('#wbtn');
   btn.disabled = true; btn.innerHTML = 'AI is reading… (10–30 s)';
   try {
-    const fb = await store.checkWriting({ kind: t.kind, prompt: t.prompt, text, group: st.group, min_words: t.min_words, max_words: t.max_words || 0 });
-    WR.last = fb; $('#wlast')?.removeAttribute('hidden');
-    showFeedback(fb);
+    const fb = await store.checkWriting({ kind: t.kind, prompt: t.prompt, text, group: st.group, min_words: t.min_words, max_words: t.max_words || 0, part: (String(t.title).match(/(?:Task|Part)\s*(1\.1|1\.2|2)\b/i) || [])[1] || '' });
+    WR.last = fb; WR.lastText = text; $('#wlast')?.removeAttribute('hidden');
+    showFeedback(fb, text);
     try {
       await store.saveWriting({ task_id: t.id, task_title: t.title, kind: t.kind, student_name: st.name, group_code: st.group, body: text, words, band: String(fb.overall ?? ''), feedback: fb });
       toast('Saved to your history', 'ok');
@@ -123,8 +144,9 @@ actions.wCheck = async () => {
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
-const showFeedback = fb => modal(`<div class="row between"><h2>AI feedback</h2><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div><div class="mt">${feedbackHTML(fb)}</div>`, true);
-actions.wLast = () => { if (WR?.last) showFeedback(WR.last); };
+const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>`, true);
+actions.printFb = () => window.print();
+actions.wLast = () => { if (WR?.last) showFeedback(WR.last, WR.lastText); };
 actions.wView = async el => {
   const w = (await store.myWritings(S.student.name, S.student.group)).find(x => x.id === el.dataset.id);
   if (w) viewWriting(w);
@@ -132,7 +154,7 @@ actions.wView = async el => {
 export function viewWriting(w) {
   modal(`<div class="row between"><h2>${esc(w.task_title)}</h2><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div>
     <p class="muted">${esc(w.student_name || '')} ${esc(w.group_code || '')} · ${fmtDateTime(w.created_at)} · ${w.words} words · <b>${esc(w.band)}</b></p>
-    <div class="panel mt" style="white-space:pre-wrap;max-height:260px;overflow:auto">${esc(w.body)}</div><div class="mt">${feedbackHTML(w.feedback)}</div>`, true);
+    <div class="panel mt" style="white-space:pre-wrap;max-height:260px;overflow:auto">${esc(w.body)}</div><div class="mt">${feedbackHTML(w.feedback, w.body)}</div>`, true);
 }
 
 export const sample = SAMPLES;

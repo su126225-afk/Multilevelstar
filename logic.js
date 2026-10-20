@@ -157,8 +157,13 @@ export function ieltsBand(section, correct, total) {
   return 0;
 }
 
-export function multilevelScore(correct, total) {
-  const pts = total ? Math.round(correct / total * 75) : 0;
+// Official Multilevel conversion table: number of correct answers (of 35) → score out of 75.
+const ML_L = [0, 23, 26, 28, 30, 33, 34, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50, 51, 53, 54, 55, 57, 58, 60, 61, 63, 65, 66, 68, 70, 72, 73, 74, 75, 75, 75];
+const ML_R = [0, 20, 24, 27, 29, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 48, 49, 51, 52, 54, 55, 57, 58, 60, 61, 63, 65, 66, 68, 70, 72, 73, 74, 75, 75, 75];
+export function multilevelScore(correct, total, section = 'reading') {
+  // the table is for 35 questions; a test with another length is scaled to 35 first
+  const raw = total ? Math.min(35, Math.max(0, total === 35 ? correct : Math.round(correct / total * 35))) : 0;
+  const pts = (section === 'listening' ? ML_L : ML_R)[raw];
   const level = pts >= 65 ? 'C1' : pts >= 51 ? 'B2' : pts >= 38 ? 'B1' : 'Below B1';
   return { pts, level };
 }
@@ -176,7 +181,7 @@ export function grade(test, answers) {
   const percent = total ? Math.round(correct / total * 1000) / 10 : 0;
   let band, points, sub;
   if (test.format === 'multilevel') {
-    const m = multilevelScore(correct, total);
+    const m = multilevelScore(correct, total, test.section);
     band = m.level; points = m.pts; sub = `${m.pts} / 75`;
   } else {
     const b = ieltsBand(test.section, correct, total);
@@ -280,4 +285,31 @@ export function typeStats(details) {
   const m = new Map();
   for (const d of details || []) { if (!d.type) continue; const r = m.get(d.type) || { type: d.type, name: TYPE_NAMES[d.type] || d.type, ok: 0, total: 0 }; r.total++; if (d.ok) r.ok++; m.set(d.type, r); }
   return [...m.values()].map(r => ({ ...r, pct: Math.round(r.ok / r.total * 100) }));
+}
+
+
+// ---------- writing: inline error annotation ----------
+/** Splits `text` into plain and marked segments using the AI's corrections ({original, better, why, type}). */
+export function annotate(text, corrections) {
+  const marks = [];
+  let cursor = 0;
+  const free = (i, e) => !marks.some(m => i < m.e && e > m.s);
+  for (const c of corrections || []) {
+    const o = String(c.original || '').trim();
+    if (!o) continue;
+    let i = text.indexOf(o, cursor);
+    if (i < 0) { i = text.toLowerCase().indexOf(o.toLowerCase()); }
+    if (i < 0 || !free(i, i + o.length)) continue;
+    marks.push({ s: i, e: i + o.length, c });
+    cursor = i + o.length;
+  }
+  marks.sort((a, b) => a.s - b.s);
+  const segs = []; let p = 0;
+  for (const m of marks) {
+    if (m.s > p) segs.push({ t: text.slice(p, m.s) });
+    segs.push({ t: text.slice(m.s, m.e), c: m.c });
+    p = m.e;
+  }
+  if (p < text.length) segs.push({ t: text.slice(p) });
+  return segs;
 }
