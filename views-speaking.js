@@ -240,9 +240,11 @@ export async function speakingTab(body) {
 const refresh = () => speakingTab(speakingTab.body);
 actions.spSample = async () => {
   let list = [];
-  try { const r = await fetch('speaking.json'); if (!r.ok) throw new Error(); list = (await r.json()).tests; } catch { return toast('speaking.json not found', 'bad'); }
-  for (const t of list) await store.saveSpeakingTest({ id: uid(), ...t });
-  toast('Sample test added — add its pictures with Edit', 'ok'); refresh();
+  try { const r = await fetch('speaking.json?v=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error(); list = (await r.json()).tests; } catch { return toast('speaking.json not found', 'bad'); }
+  const have = new Set((await store.listSpeakingTests()).map(t => t.title));
+  const fresh = list.filter(t => !have.has(t.title));
+  for (const t of fresh) await store.saveSpeakingTest({ id: uid(), ...t });
+  toast(fresh.length ? `${fresh.length} sample test(s) added` : `Nothing new: all ${list.length} samples are already in the list`, fresh.length ? 'ok' : 'bad'); refresh();
 };
 actions.spPub = async el => { const t = speakingTab.tests.find(x => x.id === el.dataset.id); await store.saveSpeakingTest({ ...t, published: !t.published }); refresh(); };
 actions.spDel = async el => { if (await confirmBox('Delete test?', 'Past attempts stay.', 'Delete', true)) { await store.deleteSpeakingTest(el.dataset.id); refresh(); } };
