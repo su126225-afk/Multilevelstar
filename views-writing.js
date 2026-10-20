@@ -146,7 +146,7 @@ actions.wCheck = async () => {
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
-const printFoot = () => `<div class="printfoot"><b>${esc(CONFIG.brand)}</b> · ${esc(CONFIG.teacher)}<br>Telegram: ${esc(CONFIG.telegramChannel)} · ${esc(CONFIG.telegramPersonal)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}${CONFIG.printSite ? '<br>' + esc(CONFIG.printSite) : ''}</div>`;
+const printFoot = () => `<div class="printfoot"><b>${esc(CONFIG.teacher)}</b><br>Telegram: ${esc(CONFIG.telegramChannel)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}${CONFIG.printSite ? '<br>' + esc(CONFIG.printSite) : ''}</div>`;
 const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>${printFoot()}`, true);
 actions.printFb = () => {
   // a closed <details> prints empty, so open the sample answer for the PDF and put it back afterwards
