@@ -85,7 +85,7 @@ actions.spVoiceTest = () => { if (R) R.dead = false; say('Hello! This is how the
 actions.spBegin = async () => {
   const err = $('#spErr'); err.textContent = '';
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) { err.textContent = 'This browser cannot record audio. Please use Chrome (Android/PC) or Safari (iPhone), updated to the latest version.'; return; }
-  try { R.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }); }
+  try { const probe = await openMic(); probe.getTracks().forEach(x => x.stop()); }   // permission check only: phones play questions quietly while the mic is open
   catch { err.textContent = 'Microphone access was blocked. Allow the microphone for this site in your browser settings, then try again.'; return; }
   try { R.ctx = new (window.AudioContext || window.webkitAudioContext)(); R.ctx.resume?.(); } catch { /* beep is optional */ }
   window.speechSynthesis?.getVoices?.();
@@ -93,6 +93,9 @@ actions.spBegin = async () => {
   window.onbeforeunload = e => { if (R && !R.dead) { e.preventDefault(); e.returnValue = ''; } };
   runAll();
 };
+
+const openMic = () => navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } });
+const closeMic = () => { try { R.stream?.getTracks().forEach(x => x.stop()); } catch { /* ignore */ } R.stream = null; };
 
 function beep() {
   return new Promise(res => {
@@ -202,9 +205,12 @@ async function runStep(step) {
   if (step.think) { setPhase('think', 'Start speaking now ›'); await countdown(step.think); if (R.dead) return; }
   // 3) beep → record
   R.skip = false; // 'Start speaking now' must not end the recording instantly
-  setPhase('wait'); await beep(); if (R.dead) return;
+  setPhase('wait');
+  try { R.stream = await openMic(); } catch { R.dead = true; toast('Microphone was blocked. Allow it and try again.', 'bad'); go('#/speaking'); return; }
+  await beep(); if (R.dead) return;
   setPhase('speak', step.kind === 'q' && step.n < step.of || step.part !== '3' ? 'Done · next ›' : 'Finish ›');
   const seg = await record(step.speak, step, label);
+  closeMic();   // mic off again so the next question is played at full volume
   R.segs.push({ part: step.part, label, question, ...seg });
 }
 actions.spNext = () => { R.skip = true; R.skipSay?.(); R.stopSay?.(); };
@@ -219,7 +225,7 @@ async function runAll() {
     if (i + 1 >= R.steps.length || R.steps[i + 1].part !== s.part) R.done.push(s.part);
   }
   if (R.dead) return;
-  R.stream.getTracks().forEach(x => x.stop());
+  closeMic();
   document.body.classList.remove('running'); window.onbeforeunload = null;
   analyse();
 }
