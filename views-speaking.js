@@ -166,7 +166,7 @@ async function runStep(step) {
   const question = step.kind === 'q' ? step.text : step.part === '2' ? step.questions.join(' / ') : step.title;
   let body;
   if (step.kind === 'q') body = `<p class="spmeta">Question ${step.n} of ${step.of}</p>${step.images ? imgs(step.images) : ''}<p class="spq-text">${esc(step.text)}</p>`;
-  else if (step.part === '2') body = `<p class="spmeta">Questions</p>${step.image ? imgs([step.image]) : ''}<ol class="spqs">${step.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol>`;
+  else if (step.part === '2') body = `<p class="spmeta">Questions</p>${step.image ? imgs([step.image]) : ''}<ul class="spqs">${step.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ul>`;
   else body = `<p class="spq-text" style="font-weight:700">${esc(step.title)}</p><div class="sptable"><div><b>For</b><ul>${step.pros.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div><b>Against</b><ul>${step.cons.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`;
   frame(step, body);
   // 1) the question is read aloud
@@ -175,8 +175,10 @@ async function runStep(step) {
   await Promise.race([say(sayText(step)), new Promise(r => { R.skipSay = r; })]);
   if (R.dead) return;
   // 2) thinking time (only where the format has it)
+  R.skip = false; // a Skip pressed while the question was read must not cut the next phases short
   if (step.think) { setPhase('think', 'Start speaking now ›'); await countdown(step.think); if (R.dead) return; }
   // 3) beep → record
+  R.skip = false; // 'Start speaking now' must not end the recording instantly
   setPhase('wait'); await beep(); if (R.dead) return;
   setPhase('speak', step.kind === 'q' && step.n < step.of || step.part !== '3' ? 'Done · next ›' : 'Finish ›');
   const seg = await record(step.speak, step, label);
@@ -211,7 +213,10 @@ async function analyse() {
     try { await store.saveSpeaking({ test_id: t.id, test_title: t.title, student_name: st.name, group_code: st.group, total: fb.total || 0, level: fb.level || '', feedback: fb }); }
     catch (e) { toast('Result shown but not saved: ' + e.message, 'bad'); }
     $('#view').innerHTML = `<div class="wrap page"><div class="row"><a class="btn sm" href="#/">${icon('home', 15)} Home</a><a class="btn sm" href="#/speaking">All speaking tests</a><a class="btn sm primary" href="#/speaking/run/${t.id}">Try again</a></div>
-      <h1 class="ptitle mt">${esc(t.title)}</h1><div class="mt">${speakingFeedback(fb)}</div></div>`;
+      <h1 class="ptitle mt">${esc(t.title)}</h1>
+      <div class="panel mt spclips"><b>Recorded on your device</b> <small class="muted">(if a long answer shows ✗ or a tiny size, the microphone did not record — tell your teacher)</small>
+      ${R.segs.map(x => `<div class="row between"><span>Part ${esc(x.part)} · ${esc(x.label)}</span><span>${hasAnswer(x) ? '✓' : '✗'} ${Math.round(x.secs)} s · ${Math.round(x.size / 1024)} KB</span></div>`).join('')}</div>
+      <div class="mt">${speakingFeedback(fb)}</div></div>`;
     window.scrollTo(0, 0);
   } catch (e) {
     $('#view').innerHTML = `<div class="wrap page"><div class="empty">${esc(e.message)}<br><br><a class="btn" href="#/speaking">Back</a></div></div>`;

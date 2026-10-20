@@ -23,11 +23,11 @@ export function buildSteps(d) {
   const q11 = lines(d.p11?.questions), q12 = lines(d.p12?.questions), q2 = lines(d.p2?.questions);
   if (q11.length) {
     steps.push({ kind: 'intro', part: '1.1', text: INTRO['1.1'] });
-    q11.forEach((text, i) => steps.push({ kind: 'q', part: '1.1', n: i + 1, of: q11.length, text, think: 0, speak: 30 }));
+    q11.forEach((text, i) => steps.push({ kind: 'q', part: '1.1', n: i + 1, of: q11.length, text, think: 5, speak: 30 }));
   }
   if (q12.length) {
     steps.push({ kind: 'intro', part: '1.2', text: INTRO['1.2'] });
-    q12.forEach((text, i) => steps.push({ kind: 'q', part: '1.2', n: i + 1, of: q12.length, text, images: lines(d.p12?.images), think: i === 0 ? 10 : 0, speak: i === 0 ? 45 : 30 }));
+    q12.forEach((text, i) => steps.push({ kind: 'q', part: '1.2', n: i + 1, of: q12.length, text, images: lines(d.p12?.images), think: i === 0 ? 10 : 5, speak: i === 0 ? 45 : 30 }));
   }
   if (q2.length) {
     steps.push({ kind: 'intro', part: '2', text: INTRO['2'] });

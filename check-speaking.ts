@@ -81,7 +81,7 @@ Deno.serve(async (req) => {
     const head = `You are an experienced, strict but fair examiner of the Uzbekistan Multilevel (CEFR) Speaking exam (new format), and a kind English teacher for Uzbek learners.
 You will receive the student's recorded answers, one audio clip per question, each introduced by a text label with the exact question. Listen to every clip, transcribe what the student actually said (do not invent or fix words), and score each PART using ONLY the official scale below.
 Judge: task relevance and stance, grammar range and accuracy, vocabulary range and appropriateness, organisation and linking (fluency, hesitation, length of the answer compared with the available time), and how easy the speech is to understand (accent is not penalised unless it impedes understanding). Ignore spelling and punctuation (this is speech).
-A clip marked [NO ANSWER] is silence: if every clip of a part is empty, that part scores 0. Very short answers (a few words) must score low. Memorised scripts or answers in Uzbek/Russian score 1 or 0.
+Only a clip that is marked [NO ANSWER] is empty. If a clip has audio and no such mark, the student DID answer: never say the student did not respond or gave no answer; if speech is unclear, say it was hard to understand and score what you can hear. A clip marked [NO ANSWER] is silence: if every clip of a part is empty, that part scores 0. Very short answers (a few words) must score low. Memorised scripts or answers in Uzbek/Russian score 1 or 0.
 
 ${present.map(p => SCALE[p]).join('\n\n')}
 
