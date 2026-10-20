@@ -3,6 +3,7 @@ import { store } from './store.js';
 import { esc, fmtDateTime, csvCell, annotate } from './logic.js';
 import { $, $$, actions, inputs, toast, icon, go, S, requireStudent, confirmBox, modal, closeModal } from './ui.js';
 import { fmtHours } from './activity.js';
+import { CONFIG } from './config.js';
 
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
@@ -47,7 +48,7 @@ export function feedbackHTML(fb, text = '') {
     ${(fb.corrections || []).length ? `<h3 class="mt2">All corrections</h3><div class="tablewrap"><table><thead><tr><th>You wrote</th><th>Better</th><th>Why</th></tr></thead><tbody>
       ${fb.corrections.map(c => `<tr><td class="fb-bad">${esc(c.original)}</td><td class="fb-good">${esc(c.better)}</td><td class="muted">${esc(c.why)}</td></tr>`).join('')}</tbody></table></div>` : ''}
     ${fb.improved_version ? `<h3 class="mt2">Improved first paragraph</h3><div class="panel" style="white-space:pre-wrap">${esc(fb.improved_version)}</div>` : ''}
-    ${[['sample_b2', 'B2'], ['sample_c1', 'C1'], ['sample_answer', '']].filter(([k]) => fb[k] && (k !== 'sample_answer' || (!fb.sample_b2 && !fb.sample_c1))).map(([k, lv]) => `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} See sample answer${lv ? ' · ' + lv : ''}</summary><div style="white-space:pre-wrap;margin-top:10px;line-height:1.7">${esc(fb[k])}</div></details>`).join('')}
+    ${[['sample_b2', 'B2'], ['sample_c1', 'C1'], ['sample_answer', '']].filter(([k]) => fb[k] && (k !== 'sample_answer' || (!fb.sample_b2 && !fb.sample_c1))).map(([k, lv]) => `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} See sample answer${lv ? ' · ' + lv : ''}</summary><div class="sample"><p class="muted" style="margin:10px 0 4px">${String(fb[k]).trim().split(/\s+/).length} words</p>${String(fb[k]).trim().split(/\n\s*\n|\n/).filter(Boolean).map(x => `<p>${esc(x)}</p>`).join('')}</div></details>`).join('')}
     ${(fb.vocabulary || []).length ? `<h3 class="mt2">Topic vocabulary</h3><div class="panel tablewrap"><table class="vtab"><thead><tr><th>English</th><th>O'zbekcha</th><th>Example</th></tr></thead><tbody>${fb.vocabulary.map(x => `<tr><td><b>${esc(x.word)}</b></td><td>${esc(x.uz)}</td><td class="muted">${esc(x.example || '')}</td></tr>`).join('')}</tbody></table></div>` : ''}
     ${fb.uzbek_tip ? `<p class="mt" style="font-weight:600">💡 ${esc(fb.uzbek_tip)}</p>` : ''}</div>`;
 }
@@ -145,7 +146,8 @@ actions.wCheck = async () => {
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
-const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>`, true);
+const printFoot = () => `<div class="printfoot"><b>${esc(CONFIG.brand)}</b> · ${esc(CONFIG.teacher)}<br>Telegram: ${esc(CONFIG.telegramChannel)} · ${esc(CONFIG.telegramPersonal)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}${CONFIG.printSite ? '<br>' + esc(CONFIG.printSite) : ''}</div>`;
+const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>${printFoot()}`, true);
 actions.printFb = () => {
   // a closed <details> prints empty, so open the sample answer for the PDF and put it back afterwards
   const ds = [...document.querySelectorAll('#modal details')], was = ds.map(d => d.open);
@@ -162,7 +164,7 @@ actions.wView = async el => {
 export function viewWriting(w) {
   modal(`<div class="row between"><h2>${esc(w.task_title)}</h2><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div>
     <p class="muted">${esc(w.student_name || '')} ${esc(w.group_code || '')} · ${fmtDateTime(w.created_at)} · ${w.words} words · <b>${esc(w.band)}</b></p>
-    <div class="panel mt" style="white-space:pre-wrap;max-height:260px;overflow:auto">${esc(w.body)}</div><div class="mt">${feedbackHTML(w.feedback, w.body)}</div>`, true);
+    <div class="panel mt" style="white-space:pre-wrap;max-height:260px;overflow:auto">${esc(w.body)}</div><div class="mt">${feedbackHTML(w.feedback, w.body)}</div>${printFoot()}`, true);
 }
 
 export const sample = SAMPLES;

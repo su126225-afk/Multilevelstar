@@ -16,6 +16,9 @@ export const CONFIG = {
   // Funksiya joylanmaguncha requireChannel: false qoldiring.
   telegramBot: 'multilevelstarbot',
   requireChannel: false,
+  // Yuklab olinadigan PDF (Writing natijasi) pastki qismidagi ma'lumotlar. Telefon raqamingizni shu yerga yozing.
+  printPhone: '',
+  printSite: 'https://su126225-afk.github.io/Multilevelstar/',
   coursesTitle: 'Online courses',
   coursesText: "IELTS & Multilevel online kurslari. Batafsil ma'lumot va yozilish uchun menga Telegramda yozing.",
 

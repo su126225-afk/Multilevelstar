@@ -514,3 +514,8 @@ body.running.vscroll{overflow:auto}
   #modal .t-grammar{background:#ffd9d9!important}#modal .t-spelling{background:#fff1b8!important}#modal .t-vocabulary{background:#d6e8ff!important}#modal .t-punctuation{background:#ecdcff!important}#modal .t-style{background:#d3f5e5!important}
   @page{margin:12mm}
 }
+.printfoot{display:none}
+@media print{
+  #modal .printfoot{display:block!important;position:fixed;left:0;right:0;bottom:0;text-align:center;font-size:11px;line-height:1.5;padding:6px 0 0;border-top:1px solid #999}
+  #modal .sheet{padding-bottom:48px!important}
+}
