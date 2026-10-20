@@ -502,3 +502,15 @@ body.running.vscroll{overflow:auto}
 }
 .spclips .row{padding:4px 0;border-top:1px solid var(--line,rgba(255,255,255,.1));font-size:14px}
 @media print{#modal details>summary{list-style:none}#modal details[open]>div{display:block!important}}
+.sample p{margin:0 0 12px;line-height:1.75}
+.vtab td,.vtab th{padding:8px 10px;text-align:left;vertical-align:top}
+@media print{
+  #modal .tablewrap,#modal .panel{overflow:visible!important;max-height:none!important}
+  #modal table{width:100%!important;min-width:0!important;table-layout:fixed;border-collapse:collapse}
+  #modal th,#modal td{white-space:normal!important;word-break:break-word;overflow-wrap:anywhere;font-size:12px;padding:5px 6px;border-bottom:1px solid #ccc}
+  #modal tr{page-break-inside:avoid;break-inside:avoid}
+  #modal .sheet,#modal .sheet *{color:#111!important;background:transparent!important}
+  #modal .ann{border:1px solid #999!important}
+  #modal .t-grammar{background:#ffd9d9!important}#modal .t-spelling{background:#fff1b8!important}#modal .t-vocabulary{background:#d6e8ff!important}#modal .t-punctuation{background:#ecdcff!important}#modal .t-style{background:#d3f5e5!important}
+  @page{margin:12mm}
+}
