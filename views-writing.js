@@ -145,7 +145,14 @@ actions.wCheck = async () => {
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
 const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>`, true);
-actions.printFb = () => window.print();
+actions.printFb = () => {
+  // a closed <details> prints empty, so open the sample answer for the PDF and put it back afterwards
+  const ds = [...document.querySelectorAll('#modal details')], was = ds.map(d => d.open);
+  ds.forEach(d => { d.open = true; });
+  const back = () => { ds.forEach((d, i) => { d.open = was[i]; }); window.removeEventListener('afterprint', back); };
+  window.addEventListener('afterprint', back);
+  window.print();
+};
 actions.wLast = () => { if (WR?.last) showFeedback(WR.last, WR.lastText); };
 actions.wView = async el => {
   const w = (await store.myWritings(S.student.name, S.student.group)).find(x => x.id === el.dataset.id);
