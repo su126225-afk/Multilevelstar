@@ -67,14 +67,25 @@ export async function speakingRun(root, id) {
       <li>Each question is read aloud. When you hear the <b>beep</b>, start speaking.</li>
       <li>Part 1.1: 30 s per question · Part 1.2: first question 10 s to think + 45 s, others 30 s · Parts 2 and 3: 1 min to think + 2 min to speak.</li>
       <li>The test cannot be paused. Press <b>Next</b> if you finish early.</li></ul></div>
+    <div class="panel mt"><b>Question voice</b> <small class="muted">— pick the clearest one, then press Test. Turn the phone volume up.</small>
+      <div class="row mt" style="gap:8px"><select class="inp" id="spVoice" data-in="spVoicePick" style="flex:1;min-width:0"></select><button class="btn sm" data-act="spVoiceTest">${icon('play', 14)} Test</button></div></div>
     <div class="err" id="spErr"></div>
     <button class="btn primary mt" style="width:100%" data-act="spBegin">${icon('mic', 18)} Allow microphone and start</button></div></div>`;
+  initVoices(); setTimeout(initVoices, 600);
 }
 
+function fillVoices() {
+  const sel = $('#spVoice'); if (!sel) return;
+  const vs = englishVoices(), cur = pickVoice();
+  sel.innerHTML = vs.length ? vs.map(v => `<option value="${esc(v.name)}"${cur && v.name === cur.name ? ' selected' : ''}>${esc(v.name)} (${esc(v.lang)})</option>`).join('') : '<option>Default voice</option>';
+}
+const initVoices = () => { fillVoices(); try { window.speechSynthesis.onvoiceschanged = fillVoices; } catch { /* ignore */ } };
+inputs.spVoicePick = el => vset(el.value);
+actions.spVoiceTest = () => { if (R) R.dead = false; say('Hello! This is how the questions will sound. Can you hear me clearly?'); };
 actions.spBegin = async () => {
   const err = $('#spErr'); err.textContent = '';
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) { err.textContent = 'This browser cannot record audio. Please use Chrome (Android/PC) or Safari (iPhone), updated to the latest version.'; return; }
-  try { R.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+  try { R.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } }); }
   catch { err.textContent = 'Microphone access was blocked. Allow the microphone for this site in your browser settings, then try again.'; return; }
   try { R.ctx = new (window.AudioContext || window.webkitAudioContext)(); R.ctx.resume?.(); } catch { /* beep is optional */ }
   window.speechSynthesis?.getVoices?.();
@@ -92,15 +103,27 @@ function beep() {
     } catch { res(); }
   });
 }
+const VKEY = 'ma_spvoice';
+const vget = () => { try { return localStorage.getItem(VKEY) || ''; } catch { return ''; } };
+const vset = v => { try { localStorage.setItem(VKEY, v); } catch { /* optional */ } };
+const englishVoices = () => (window.speechSynthesis?.getVoices?.() || []).filter(x => /^en/i.test(x.lang));
+/** Picks the clearest English voice the device has (natural/neural voices first); the student's own choice wins. */
+function pickVoice() {
+  const all = englishVoices(), chosen = vget();
+  const mine = chosen && all.find(x => x.name === chosen); if (mine) return mine;
+  const score = x => (/natural|neural|online|premium|enhanced/i.test(x.name) ? 60 : 0) + (/google (us|uk) english/i.test(x.name) ? 45 : 0)
+    + (/samantha|daniel|karen|serena|moira|aria|jenny|guy|libby|sonia|ryan/i.test(x.name) ? 30 : 0) + (/^en[-_](US|GB)/i.test(x.lang) ? 10 : 0) + (x.localService ? 0 : 5);
+  return all.slice().sort((a, b) => score(b) - score(a))[0] || null;
+}
 function say(text) {
   return new Promise(res => {
     const ss = window.speechSynthesis;
     if (!ss || R.dead) return res();
     ss.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-GB'; u.rate = 0.95;
-    const v = ss.getVoices().find(x => /^en[-_]GB/i.test(x.lang)) || ss.getVoices().find(x => /^en/i.test(x.lang));
-    if (v) u.voice = v;
+    u.rate = 0.92; u.pitch = 1; u.volume = 1;
+    const v = pickVoice();
+    if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'en-US';
     let done = false, tm;
     const fin = () => { if (!done) { done = true; clearTimeout(tm); R.stopSay = null; res(); } };
     u.onend = fin; u.onerror = fin;
