@@ -47,7 +47,7 @@ export function feedbackHTML(fb, text = '') {
     ${(fb.corrections || []).length ? `<h3 class="mt2">All corrections</h3><div class="tablewrap"><table><thead><tr><th>You wrote</th><th>Better</th><th>Why</th></tr></thead><tbody>
       ${fb.corrections.map(c => `<tr><td class="fb-bad">${esc(c.original)}</td><td class="fb-good">${esc(c.better)}</td><td class="muted">${esc(c.why)}</td></tr>`).join('')}</tbody></table></div>` : ''}
     ${fb.improved_version ? `<h3 class="mt2">Improved first paragraph</h3><div class="panel" style="white-space:pre-wrap">${esc(fb.improved_version)}</div>` : ''}
-    ${fb.sample_answer ? `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} See sample answer</summary><div style="white-space:pre-wrap;margin-top:10px;line-height:1.7">${esc(fb.sample_answer)}</div></details>` : ''}
+    ${[['sample_b2', 'B2'], ['sample_c1', 'C1'], ['sample_answer', '']].filter(([k]) => fb[k] && (k !== 'sample_answer' || (!fb.sample_b2 && !fb.sample_c1))).map(([k, lv]) => `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} See sample answer${lv ? ' · ' + lv : ''}</summary><div style="white-space:pre-wrap;margin-top:10px;line-height:1.7">${esc(fb[k])}</div></details>`).join('')}
     ${fb.uzbek_tip ? `<p class="mt" style="font-weight:600">💡 ${esc(fb.uzbek_tip)}</p>` : ''}</div>`;
 }
 

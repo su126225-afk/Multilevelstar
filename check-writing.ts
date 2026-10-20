@@ -98,7 +98,8 @@ Reply with JSON only, in exactly this shape:
  "improvements": ["... (most important first, max 5)"],
  "corrections": [{"original": "<exact words from the student's text>", "better": "<corrected words>", "type": "<grammar|spelling|vocabulary|punctuation|style>", "why": "<short reason>"}],
  "improved_version": "<a better version of the student's first paragraph only>",
- "sample_answer": "<a complete model answer for THIS task, at the target level, inside the word limit>",
+ "sample_b2": "<a complete model answer for THIS task written at a solid B2 level (clear, accurate, some complex grammar), inside the word limit>",
+ "sample_c1": "<a complete model answer for THIS task written at C1 level (wide range of vocabulary, complex structures, smooth linking, consistent register), inside the word limit>",
  "uzbek_tip": "<one short, motivating tip written in Uzbek>"
 }
 Mark EVERY real mistake, in the order it appears in the text (up to 30 corrections). 'original' must be the shortest wrong span (1-5 words) copied CHARACTER FOR CHARACTER from the student's text, and 'better' the corrected span; give each one a 'type'. Never mark something that is correct. Do not invent text the student did not write. Mention if the answer is under the word limit or off-topic.`;
