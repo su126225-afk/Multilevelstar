@@ -448,3 +448,15 @@ mark.hl{color:inherit;border-radius:3px;padding:0}
 
 body.running.vscroll{overflow:auto}
 .vhead .icon-btn{flex:none}
+
+/* ───── Writing: full-screen split editor ───── */
+.wmain{flex:1;min-height:0;display:grid;grid-template-columns:var(--wl,1fr) 10px var(--wr,1fr)}
+.wleft{overflow:auto;padding:22px 24px;min-width:0}
+.wright{display:flex;flex-direction:column;min-height:0;min-width:0;padding:16px 18px;gap:10px}
+.wright .wtext{flex:1;min-height:0;resize:none;font-size:16px;line-height:1.7}
+.wbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.wmain.dragging{user-select:none}.wmain.dragging .resizer{background:var(--primary)}
+@media (max-width:960px){
+  .wmain{grid-template-columns:1fr;grid-template-rows:var(--wt,40fr) 14px var(--wb,60fr)}
+  .wleft{padding:14px}.wright{padding:10px 12px}
+}

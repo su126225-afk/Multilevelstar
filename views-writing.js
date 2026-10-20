@@ -58,17 +58,43 @@ export async function writingEditor(root, id) {
   const key = 'ma_wr_' + id;
   WR = { task: t, key, start: Date.now(), busy: false };
   const draft = (() => { try { return localStorage.getItem(key) || ''; } catch { return ''; } })();
-  root.innerHTML = `<div class="wrap page"><div class="row"><a class="btn sm" href="#/">${icon('home', 15)} Home</a><a class="btn sm" href="#/writing">← All writing tasks</a></div>
-    <div class="wgrid mt">
-      <div class="panel"><span class="badge ${t.kind === 'multilevel' ? 'multi' : 'ielts'}">${KINDS[t.kind]}</span><h2 style="margin:10px 0">${esc(t.title)}</h2>
+  const lsGet = (k, d) => { try { const v = Number(localStorage.getItem(k)); return v >= 0.2 && v <= 0.8 ? v : d; } catch { return d; } };
+  const fw = lsGet('ma_wsplit', 0.5), fv = lsGet('ma_wvsplit', 0.4);
+  root.innerHTML = `<div class="runner wr">
+    <div class="run-top"><a class="icon-btn" href="#/" title="Home">${icon('home', 18)}</a><a class="icon-btn" href="#/writing" title="All writing tasks">${icon('x', 18)}</a>
+      <h2>${esc(t.title)}</h2><span class="badge ${t.kind === 'multilevel' ? 'multi' : 'ielts'}">${KINDS[t.kind]}</span></div>
+    <div class="wmain" id="wmain" style="--wl:${fw}fr;--wr:${1 - fw}fr;--wt:${fv}fr;--wb:${1 - fv}fr">
+      <div class="wleft"><h2 style="margin-bottom:10px">${esc(t.title)}</h2>
         ${t.image_url ? `<img class="plan" src="${esc(t.image_url)}" alt="Task image">` : ''}<div style="white-space:pre-wrap;line-height:1.7">${esc(t.prompt)}</div>
         <p class="mt" style="font-size:14px"><b>Word limit:</b> ${limitText(t)}</p></div>
-      <div><textarea id="wtext" class="inp wtext" placeholder="Start writing here…" spellcheck="true" data-in="wtext">${esc(draft)}</textarea>
-        <div class="row between wrapx mt"><div class="wcount" id="wcount"></div>
-          <button class="btn primary" data-act="wCheck" id="wbtn">${icon('spark', 16)} Check with AI</button></div>
-        <div id="wout" class="mt2"></div></div></div></div>`;
+      <div class="resizer" id="wresizer" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+      <div class="wright"><textarea id="wtext" class="inp wtext" placeholder="Start writing here…" spellcheck="true" data-in="wtext">${esc(draft)}</textarea>
+        <div class="wbar"><div class="wcount" id="wcount"></div>
+          <div class="row"><button class="btn sm" data-act="wLast" id="wlast" hidden>Last feedback</button><button class="btn primary" data-act="wCheck" id="wbtn">${icon('spark', 16)} Check with AI</button></div></div></div>
+    </div></div>`;
+  document.body.classList.add('running');
+  S.cleanup = () => { document.body.classList.remove('running'); };
   inputs.wtext();
 }
+document.addEventListener('pointerdown', e => {
+  const h = e.target.closest('#wresizer'); if (!h) return;
+  e.preventDefault();
+  const main = $('#wmain'), box = main.getBoundingClientRect();
+  const stacked = !!window.matchMedia?.('(max-width:960px)').matches;
+  h.setPointerCapture?.(e.pointerId); main.classList.add('dragging');
+  let f = 0;
+  const move = ev => {
+    f = Math.min(0.8, Math.max(0.2, stacked ? (ev.clientY - box.top) / box.height : (ev.clientX - box.left) / box.width));
+    const [x, y] = stacked ? ['--wt', '--wb'] : ['--wl', '--wr'];
+    main.style.setProperty(x, f + 'fr'); main.style.setProperty(y, (1 - f) + 'fr');
+  };
+  const up = () => {
+    main.classList.remove('dragging');
+    document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up);
+    if (f) try { localStorage.setItem(stacked ? 'ma_wvsplit' : 'ma_wsplit', String(f)); } catch { /* ignore */ }
+  };
+  document.addEventListener('pointermove', move); document.addEventListener('pointerup', up);
+});
 inputs.wtext = () => {
   if (!WR) return;
   const ta = $('#wtext'), n = countWords(ta.value), min = WR.task.min_words, max = WR.task.max_words || 0;
@@ -84,19 +110,21 @@ actions.wCheck = async () => {
   if (words < 20) return toast('Write at least 20 words first', 'bad');
   if (words < t.min_words * 0.5 && !(await confirmBox('Very short answer', `You wrote ${words} words, the task asks for ${limitText(t)}. Check anyway?`, 'Check'))) return;
   WR.busy = true;
-  const btn = $('#wbtn'), out = $('#wout');
-  btn.disabled = true; out.innerHTML = '<div class="loading">AI is reading your writing… (10–30 seconds)</div>';
+  const btn = $('#wbtn');
+  btn.disabled = true; btn.innerHTML = 'AI is reading… (10–30 s)';
   try {
     const fb = await store.checkWriting({ kind: t.kind, prompt: t.prompt, text, group: st.group, min_words: t.min_words, max_words: t.max_words || 0 });
-    out.innerHTML = feedbackHTML(fb);
-    out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    WR.last = fb; $('#wlast')?.removeAttribute('hidden');
+    showFeedback(fb);
     try {
       await store.saveWriting({ task_id: t.id, task_title: t.title, kind: t.kind, student_name: st.name, group_code: st.group, body: text, words, band: String(fb.overall ?? ''), feedback: fb });
       toast('Saved to your history', 'ok');
     } catch (e) { toast('Feedback shown but not saved: ' + e.message, 'bad'); }
-  } catch (e) { out.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
-  finally { WR.busy = false; btn.disabled = false; }
+  } catch (e) { toast(e.message, 'bad'); }
+  finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
+const showFeedback = fb => modal(`<div class="row between"><h2>AI feedback</h2><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div><div class="mt">${feedbackHTML(fb)}</div>`, true);
+actions.wLast = () => { if (WR?.last) showFeedback(WR.last); };
 actions.wView = async el => {
   const w = (await store.myWritings(S.student.name, S.student.group)).find(x => x.id === el.dataset.id);
   if (w) viewWriting(w);
