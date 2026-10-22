@@ -41,6 +41,9 @@ export const DEMO = {
   ] },
 };
 
+// Ready-made full tests (single HTML files uploaded next to index.html). Add a line per file.
+export const EXTERNAL = [{ title: 'CDI Listening 1', file: 'cdi-listening-1.html', note: 'Full computer-delivered Listening test · 4 parts · 40 questions' }];
+
 // ───────── helpers ─────────
 const SIM = { s: null };
 const cur = () => SIM.s;
@@ -70,6 +73,7 @@ export async function ieltsHome(root) {
         <div class="st"><b>2</b><span>Reading<small>60 min · coming next</small></span></div>
         <div class="st"><b>3</b><span>Writing<small>60 min · coming next</small></span></div></div>
       <p class="muted sm" style="margin-top:10px">Start with Listening below. Reading and Writing will join this sequence in the next update.</p></div>
+    ${EXTERNAL.length ? `<h2 style="font-size:20px;margin:0 0 12px">Full tests</h2><div class="tgrid" style="margin-bottom:26px">${EXTERNAL.map(e => `<div class="tcard"><div class="row between"><span class="badge ielts">IELTS</span><span class="badge">Listening</span></div><h3>${esc(e.title)}</h3><div class="muted sm">${esc(e.note || '')}</div><div class="ctas"><a class="btn primary sm" href="${esc(e.file)}" target="_blank" rel="noopener">${icon('play', 14)} Open test</a></div></div>`).join('')}</div>` : ''}
     <h2 style="font-size:20px;margin:0 0 12px">Listening simulator</h2>
     <div class="tgrid">${[DEMO, ...ls].map(card).join('')}</div>
     ${ls.length ? '' : '<p class="muted sm" style="margin-top:14px">No IELTS Listening tests with audio yet. Teacher: Admin → New test → Format “IELTS”, Section “Listening”, add the audio URL and part timings.</p>'}
