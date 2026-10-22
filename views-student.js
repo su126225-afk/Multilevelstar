@@ -543,8 +543,8 @@ export async function resultView(root, id) {
       <div class="stats"><div><b style="color:var(--ok)">${rec.correct}</b><span>correct</span></div><div><b style="color:var(--bad)">${wrong}</b><span>wrong</span></div><div><b>${blank}</b><span>empty</span></div></div>
       <div class="stats" style="grid-template-columns:1fr 1fr"><div><b>${rec.percent}%</b><span>score</span></div><div><b>${fmtTime(rec.time_sec)}</b><span>time</span></div></div>
       ${idx >= 0 ? `<p class="mt"><span class="badge ok">${icon('trophy', 13)} Rank #${idx + 1} of ${board.length} on this test</span></p>` : ''}
-      ${rec.saved === false ? '<p class="err">This result was not saved to the leaderboard.</p>' : ''}
-      <div class="ctas" style="justify-content:center"><a class="btn primary" href="#/test/${rec.test_id}">Try again</a><a class="btn" href="#/practice/${rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
+      ${rec.demo ? '<p class="muted">Demo test — this result is not saved to the leaderboard.</p>' : rec.saved === false ? '<p class="err">This result was not saved to the leaderboard.</p>' : ''}
+      <div class="ctas" style="justify-content:center"><a class="btn primary" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try again</a><a class="btn" href="${rec.format === 'ielts' ? '#/ielts' : '#/practice/' + rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
       <p class="note"><a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 14)} ${esc(CONFIG.telegramChannel)}</a></p>
       ${coursesCard('small')}
     </div>
@@ -554,7 +554,7 @@ export async function resultView(root, id) {
       const ts = typeStats(rec.details), weak = ts.slice().sort((a, b) => a.pct - b.pct)[0];
       return (mine0 ? `<div class="xpban">${icon('spark', 22)}<div><b>+${gain} XP earned${after.level > before.level ? ` · Level ${after.level} reached!` : ''}</b><small>Level ${after.level} · ${after.toNext} XP to the next level</small></div></div>` : '')
       + (ts.length ? `<div class="panel mt"><h3 style="font-size:20px">Performance by question type</h3><small class="muted">Based on this attempt.</small><div class="perf mt">${ts.map(t => `<div><div class="row between"><span>${esc(t.name)}</span><b>${t.ok} / ${t.total} · ${t.pct}%</b></div><div class="meter ${t.pct >= 80 ? 'ok' : ''}"><i style="width:${t.pct}%"></i></div></div>`).join('')}</div></div>` : '')
-      + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="#/test/${rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
+      + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
     })()}
       <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2>
       <div class="tabs"><button class="chip on" data-act="revFilter" data-v="">All</button><button class="chip" data-act="revFilter" data-v="no">Wrong</button><button class="chip" data-act="revFilter" data-v="blank">Empty</button></div></div>

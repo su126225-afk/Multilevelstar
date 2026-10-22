@@ -514,10 +514,9 @@ body.running.vscroll{overflow:auto}
   #modal .t-grammar{background:#ffd9d9!important}#modal .t-spelling{background:#fff1b8!important}#modal .t-vocabulary{background:#d6e8ff!important}#modal .t-punctuation{background:#ecdcff!important}#modal .t-style{background:#d3f5e5!important}
   @page{margin:12mm}
 }
-.printfoot{display:none}
+.printfoot{display:block;margin-top:22px;padding-top:10px;border-top:1px solid var(--border,#555);text-align:center;font-size:12.5px;line-height:1.6;color:var(--muted,#999)}
 @media print{
-  #modal .printfoot{display:block!important;position:fixed;left:0;right:0;bottom:0;text-align:center;font-size:11px;line-height:1.5;padding:6px 0 0;border-top:1px solid #999}
-  #modal .sheet{padding-bottom:48px!important}
+  #modal .printfoot{display:block!important;position:static!important;margin-top:18px;padding-top:8px;text-align:center;font-size:12px;line-height:1.6;border-top:2px solid #000;break-inside:avoid;color:#000!important}
 }
 /* print: crisp, high-contrast paper */
 @media print{
@@ -533,3 +532,95 @@ body.running.vscroll{overflow:auto}
   #modal .t-grammar{background:#ffb3b3!important}#modal .t-spelling{background:#ffe27a!important}#modal .t-vocabulary{background:#a9d0ff!important}#modal .t-punctuation{background:#d8b8ff!important}#modal .t-style{background:#a6ebc9!important}
   #modal th{background:#e8e8e8!important}
 }
+
+/* ═════════ IELTS simulator (exam-screen look; always light) ═════════ */
+.simsteps{display:flex;gap:12px;flex-wrap:wrap}
+.simsteps .st{display:flex;gap:12px;align-items:center;padding:12px 18px;border:1px solid var(--border);border-radius:14px;opacity:.55}
+.simsteps .st.on{opacity:1;border-color:var(--primary);background:rgba(91,108,255,.12)}
+.simsteps .st b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--panel2)}
+.simsteps .st.on b{background:var(--grad);color:#fff}
+.simsteps small{display:block;color:var(--muted);font-size:12px}
+.sim{--red:#c8102e;--ink:#1b1b1b;--grey:#e9e9e9;--line:#c9c9c9;--blue:#1f78d1;position:fixed;inset:0;display:flex;flex-direction:column;background:#fff;color:var(--ink);font-family:Arial,'Plus Jakarta Sans',sans-serif;font-size:15px;z-index:50}
+.sim *{box-sizing:border-box}
+.sim-brand{display:flex;align-items:center;gap:10px;padding:8px 18px;border-bottom:1px solid var(--line);background:#fff}
+.sim-logo{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center}
+.sim-brand b{color:var(--red);font-size:20px;letter-spacing:.3px}
+.sim-brand i{color:#555;font-style:normal;font-size:13px}
+.sim-by{margin-left:auto;color:#555;font-size:12.5px}
+.sim-bar{display:flex;align-items:center;gap:14px;background:#2b2b2b;color:#fff;padding:7px 18px;font-size:13.5px}
+.sim-mid{flex:1;text-align:center;color:#ddd}
+.sim-timer{font-variant-numeric:tabular-nums;font-weight:700;min-width:110px;text-align:right}
+.sim-timer.low{color:#ff8a8a}
+.sim-vol{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
+.sim-bar .sim-mid~.sim-vol{margin-left:0}
+.sim-vol input{width:90px;accent-color:#fff}
+.sim-center{flex:1;overflow:auto;display:grid;place-items:center;padding:24px;background:#f3f3f3}
+.sim-center.blue{background:#dbe8f7}
+.sim-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:26px 30px;width:min(560px,100%);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.sim-card.narrow{width:min(430px,100%);padding:0;overflow:hidden}
+.sim-card.narrow>*:not(.sim-card-head){margin-left:20px;margin-right:20px}
+.sim-card.narrow p:last-child{margin-bottom:20px}
+.sim-card.wide{width:min(820px,100%)}
+.sim-card-head{background:#111;color:#fff;font-weight:700;padding:9px 16px;display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.sim-card h2{font-size:22px;margin-bottom:10px}
+.sim-card h3{font-size:16px;margin:16px 0 6px}
+.sim-card ul{margin:0 0 6px 22px;line-height:1.7}
+.sim-card p{margin:10px 0}
+.sim-kv{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;margin:16px 0;padding:14px;background:#f6f6f6;border-radius:6px}
+.sim-kv span{color:#666}
+.sim-warn{display:flex;gap:8px;align-items:center;color:#8a1020;font-size:14px}
+.sim-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+.sim-btn{font:inherit;font-size:14px;padding:8px 18px;border:1px solid #888;background:#ececec;color:#111;border-radius:4px;cursor:pointer}
+.sim-btn:hover:not(:disabled){background:#dedede}
+.sim-btn.pri{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+.sim-btn.pri:hover:not(:disabled){background:#a50d26}
+.sim-btn.sm{padding:3px 12px;font-size:12.5px}
+.sim-btn:disabled{opacity:.45;cursor:not-allowed}
+.sim-title{padding:9px 18px;border-bottom:1px solid var(--line);background:#fff;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.sim-title b{font-size:17px}.sim-title span{color:#444}.sim-title em{color:#555;font-size:13.5px}
+.sim-body{flex:1;overflow:auto;background:var(--grey);padding:18px 22px;min-height:0}
+.sim-body.two{display:grid;grid-template-columns:minmax(240px,.9fr) 1.1fr;gap:26px;align-items:start}
+.sim-left{position:sticky;top:0}
+.sim-img{max-width:100%;border:1px solid #aaa;background:#fff}
+.sim-block{margin-bottom:26px}
+.sim-qhead{font-weight:700;margin-bottom:2px}
+.sim-ins{color:#333;margin-bottom:10px;font-size:14px}.sim-ins p{margin:0}
+.sim-notes p{margin:8px 0;line-height:1.9}
+.sim-optlist{background:#fff;border:1px solid #bbb;padding:10px 14px;margin:10px 0;line-height:1.7}
+.sim-optlist>b:first-child{display:block;margin-bottom:4px}
+.sim-q{display:flex;gap:12px;padding:10px 8px;border-radius:4px;margin-bottom:6px}
+.sim-q.cur{background:rgba(31,120,209,.1);outline:1px solid rgba(31,120,209,.45)}
+.sim-qn{font-weight:700;min-width:22px}
+.sim-qb{flex:1}.sim-qb .qt{margin-bottom:8px;font-weight:600}
+.sim-opts{display:flex;flex-direction:column;gap:6px}
+.sim-opt{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+.sim-opt input{margin-top:3px}
+.sim-gap{width:150px;max-width:100%;padding:3px 8px;border:1px solid #6e8fb8;background:#fff;border-radius:3px;font:inherit;font-size:14.5px;margin:0 4px}
+.sim-gap:focus,.sim-sel:focus{outline:2px solid var(--blue);background:#eaf3ff}
+.gapwrap .gnum{font-size:12px;background:#333;color:#fff;border-radius:3px;padding:1px 5px;margin-right:2px}
+.sim-match{display:flex;gap:14px;align-items:center}.sim-match .qt{min-width:160px;margin:0}
+.sim-sel{font:inherit;padding:4px 8px;border:1px solid #6e8fb8;background:#fff;border-radius:3px;min-width:70px}
+.sim-foot{display:flex;align-items:center;gap:14px;padding:8px 14px;border-top:1px solid var(--line);background:#fff;flex-wrap:wrap}
+.sim-rev{display:flex;gap:5px;align-items:center;font-size:13px;cursor:pointer}
+.sim-nums{display:flex;gap:14px;flex-wrap:wrap;flex:1;min-width:0}
+.sim-pg{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.sim-pl{font:inherit;font-size:12.5px;font-weight:700;border:0;background:none;cursor:pointer;padding:2px 4px}
+.sim-pg.on .sim-pl{text-decoration:underline}
+.sim-pg small{color:#555;font-size:12px}
+.sim-n{width:26px;height:26px;border:1px solid #666;background:#fff;color:#111;font:inherit;font-size:12px;font-weight:700;cursor:pointer;border-radius:3px;position:relative}
+.sim-n.done{background:#222;color:#fff;border-color:#222}
+.sim-n.cur{background:var(--blue);border-color:var(--blue);color:#fff}
+.sim-n.flag::after{content:"";position:absolute;right:-3px;top:-3px;width:9px;height:9px;border-radius:50%;background:#f59e0b;border:1px solid #fff}
+.sim-arrows{display:flex;gap:6px;align-items:center;margin-left:auto}
+.sim-arr{width:34px;height:30px;border:1px solid #888;background:#ececec;border-radius:4px;cursor:pointer;font-size:17px;line-height:1}
+@media (max-width:760px){
+  .sim-brand i,.sim-by{display:none}
+  .sim-body.two{grid-template-columns:1fr;gap:14px}.sim-left{position:static}
+  .sim-bar{flex-wrap:wrap;gap:6px 12px}.sim-mid{flex-basis:100%;order:5;text-align:left}
+  .sim-match{flex-direction:column;align-items:flex-start;gap:6px}.sim-match .qt{min-width:0}
+  .sim-card{padding:20px 18px}
+  .sim-pg:not(.on) small{display:none}.sim-nums{gap:4px 10px}.sim-foot{gap:8px;padding:6px 10px}.sim-arrows{margin-left:0}
+}
+
+#modal.modal{z-index:200}
+#toasts{z-index:300}
