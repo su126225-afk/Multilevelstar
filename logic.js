@@ -147,13 +147,16 @@ function show(q, a, key) {
   return String(a);
 }
 
+// IELTS raw score (of 40) -> band. Each row is [minimum correct answers, band]; checked from the top.
+const BAND_L = [[39, 9], [37, 8.5], [35, 8], [32, 7.5], [30, 7], [26, 6.5], [23, 6], [18, 5.5], [16, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5], [2, 2], [1, 1]];
 const BAND_R = [[39, 9], [37, 8.5], [35, 8], [33, 7.5], [30, 7], [27, 6.5], [23, 6], [19, 5.5], [15, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5], [2, 2], [1, 1]];
-const BAND_L = [[39, 9], [37, 8.5], [35, 8], [32, 7.5], [30, 7], [26, 6.5], [23, 6], [18, 5.5], [16, 5], [13, 4.5], [11, 4], [8, 3.5], [6, 3], [4, 2.5], [2, 2], [1, 1]];
 
+/** Listening and Academic Reading tables. */
 export function ieltsBand(section, correct, total) {
   if (!total) return 0;
   const raw = Math.round(correct / total * 40);
-  for (const [m, b] of (section === 'listening' ? BAND_L : BAND_R)) if (raw >= m) return b;
+  const table = section === 'listening' ? BAND_L : BAND_R;
+  for (const [m, b] of table) if (raw >= m) return b;
   return 0;
 }
 
