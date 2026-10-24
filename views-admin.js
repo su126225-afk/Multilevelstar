@@ -53,7 +53,20 @@ actions.adminLogin = async () => {
 };
 
 // ═════════════════════ TESTS TAB ═════════════════════
+// Tests added to tests.json on GitHub are copied into the database the first time the teacher opens the panel.
+async function syncBundle() {
+  if (store.mode !== 'cloud') return;
+  try {
+    const r = await fetch('tests.json'); if (!r.ok) return;
+    const bundle = (await r.json()).tests || [];
+    const have = new Set((await store.listTests()).map(t => t.id));
+    const fresh = bundle.filter(t => !have.has(t.id));
+    for (let i = 0; i < fresh.length; i += 4) await store.saveTests(fresh.slice(i, i + 4));
+    if (fresh.length) toast(`${fresh.length} new test(s) added from tests.json`, 'ok');
+  } catch (e) { console.error(e); }
+}
 async function testsTab(body) {
+  await syncBundle();
   const tests = await store.listTests();
   body.innerHTML = `<div class="row between wrapx" style="margin-bottom:14px">
       <b>${tests.length} tests</b>

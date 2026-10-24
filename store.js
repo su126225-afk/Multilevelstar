@@ -14,14 +14,23 @@ export const cloudConfigured = () => !!(CONFIG.supabaseUrl && CONFIG.supabaseAno
 const local = {
   mode: 'local',
   async init() {
-    if (LS.get('seeded')) return;
-    let tests = [];
-    try { const r = await fetch('tests.json'); if (r.ok) tests = (await r.json()).tests || []; } catch { /* no bundle */ }
+    let bundle = [];
+    try { const r = await fetch('tests.json'); if (r.ok) bundle = (await r.json()).tests || []; } catch { /* no bundle */ }
     const now = Date.now();
-    LS.set('tests', tests.map((t, i) => ({ published: true, ...t, created_at: new Date(now - i * 1000).toISOString() })));
-    LS.set('groups', [{ code: 'DEMO', name: 'Demo group' }]);
-    LS.set('results', []);
-    LS.set('seeded', 1);
+    if (!LS.get('seeded')) {
+      LS.set('tests', bundle.map((t, i) => ({ published: true, ...t, created_at: new Date(now - i * 1000).toISOString() })));
+      LS.set('groups', [{ code: 'DEMO', name: 'Demo group' }]);
+      LS.set('results', []);
+      LS.set('seeded', 1);
+      LS.set('bundle_seen', bundle.map(t => t.id));
+      return;
+    }
+    // New tests added to tests.json later appear automatically (once each, so deleted ones stay deleted).
+    const have = LS.get('tests', []);
+    const seen = new Set(LS.get('bundle_seen', null) || have.map(t => t.id));
+    const fresh = bundle.filter(t => !seen.has(t.id) && !have.some(h => h.id === t.id));
+    if (fresh.length) LS.set('tests', [...fresh.map(t => ({ published: true, ...t, created_at: new Date(now).toISOString() })), ...have]);
+    LS.set('bundle_seen', [...new Set([...seen, ...bundle.map(t => t.id)])]);
   },
   isAdmin: () => sessionStorage.getItem('ma_admin') === '1',
   async adminLogin(_email, pw) {
