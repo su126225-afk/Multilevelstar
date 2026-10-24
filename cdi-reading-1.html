@@ -4600,7 +4600,7 @@ body.rd-dark .rd-tabs button.on,body.rd-yellow .rd-tabs button.on{border-bottom-
   /* ---------- Full-mock hook ---------- */
   (function(){
     if(!isMock)return;
-    var b=document.createElement('button');b.id='mock-next';b.type='button';b.textContent='Finish Reading';document.body.appendChild(b);
+    var b=document.createElement('button');b.id='mock-next';b.type='button';b.textContent='Finish Reading \u2192 Writing';document.body.appendChild(b);
     var sc=$('results-score');
     function ready(){return sc&&sc.textContent.trim()!=='';}
     new MutationObserver(function(){if(ready())b.classList.add('show');}).observe(sc,{childList:true,characterData:true,subtree:true});
@@ -4608,7 +4608,7 @@ body.rd-dark .rd-tabs button.on,body.rd-yellow .rd-tabs button.on{border-bottom-
       var s=parseInt(sc.textContent,10)||0,band=($('results-band')||{}).textContent||'';
       var out={done:true,band:band.trim(),acc:Math.round(s/40*100)+'%'};
       try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.reading=out;localStorage.setItem(k,JSON.stringify(st));}catch(e){}
-      location.href='ielts-mock.html';
+      location.href='cdi-writing-1.html?mock=1';
     });
   })();
 })();

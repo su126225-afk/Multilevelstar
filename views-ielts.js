@@ -1,3 +1,4 @@
+// views-ielts.js v4 (Reading available)
 // IELTS computer-delivered style simulator (Listening first; Reading and Writing plug in later).
 // Own branding: it imitates how the exam *works* (sound check, instructions, one-play audio,
 // numbered question bar, review flags, 2-minute check), not the logos of the exam owners.
@@ -42,7 +43,7 @@ export const DEMO = {
 };
 
 // Ready-made full tests (single HTML files uploaded next to index.html). Add a line per file.
-export const EXTERNAL = [{ title: 'IELTS Full Mock', file: 'ielts-mock.html', note: 'Listening → Reading, one after another, like the real exam day' }, { title: 'CDI Listening 1', file: 'cdi-listening-1.html', note: 'Full computer-delivered Listening test · 4 parts · 40 questions' }];
+export const EXTERNAL = [{ title: 'IELTS Full Mock', file: 'ielts-mock.html', note: 'Listening → Reading → Writing, one after another, like the real exam day' }, { title: 'CDI Listening 1', file: 'cdi-listening-1.html', note: 'Full computer-delivered Listening test · 4 parts · 40 questions' }];
 
 // ───────── helpers ─────────
 const SIM = { s: null };
@@ -71,8 +72,8 @@ export async function ieltsHome(root) {
     <div class="panel" style="margin-bottom:22px"><h2 style="font-size:20px;margin-bottom:12px">Full mock test</h2>
       <div class="simsteps"><div class="st on"><b>1</b><span>Listening<small>≈ 30 min + 2 min check · available now</small></span></div>
         <div class="st on"><b>2</b><span>Reading<small>60 min · available now</small></span></div>
-        <div class="st"><b>3</b><span>Writing<small>60 min · coming next</small></span></div></div>
-      <p class="muted sm" style="margin-top:10px">Start the full mock below: Listening, then Reading. Writing will join in the next update.</p></div>
+        <div class="st on"><b>3</b><span>Writing<small>60 min · available now</small></span></div></div>
+      <p class="muted sm" style="margin-top:10px">Start the full mock below: Listening, then Reading, then Writing.</p></div>
     ${EXTERNAL.length ? `<h2 style="font-size:20px;margin:0 0 12px">Full tests</h2><div class="tgrid" style="margin-bottom:26px">${EXTERNAL.map(e => `<div class="tcard"><div class="row between"><span class="badge ielts">IELTS</span><span class="badge">Listening</span></div><h3>${esc(e.title)}</h3><div class="muted sm">${esc(e.note || '')}</div><div class="ctas"><a class="btn primary sm" href="${esc(e.file)}" target="_blank" rel="noopener">${icon('play', 14)} Open test</a></div></div>`).join('')}</div>` : ''}
     ${ls.length ? `<h2 style="font-size:20px;margin:0 0 12px">Listening simulator</h2><div class="tgrid">${ls.map(card).join('')}</div>` : ''}
     ${ls.length || EXTERNAL.length ? '' : '<p class="muted sm">No IELTS tests yet. Teacher: Admin → New test → Format “IELTS”, Section “Listening”, add the audio URL and part timings.</p>'}
