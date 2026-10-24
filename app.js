@@ -8,7 +8,7 @@ import * as A from './views-admin.js';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';
 import * as SP from './views-speaking.js';
-import * as IE from './views-ielts.js?v=3';
+import * as IE from './views-ielts.js?v=4';
 import { startActivity } from './activity.js';
 
 const routes = [
