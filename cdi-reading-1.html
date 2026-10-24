@@ -1951,8 +1951,9 @@ body.rd-dark .hl-pop button:disabled,body.rd-yellow .hl-pop button:disabled{colo
 .note-box button{padding:9px 18px;border-radius:5px;border:1px solid #888;background:#fff;font:600 14px Arial,sans-serif;cursor:pointer}
 .note-box button.pri{background:#000;color:#fff;border-color:#000}
 /* mock finish */
-#mock-next{position:fixed;right:16px;bottom:74px;z-index:9999;display:none;font:700 15px Arial,sans-serif;padding:12px 20px;border:0;border-radius:4px;background:#2a6c96;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
-#mock-next.show{display:block}
+body.mock-live #results-modal{display:none!important}
+#mock-wait{position:fixed;inset:0;background:#fff;z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;font:700 22px Arial,sans-serif;color:#333;text-align:center;padding:20px}
+#mock-wait small{font:400 15px Arial,sans-serif;color:#666}
 /* intro */
 .intro{position:fixed;inset:0;background:#fff;z-index:2000;overflow-y:auto;font-family:Arial,Helvetica,sans-serif;color:#4a4a4a}
 .intro[hidden]{display:none!important}
@@ -4382,9 +4383,8 @@ body.rd-dark .rd-tabs button.on,body.rd-yellow .rd-tabs button.on{border-bottom-
     var td=document.querySelector('.timer-display'),dbtn=$('deliver-button');
     if(!td||!dbtn)return;
     new MutationObserver(function(){
-      if(/up/i.test(td.textContent)&&!body.dataset.finished){body.dataset.finished='1';dbtn.click();}
+      if(/up/i.test(td.textContent)&&!window.__rdSubmitted&&!window.__rdTimeUp){window.__rdTimeUp=true;window.__readingForce=true;dbtn.click();}
     }).observe(td,{childList:true,characterData:true,subtree:true});
-    dbtn.addEventListener('click',function(){body.dataset.finished='1';},true);
   })();
 
   /* ---------- Options (contrast + text size) ---------- */
@@ -4600,20 +4600,40 @@ body.rd-dark .rd-tabs button.on,body.rd-yellow .rd-tabs button.on{border-bottom-
   /* ---------- Full-mock hook ---------- */
   (function(){
     if(!isMock)return;
-    var b=document.createElement('button');b.id='mock-next';b.type='button';b.textContent='Finish Reading \u2192 Writing';document.body.appendChild(b);
-    var sc=$('results-score');
-    function ready(){return sc&&sc.textContent.trim()!=='';}
-    new MutationObserver(function(){if(ready())b.classList.add('show');}).observe(sc,{childList:true,characterData:true,subtree:true});
-    b.addEventListener('click',function(){
-      var s=parseInt(sc.textContent,10)||0,band=($('results-band')||{}).textContent||'';
-      var out={done:true,band:band.trim(),acc:Math.round(s/40*100)+'%'};
-      try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.reading=out;localStorage.setItem(k,JSON.stringify(st));}catch(e){}
-      location.href='cdi-writing-1.html?mock=1';
+    body.classList.add('mock-live');
+    var d=$('deliver-button'),armed=false,label=d.textContent.trim();
+    var sp=d.querySelector('span');if(sp)sp.textContent='Finish Reading';
+    var wait=document.createElement('div');wait.id='mock-wait';wait.innerHTML='Submitting your answers\u2026<small>Please wait</small>';document.body.appendChild(wait);
+    function collect(){
+      var rows=[],ok=0;
+      document.querySelectorAll('#results-details .result-row').forEach(function(r){
+        var good=!r.classList.contains('incorrect');if(good)ok++;
+        rows.push({n:parseInt(r.querySelector('.q-num').textContent,10),user:(r.querySelector('.user-ans').textContent||'').trim().replace(/^Not Answered$/,''),correct:(r.querySelector('.correct-ans').textContent||'').trim(),ok:good});
+      });
+      return {correct:ok,total:40,band:(($('results-band')||{}).textContent||'').trim(),details:rows};
+    }
+    function submit(){
+      if(window.__rdSubmitted)return;window.__rdSubmitted=true;wait.style.display='flex';
+      var data=collect(),t=setTimeout(go,5000);
+      function go(){
+        try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.reading={done:true};localStorage.setItem(k,JSON.stringify(st));}catch(e){}
+        location.href='cdi-writing-1.html?mock=1';
+      }
+      (window.MockSync?MockSync.send('reading',data):Promise.resolve()).then(function(){clearTimeout(t);go();});
+    }
+    d.addEventListener('click',function(e){
+      if(window.__rdSubmitted){e.stopImmediatePropagation();return;}
+      if(!armed&&!window.__readingForce){
+        e.stopImmediatePropagation();armed=true;if(sp)sp.textContent='Click again to submit';d.style.background='#c8102e';d.style.color='#fff';
+        setTimeout(function(){if(!window.__rdSubmitted){armed=false;if(sp)sp.textContent='Finish Reading';d.style.background='';d.style.color='';}},5000);return;
+      }
+      setTimeout(submit,400);
     });
   })();
 })();
 
 </script>
+<script src="mock-sync.js"></script>
 <script>
 window.addEventListener('load',function(){
   document.querySelectorAll('.hd-chip').forEach(function(c){c.classList.add('drag-item');});

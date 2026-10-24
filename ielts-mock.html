@@ -37,21 +37,25 @@ var KEY='ielts_mock_v1';
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};}}
 var TICK='<svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
 function exists(f){return fetch(f,{method:'HEAD'}).then(function(r){return r.ok;}).catch(function(){return false;});}
+var stu=null;try{stu=JSON.parse(localStorage.getItem('ma_student'));}catch(e){}
+if(stu&&!stu.name)stu=null;
 Promise.all(SECTIONS.map(function(s){return exists(s.file);})).then(function(ok){
   var st=load(),html='',prevDone=true;
+  if(!stu){document.getElementById('list').innerHTML='<div class="card"><div><h2>Please sign in first</h2><div class="meta">Enter your name and group code on the main page, then come back to the mock test.</div></div><div><a class="btn" href="./#/ielts">Sign in</a></div></div>';return;}
+  html+='<div class="meta" style="margin-bottom:18px">Student: <b>'+String(stu.name).replace(/</g,'&lt;')+'</b>'+(stu.group?' · Group: <b>'+String(stu.group).replace(/</g,'&lt;')+'</b>':'')+'</div>';
   SECTIONS.forEach(function(s,i){
     var d=st[s.key]&&st[s.key].done,avail=ok[i],locked=!prevDone;
     var status=d?'<div class="st ok">Completed</div>':locked?'<div class="st lock">Locked — finish the previous section first</div>':avail?'<div class="st no">Not completed</div>':'<div class="st lock">Coming soon</div>';
-    var score=d&&st[s.key].band?'<div class="score">Estimated band: <b>'+st[s.key].band+'</b>'+(st[s.key].acc?' · Accuracy: '+st[s.key].acc:'')+'</div>':'';
-    var act=d?TICK:'<a class="btn" href="'+s.file+'?mock=1" '+((locked||!avail)?'aria-disabled="true"':'')+'>'+s.label+'</a>';
-    html+='<div class="card"><div><h2>'+s.title+'</h2>'+status+'<div class="meta">Timing: '+s.timing+'</div>'+score+'</div><div>'+act+'</div></div>';
+    var act=d?TICK:'<a class="btn" data-k="'+s.key+'" href="'+s.file+'?mock=1" '+((locked||!avail)?'aria-disabled="true"':'')+'>'+s.label+'</a>';
+    html+='<div class="card"><div><h2>'+s.title+'</h2>'+status+'<div class="meta">Timing: '+s.timing+'</div></div><div>'+act+'</div></div>';
     prevDone=prevDone&&!!d;
   });
   document.getElementById('list').innerHTML=html;
   var all=SECTIONS.every(function(s){return st[s.key]&&st[s.key].done;});
-  if(all){var bands=SECTIONS.map(function(s){return parseFloat(st[s.key].band);}).filter(function(b){return !isNaN(b);});
-    var avg=bands.length?Math.round(bands.reduce(function(a,b){return a+b;},0)/bands.length*2)/2:null;
-    document.getElementById('final').innerHTML='<div class="done"><h2>Mock finished</h2>'+SECTIONS.map(function(s){return s.title+': <b>'+(st[s.key].band||'—')+'</b>';}).join(' &nbsp;·&nbsp; ')+(avg!==null?'<br><br>Average band of the sections above: <b>'+avg.toFixed(1)+'</b>':'')+'</div>';}
+  if(all)document.getElementById('final').innerHTML='<div class="done"><h2>Mock finished</h2>Your answers have been sent to your teacher. Your results will be given to you by your teacher.</div>';
+  var first=document.querySelector('a.btn[data-k="listening"]');
+  if(first)first.addEventListener('click',function(){if(window.MockSync)MockSync.newAttempt();});
+  if(window.MockSync)MockSync.flush();
 });
-document.getElementById('reset').onclick=function(){if(confirm('Clear the results of this mock and start again?')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}};
-</script></body></html>
+document.getElementById('reset').onclick=function(){if(confirm('Start the mock again from Listening? Your previous answers stay with your teacher.')){try{localStorage.removeItem(KEY);}catch(e){}location.reload();}};
+</script><script src="mock-sync.js"></script></body></html>

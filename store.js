@@ -104,6 +104,8 @@ const local = {
   async myWritings(name, group) { return LS.get('wsubs', []).filter(w => w.student_name.toLowerCase() === name.toLowerCase() && w.group_code.toUpperCase() === group.toUpperCase()).sort(byNewest); },
   async listWritings() { return LS.get('wsubs', []).slice().sort(byNewest); },
   async deleteWriting(id) { LS.set('wsubs', LS.get('wsubs', []).filter(w => w.id !== id)); },
+  async listMocks() { return []; },
+  async deleteMock() {},
   async addActivity(name, group, secs) {
     const day = new Date().toISOString().slice(0, 10), a = LS.get('activity', []);
     const r = a.find(x => x.student_name === name && x.group_code === group && x.day === day);
@@ -206,6 +208,8 @@ async function makeCloud() {
     async myWritings(name, group) { return ok(sb.rpc('my_writings', { n: name, g: group })); },
     async listWritings() { return ok(sb.from('writing_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
     async deleteWriting(id) { await ok(sb.from('writing_submissions').delete().eq('id', id)); },
+    async listMocks() { return ok(sb.from('mock_submissions').select('*').order('created_at', { ascending: false }).limit(2000)); },
+    async deleteMock(id) { await ok(sb.from('mock_submissions').delete().eq('id', id)); },
     async addActivity(name, group, secs) { await sb.rpc('add_activity', { n: name, g: group, secs }); },
     async listActivity() { return ok(sb.from('activity').select('*').limit(20000)); },
     async uploadFile(file) {

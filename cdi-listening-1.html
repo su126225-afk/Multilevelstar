@@ -1174,30 +1174,54 @@
   });
 })();
 </script>
-<style id="mock-next-css">#mock-next{position:fixed;right:16px;bottom:74px;z-index:9999;display:none;font:700 15px Arial,sans-serif;padding:12px 20px;border:0;border-radius:4px;background:#2a6c96;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}#mock-next.show{display:block}#mock-next.sure{background:#c8102e}</style>
+<style id="mock-next-css">
+body.mock-live #float-check{display:none!important}
+#mock-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:74px;z-index:9999;display:none;align-items:center;gap:14px;background:#111;color:#fff;font:15px Arial,sans-serif;padding:12px 16px;border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.3);max-width:94vw}
+#mock-bar.show{display:flex}
+#mock-bar button{border:0;border-radius:4px;background:#2a6c96;color:#fff;font:700 14px Arial,sans-serif;padding:9px 16px;cursor:pointer;white-space:nowrap}
+#mock-wait{position:fixed;inset:0;background:#fff;z-index:99999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;font:700 22px Arial,sans-serif;color:#333;text-align:center;padding:20px}
+#mock-wait small{font:400 15px Arial,sans-serif;color:#666}
+</style>
+<script src="mock-sync.js"></script>
 <script id="mock-next-js">
-// Full-mock mode (opened from ielts-mock.html): when the recording has ended, offer to finish Listening and go on to Reading.
+// Full-mock mode (opened from ielts-mock.html). After the recording: 2 minutes to check, then the answers go to the teacher and the Reading test starts.
 (function(){
   if(!/[?&]mock=1/.test(location.search))return;
+  document.body.classList.add('mock-live');
   var a=document.getElementById('l-audio'); if(!a)return;
-  var b=document.createElement('button'); b.id='mock-next'; b.type='button'; b.textContent='Finish Listening \u2192 Reading'; document.body.appendChild(b);
-  function show(){b.classList.add('show');}
+  var bar=document.createElement('div');bar.id='mock-bar';bar.innerHTML='<span>The recording has finished. Check your answers: <b id="mock-t">2:00</b></span><button type="button" id="mock-go">Finish Listening</button>';document.body.appendChild(bar);
+  var wait=document.createElement('div');wait.id='mock-wait';wait.innerHTML='Submitting your answers…<small>Please wait</small>';document.body.appendChild(wait);
+  var left=120,iv=null,done=false;
+  function tick(){var m=Math.floor(left/60),s=left%60;document.getElementById('mock-t').textContent=m+':'+(s<10?'0':'')+s;}
+  function show(){if(bar.classList.contains('show'))return;bar.classList.add('show');tick();iv=setInterval(function(){left--;tick();if(left<=0){clearInterval(iv);finish();}},1000);}
   a.addEventListener('ended',function(){setTimeout(show,500);});
   a.addEventListener('error',show);
-  var sure=false;
-  b.addEventListener('click',function(){
-    if(!sure){sure=true;b.classList.add('sure');b.textContent='Click again to submit and continue';setTimeout(function(){sure=false;b.classList.remove('sure');b.textContent='Finish Listening \u2192 Reading';},6000);return;}
-    var chk=document.getElementById('float-check'); if(chk)chk.click();
+  setInterval(function(){if(window.__testStarted&&(a.error||a.ended))show();},1000);
+  document.getElementById('mock-go').addEventListener('click',finish);
+  function collect(){
+    var ua=window.userAnswers||{},am=window._answerMap||{},cr=window._checkResults||{},rows=[],ok=0;
+    for(var n=1;n<=40;n++){
+      var k='q'+n,u=ua[k]&&ua[k].answer;if(Array.isArray(u))u=u.join(', ');
+      var good=cr[k]==='status-ok'||cr[k]==='status-good'||cr[k]==='status-correct';if(good)ok++;
+      rows.push({n:n,user:u==null?'':String(u),correct:am[k]==null?'':String(am[k]),ok:good});
+    }
+    var band='';document.querySelectorAll('.results-stat').forEach(function(e){var t=e.textContent;if(/band/i.test(t))band=t.replace(/Est\.?\s*Band/i,'').trim();});
+    return {correct:ok,total:40,band:band,details:rows};
+  }
+  function finish(){
+    if(done)return;done=true;clearInterval(iv);
+    wait.style.display='flex';
+    var chk=document.getElementById('float-check');if(chk)chk.click();
     setTimeout(function(){
-      var out={done:true};
-      document.querySelectorAll('.results-stat').forEach(function(e){
-        var v=(e.querySelector('strong')||{}).textContent||'',l=e.textContent.replace(v,'').trim().toLowerCase();
-        if(l.indexOf('band')>-1)out.band=v; else if(l.indexOf('accuracy')>-1)out.acc=v;
-      });
-      try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.listening=out;localStorage.setItem(k,JSON.stringify(st));}catch(e){}
-      try{sessionStorage.removeItem('cdi.live');Object.keys(localStorage).forEach(function(k){if(k.indexOf('cdi.answers.')===0)localStorage.removeItem(k);});}catch(e){}location.href='cdi-reading-1.html?mock=1';
+      var data=collect(),t=setTimeout(go,5000);
+      function go(){
+        try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.listening={done:true};localStorage.setItem(k,JSON.stringify(st));}catch(e){}
+        try{sessionStorage.removeItem('cdi.live');Object.keys(localStorage).forEach(function(k){if(k.indexOf('cdi.answers.')===0)localStorage.removeItem(k);});}catch(e){}
+        location.href='cdi-reading-1.html?mock=1';
+      }
+      (window.MockSync?MockSync.send('listening',data):Promise.resolve()).then(function(){clearTimeout(t);go();});
     },900);
-  });
+  }
 })();
 </script>
 </body>

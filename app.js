@@ -4,11 +4,11 @@ import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
 import * as V from './views-student.js';
-import * as A from './views-admin.js';
+import * as A from './views-admin.js?v=5';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';
 import * as SP from './views-speaking.js';
-import * as IE from './views-ielts.js?v=4';
+import * as IE from './views-ielts.js?v=5';
 import { startActivity } from './activity.js';
 
 const routes = [

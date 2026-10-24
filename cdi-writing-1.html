@@ -249,11 +249,21 @@ window.WRITING={
   function finish(){
     if(fin)return;fin=true;clearInterval(iv);txt[cur]=$('ans').value;
     var w1=words(txt[1]),w2=words(txt[2]);
+    $('ans').readOnly=true;
+    if(isMock){
+      var wait=document.createElement('div');wait.style.cssText='position:fixed;inset:0;background:#fff;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;font:700 22px Arial,sans-serif;color:#333;text-align:center;padding:20px';
+      wait.innerHTML='Submitting your answers\u2026<small style="font:400 15px Arial,sans-serif;color:#666">Please wait</small>';document.body.appendChild(wait);
+      var t=setTimeout(go,5000);
+      function go(){
+        try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.writing={done:true};localStorage.setItem(k,JSON.stringify(st));localStorage.removeItem('ielts_writing_draft');}catch(e){}
+        location.href='ielts-mock.html';
+      }
+      (window.MockSync?MockSync.send('writing',{text1:txt[1],text2:txt[2],correct:w1,total:w2,details:{w1:w1,w2:w2}}):Promise.resolve()).then(function(){clearTimeout(t);go();});
+      return;
+    }
     $('dsum').textContent='Task 1: '+w1+' words · Task 2: '+w2+' words';
     $('dtxt').value='TASK 1 ('+w1+' words)\n'+txt[1]+'\n\nTASK 2 ('+w2+' words)\n'+txt[2];
-    $('ans').readOnly=true;
     try{localStorage.setItem('ielts_writing_last',JSON.stringify({t:Date.now(),w1:w1,w2:w2,t1:txt[1],t2:txt[2]}));localStorage.removeItem('ielts_writing_draft');}catch(e){}
-    if(isMock){try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.writing={done:true,words:w1+' + '+w2+' words'};localStorage.setItem(k,JSON.stringify(st));}catch(e){}$('dclose').textContent='Back to the mock';}
     $('done').classList.add('open');
   }
   $('dclose').addEventListener('click',function(){if(isMock)location.href='ielts-mock.html';else $('done').classList.remove('open');});
@@ -425,4 +435,5 @@ window.WRITING={
 
 })();
 </script>
+<script src="mock-sync.js"></script>
 </body></html>
