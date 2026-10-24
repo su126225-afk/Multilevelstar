@@ -21954,7 +21954,7 @@
     },
     "practice": true,
     "qstart": 1,
-    "pdf": "recent-2026-10-10-s1-reading-1.pdf",
+    "pdf": "2026-10-10-s1-reading-1.pdf",
     "parts": [
      {
       "title": "Growing flowers at home",
@@ -21983,7 +21983,7 @@
     },
     "practice": true,
     "qstart": 30,
-    "pdf": "recent-2026-10-10-s1-reading-5.pdf",
+    "pdf": "2026-10-10-s1-reading-5.pdf",
     "parts": [
      {
       "title": "The Legacy of the Silk Road",
@@ -22070,7 +22070,7 @@
     "qstart": 9,
     "audio_url": "",
     "audioPending": true,
-    "pdf": "recent-2026-10-10-s1-listening-2.pdf",
+    "pdf": "2026-10-10-s1-listening-2.pdf",
     "parts": [
      {
       "title": "Photograph Course",
@@ -22101,7 +22101,7 @@
     "qstart": 19,
     "audio_url": "",
     "audioPending": true,
-    "pdf": "recent-2026-10-10-s1-listening-4.pdf",
+    "pdf": "2026-10-10-s1-listening-4.pdf",
     "parts": [
      {
       "title": "Label the campus map",
@@ -22197,7 +22197,7 @@
     "qstart": 19,
     "audio_url": "",
     "audioPending": true,
-    "pdf": "recent-2026-10-10-s2-listening-4.pdf",
+    "pdf": "2026-10-10-s2-listening-4.pdf",
     "parts": [
      {
       "title": "Label the museum map",
@@ -22291,7 +22291,7 @@
     },
     "practice": true,
     "pdfOnly": true,
-    "pdf": "recent-2026-10-10-s1-writing.pdf",
+    "pdf": "2026-10-10-s1-writing.pdf",
     "parts": []
    }
   },
@@ -22313,7 +22313,7 @@
     },
     "practice": true,
     "pdfOnly": true,
-    "pdf": "recent-2026-10-10-s2-writing.pdf",
+    "pdf": "2026-10-10-s2-writing.pdf",
     "parts": []
    }
   }
