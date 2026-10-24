@@ -9,6 +9,7 @@ export const CONFIG = {
   teacher: 'Sardor Usmonov',
   telegramChannel: '@EnglishwithUsmonov',
   telegramUrl: 'https://t.me/EnglishwithUsmonov',
+  currency: "so'm",                // to'lov summalari yonida ko'rsatiladi
 
   supabaseUrl: 'https://gvngtrhhwjodokjftxko.supabase.co',
   supabaseAnonKey: '',

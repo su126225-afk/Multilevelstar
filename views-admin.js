@@ -1,7 +1,8 @@
 import { store, cloudConfigured } from './store.js';
 import { CONFIG } from './config.js';
-import { esc, parseBlock, parseOptions, serializeBlock, serializeOptions, parseTime, fmtTime, fmtDateTime, testMeta, setPath, csvCell, prepare } from './logic.js';
-import { $, $$, actions, inputs, toast, icon, go, confirmBox, modal, closeModal } from './ui.js';
+import { esc, parseBlock, parseOptions, serializeBlock, serializeOptions, parseTime, fmtTime, fmtDateTime, testMeta, setPath, csvCell, prepare,
+  ATTENDANCE, HOMEWORK, makeAccessCode, formatCode, mondayOf, addDays, todayKey, monthOf, shiftMonth, weekReport, paymentStatus, fmtMoney, weeklyMessageUz, inviteMessageUz, uzShort } from './logic.js';
+import { $, $$, actions, inputs, toast, icon, go, confirmBox, modal, closeModal, copyText } from './ui.js';
 
 const adm = { tab: 'tests', rf: { section: '', group: '' } };
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
@@ -15,12 +16,16 @@ export async function adminHome(root) {
   root.innerHTML = `<div class="wrap page">
     <div class="row between wrapx"><div><h1 class="ptitle">Teacher panel</h1><p class="muted">${store.mode === 'cloud' ? 'Connected to your database.' : 'Demo mode: data is stored only in this browser. Connect Supabase to go live (see README).'}</p></div>
       <button class="btn sm" data-act="adminLogout">${icon('logout', 16)} Log out</button></div>
-    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
+    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results'], ['students', 'Students'], ['attendance', 'Attendance'], ['weekly', 'Weekly report'], ['payments', 'Payments']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
     <div class="mt2" id="admBody"><div class="loading">Loading…</div></div></div>`;
   const body = $('#admBody');
   try {
     if (adm.tab === 'tests') await testsTab(body);
     else if (adm.tab === 'groups') await groupsTab(body);
+    else if (adm.tab === 'students') await studentsTab(body);
+    else if (adm.tab === 'attendance') await attendanceTab(body);
+    else if (adm.tab === 'weekly') await weeklyTab(body);
+    else if (adm.tab === 'payments') await paymentsTab(body);
     else await resultsTab(body);
   } catch (e) { body.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
 }
@@ -98,7 +103,8 @@ actions.addGroup = async () => {
 };
 actions.delGroup = async el => {
   if (!(await confirmBox('Delete group?', `Students will no longer be able to join with "${el.dataset.code}". Their old results stay.`, 'Delete', true))) return;
-  await store.deleteGroup(el.dataset.code); rerenderAdmin();
+  try { await store.deleteGroup(el.dataset.code); } catch (e) { return toast(e.message, 'bad'); }
+  rerenderAdmin();
 };
 
 // ═════════════════════ RESULTS TAB ═════════════════════
@@ -318,4 +324,194 @@ actions.edSave = async el => {
     toast(test.published ? 'Saved and published' : 'Saved', 'ok');
     go('#/admin');
   } catch (e) { toast(e.message, 'bad'); }
+};
+
+// ═════════════════════ FAMILY PORTAL TOOLS: STUDENTS / ATTENDANCE / WEEKLY REPORT / PAYMENTS ═════════════════════
+Object.assign(adm, { stu: { group: '' }, att: { group: '', date: todayKey() }, wk: { group: '', week: mondayOf(todayKey()) }, pay: { group: '', period: monthOf(todayKey()) } });
+const familyLink = () => `${location.origin}${location.pathname}#/family`;
+const ATT_LABEL = { present: 'Present', late: 'Late', absent: 'Absent', excused: 'Excused' };
+const HW_LABEL = { done: 'Done', partial: 'Partly', missing: 'Not done', none: 'None given' };
+const pickGroup = (groups, cur) => (groups.some(g => g.code === cur) ? cur : groups[0]?.code || '');
+const groupSelect = (key, groups, cur, all = false) => `<select class="sel" data-in="admf" data-s="${key}" data-k="group" aria-label="Group">${all ? '<option value="">All groups</option>' : ''}${groups.map(g => `<option value="${esc(g.code)}" ${g.code === cur ? 'selected' : ''}>${esc(g.code)}${g.name ? ' · ' + esc(g.name) : ''}</option>`).join('')}</select>`;
+const noGroups = '<div class="empty">Create a group first (Groups tab), then add its students.</div>';
+const payBadge = st => ({ paid: '<span class="badge ok">Paid</span>', partial: '<span class="badge draft">Partly paid</span>', unpaid: '<span class="badge bad">Unpaid</span>', none: '<span class="badge">—</span>' }[st]);
+inputs.admf = el => { adm[el.dataset.s][el.dataset.k] = el.value; rerenderAdmin(); };
+const downloadCsv = (name, rows) => {
+  const blob = new Blob(['﻿' + rows.map(r => r.map(csvCell).join(',')).join('\n')], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+};
+
+// ───── Students ─────
+let stuAll = [];
+async function studentsTab(body) {
+  const [groups, all] = await Promise.all([store.listGroups(), store.listStudents()]);
+  if (!groups.length) { body.innerHTML = noGroups; return; }
+  stuAll = all;
+  const g = adm.stu.group, list = all.filter(s => !g || s.group_code === g);
+  body.innerHTML = `<div class="panel"><b>Add students</b>
+      <p class="muted" style="font-size:14px">One student per line. You can add the parent's name after a semicolon: <code>Ali Valiyev; Karim Valiyev</code>. Every student gets a personal 12-digit number to log in to the family page.</p>
+      <div class="grid2 mt" style="grid-template-columns:minmax(160px,220px) 1fr;align-items:start">
+        <div><label class="lbl" for="stuGroup">Group</label><select class="sel" id="stuGroup">${groups.map(x => `<option value="${esc(x.code)}" ${x.code === (g || groups[0].code) ? 'selected' : ''}>${esc(x.code)}</option>`).join('')}</select></div>
+        <div><label class="lbl" for="stuNames">Students</label><textarea class="inp" id="stuNames" rows="4" placeholder="Ali Valiyev; Karim Valiyev&#10;Madina Karimova"></textarea></div></div>
+      <button class="btn primary mt" data-act="addStudents">${icon('plus', 16)} Add and create numbers</button></div>
+    <div class="row between wrapx mt2"><div class="row wrapx"><b>${list.length} student${list.length === 1 ? '' : 's'}</b>${groupSelect('stu', groups, g, true)}</div>
+      <button class="btn sm" data-act="exportCodes">Export numbers (CSV)</button></div>
+    <div class="mt">${list.length ? `<div class="tablewrap"><table><thead><tr><th>Student</th><th>Group</th><th>Personal number</th><th>Status</th><th class="r">Actions</th></tr></thead><tbody>
+      ${list.map(s => `<tr><td><b>${esc(s.full_name)}</b>${s.parent_name ? `<br><small class="muted">Parent: ${esc(s.parent_name)}</small>` : ''}</td><td>${esc(s.group_code)}</td>
+        <td><code class="mono">${esc(formatCode(s.access_code))}</code></td><td>${s.active === false ? '<span class="badge draft">Paused</span>' : '<span class="badge ok">Active</span>'}</td>
+        <td class="r"><button class="btn sm" data-act="stuInvite" data-id="${s.id}">Copy invitation</button> <button class="btn sm" data-act="stuNewCode" data-id="${s.id}">New number</button>
+          <button class="btn sm" data-act="stuToggle" data-id="${s.id}">${s.active === false ? 'Activate' : 'Pause'}</button> <button class="btn sm danger" data-act="stuDelete" data-id="${s.id}" aria-label="Delete ${esc(s.full_name)}">${icon('trash', 14)}</button></td></tr>`).join('')}
+      </tbody></table></div>` : '<div class="empty">No students yet. Add some above.</div>'}</div>
+    <p class="muted mt" style="font-size:13px">Personal numbers give read-only access to one student's attendance, homework and payment status. Pausing a student or issuing a new number stops the old number immediately.</p>`;
+}
+actions.addStudents = async () => {
+  const group = $('#stuGroup').value;
+  const lines = $('#stuNames').value.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return toast('Type at least one name', 'bad');
+  const taken = new Set(stuAll.map(s => s.access_code)), have = new Set(stuAll.filter(s => s.group_code === group).map(s => s.full_name.toLowerCase()));
+  const fresh = []; let skipped = 0;
+  for (const line of lines) {
+    const [n, ...rest] = line.split(';');
+    const name = n.trim().replace(/\s+/g, ' ').slice(0, 80);
+    if (name.length < 2 || have.has(name.toLowerCase())) { skipped++; continue; }
+    have.add(name.toLowerCase());
+    const code = makeAccessCode(taken); taken.add(code);
+    fresh.push({ id: uid(), full_name: name, group_code: group, access_code: code, parent_name: rest.join(';').trim().slice(0, 80), active: true });
+  }
+  if (!fresh.length) return toast('Nothing to add: those names are already in the group', 'bad');
+  try { await store.saveStudents(fresh); toast(`${fresh.length} student${fresh.length > 1 ? 's' : ''} added${skipped ? `, ${skipped} skipped (already in the group)` : ''}`, 'ok'); adm.stu.group = group; rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); }
+};
+const stuById = id => stuAll.find(s => s.id === id);
+actions.stuInvite = el => { const s = stuById(el.dataset.id); if (s) copyText(inviteMessageUz({ name: s.full_name, code: s.access_code, link: familyLink(), brand: CONFIG.brand, signature: CONFIG.teacher }), 'Invitation copied'); };
+actions.stuNewCode = async el => {
+  const s = stuById(el.dataset.id); if (!s) return;
+  if (!(await confirmBox('Issue a new number?', `The old number of ${s.full_name} stops working immediately. Send the new number to the family.`, 'Issue new number'))) return;
+  try { await store.saveStudents([{ ...s, access_code: makeAccessCode(new Set(stuAll.map(x => x.access_code))) }]); toast('New number issued', 'ok'); rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); }
+};
+actions.stuToggle = async el => { const s = stuById(el.dataset.id); if (!s) return; try { await store.saveStudents([{ ...s, active: s.active === false }]); rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); } };
+actions.stuDelete = async el => {
+  const s = stuById(el.dataset.id); if (!s) return;
+  if (!(await confirmBox('Delete this student?', `${s.full_name} and ALL their attendance, homework and payment records will be removed. This cannot be undone. Use "Pause" to keep the history.`, 'Delete', true))) return;
+  try { await store.deleteStudent(s.id); toast('Student deleted'); rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); }
+};
+actions.exportCodes = () => downloadCsv('student-numbers.csv', [['Student', 'Group', 'Parent', 'Personal number']].concat(stuAll.filter(s => !adm.stu.group || s.group_code === adm.stu.group).map(s => [s.full_name, s.group_code, s.parent_name, formatCode(s.access_code)])));
+
+// ───── Attendance register ─────
+const seg = (name, vals, labels, cur) => `<div class="seg sm" role="radiogroup">${vals.map(v => `<label class="opt"><input type="radio" name="${name}" value="${v}" ${cur === v ? 'checked' : ''}><span>${labels[v]}</span></label>`).join('')}</div>`;
+async function attendanceTab(body) {
+  const [groups, students] = await Promise.all([store.listGroups(), store.listStudents()]);
+  if (!groups.length) { body.innerHTML = noGroups; return; }
+  adm.att.group = pickGroup(groups, adm.att.group);
+  const { group, date } = adm.att;
+  const roster = students.filter(s => s.group_code === group && s.active !== false);
+  const existing = await store.getLesson(group, date);
+  const rec = new Map((existing?.records || []).map(r => [r.student_id, r])), les = existing?.lesson || {};
+  body.innerHTML = `<div class="filters" style="margin-top:0">${groupSelect('att', groups, group)}
+      <input class="inp" type="date" value="${esc(date)}" data-in="admf" data-s="att" data-k="date" aria-label="Lesson date" style="max-width:190px">
+      ${existing ? '<span class="badge ok">Saved lesson — editing</span>' : '<span class="badge">New lesson</span>'}</div>
+    ${roster.length ? `<div class="panel"><div class="grid2"><div><label class="lbl" for="attTopic">Lesson topic</label><input class="inp" id="attTopic" maxlength="120" value="${esc(les.topic || '')}" placeholder="e.g. Past Simple vs Present Perfect"></div>
+        <div><label class="lbl" for="attTask">Homework given</label><input class="inp" id="attTask" maxlength="200" value="${esc(les.homework || '')}" placeholder="e.g. Workbook p. 42, ex. 3–5"></div></div>
+      <div class="row wrapx mt"><button class="btn sm" data-act="attAll" data-k="a" data-v="present">Everyone present</button><button class="btn sm" data-act="attAll" data-k="h" data-v="done">Everyone did the homework</button></div></div>
+      <div class="tablewrap mt"><table><thead><tr><th>Student</th><th>Attendance</th><th>Homework</th><th>Comment for parents</th></tr></thead><tbody id="attRows">
+      ${roster.map(s => { const r = rec.get(s.id) || {}; return `<tr data-stu="${s.id}"><td><b>${esc(s.full_name)}</b></td><td>${seg('a-' + s.id, ATTENDANCE, ATT_LABEL, r.attendance || 'present')}</td>
+        <td>${seg('h-' + s.id, HOMEWORK, HW_LABEL, r.homework || 'none')}</td><td><input class="inp note" maxlength="200" value="${esc(r.note || '')}" aria-label="Comment for ${esc(s.full_name)}" placeholder="optional"></td></tr>`; }).join('')}
+      </tbody></table></div>
+      <div class="row mt" style="justify-content:flex-end"><button class="btn primary" data-act="attSave">Save lesson</button></div>
+      <p class="muted" style="font-size:13px">The comment is visible to the family. Do not write anything private here. "Excused" lessons are not counted against attendance; "None given" means no homework for this student.</p>`
+      : '<div class="empty" style="margin-top:16px">This group has no active students. Add them in the Students tab.</div>'}`;
+}
+actions.attAll = el => { $$('#attRows tr[data-stu]').forEach(tr => { const r = $(`input[name="${el.dataset.k}-${tr.dataset.stu}"][value="${el.dataset.v}"]`, tr); if (r) r.checked = true; }); };
+actions.attSave = async () => {
+  const { group, date } = adm.att, rows = $$('#attRows tr[data-stu]');
+  if (!rows.length) return toast('This group has no active students', 'bad');
+  const records = rows.map(tr => { const id = tr.dataset.stu; return { student_id: id, attendance: $(`input[name="a-${id}"]:checked`, tr)?.value || 'present', homework: $(`input[name="h-${id}"]:checked`, tr)?.value || 'none', note: $('.note', tr).value.trim().slice(0, 200) }; });
+  const task = $('#attTask').value.trim();
+  try {
+    await store.saveLesson({ group_code: group, lesson_date: date, topic: $('#attTopic').value.trim(), homework: task }, records);
+    const unset = task ? records.filter(r => r.homework === 'none').length : 0;
+    toast(unset ? `Lesson saved. ${unset} student${unset > 1 ? 's have' : ' has'} no homework status although homework was given.` : 'Lesson saved', 'ok');
+    rerenderAdmin();
+  } catch (e) { toast(e.message, 'bad'); }
+};
+
+// ───── Weekly report ─────
+let wkRows = [];
+async function weeklyTab(body) {
+  const [groups, students] = await Promise.all([store.listGroups(), store.listStudents()]);
+  if (!groups.length) { body.innerHTML = noGroups; return; }
+  adm.wk.group = pickGroup(groups, adm.wk.group);
+  const { group, week } = adm.wk, end = addDays(week, 6), period = monthOf(week);
+  const [lessons, pays] = await Promise.all([store.listLessons(group, week, end), store.listPayments(period)]);
+  const payBy = new Map(pays.map(p => [p.student_id, p]));
+  wkRows = students.filter(s => s.group_code === group && s.active !== false).map(s => {
+    const items = lessons.flatMap(l => { const r = (l.lesson_records || []).find(x => x.student_id === s.id); return r ? [{ date: l.lesson_date, topic: l.topic, task: l.homework, attendance: r.attendance, homework: r.homework, note: r.note }] : []; });
+    const pay = payBy.get(s.id);
+    return { s, rep: weekReport(items, week), pay, st: pay ? paymentStatus(pay.amount_due, pay.amount_paid) : 'none' };
+  });
+  const avg = k => { const v = wkRows.map(r => r.rep[k]).filter(x => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) + '%' : '—'; };
+  const behind = wkRows.filter(r => r.st === 'unpaid' || r.st === 'partial').length;
+  const cell = (v, bad) => `<b ${v != null && v < bad ? 'style="color:var(--bad)"' : ''}>${v == null ? '—' : v + '%'}</b>`;
+  body.innerHTML = `<div class="filters" style="margin-top:0">${groupSelect('wk', groups, group)}
+      <button class="btn sm" data-act="wkShift" data-d="-1" aria-label="Previous week">← Previous</button><b aria-live="polite">${uzShort(week)} – ${uzShort(end)}.${end.slice(0, 4)}</b>
+      <button class="btn sm" data-act="wkShift" data-d="1" aria-label="Next week">Next →</button><button class="btn sm" data-act="wkNow">This week</button>
+      <button class="btn sm" data-act="wkCsv" style="margin-left:auto">Export CSV</button></div>
+    <div class="kv" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"><div><b>${lessons.length}</b><span>lessons held</span></div><div><b>${avg('attendedPct')}</b><span>average attendance</span></div><div><b>${avg('homeworkPct')}</b><span>homework completed</span></div><div><b>${behind}</b><span>payments to follow up (${period})</span></div></div>
+    <div class="mt2">${wkRows.length ? `<div class="tablewrap"><table><thead><tr><th>Student</th><th>Lessons</th><th>Attendance</th><th>Late</th><th>Absent</th><th>Homework</th><th>Payment ${period}</th><th class="r"></th></tr></thead><tbody>
+      ${wkRows.map(({ s, rep, st }) => `<tr><td><b>${esc(s.full_name)}</b></td><td>${rep.total}</td><td>${cell(rep.attendedPct, 70)} <small class="muted">${rep.present + rep.late}/${rep.total - rep.excused}</small></td><td>${rep.late}</td><td>${rep.absent}</td>
+        <td>${cell(rep.homeworkPct, 50)} <small class="muted">${rep.homework.done}/${rep.homework.assigned}</small></td><td>${payBadge(st)}</td>
+        <td class="r"><button class="btn sm" data-act="wkMsg" data-id="${s.id}">Copy message for parents</button></td></tr>`).join('')}
+      </tbody></table></div><p class="muted mt" style="font-size:13px">Attendance counts "late" as attended and ignores "excused" lessons. Homework counts only "done". Red = attendance under 70% or homework under 50%. Weeks run Monday to Sunday.</p>`
+      : '<div class="empty">This group has no active students.</div>'}</div>`;
+}
+actions.wkShift = el => { adm.wk.week = addDays(adm.wk.week, 7 * Number(el.dataset.d)); rerenderAdmin(); };
+actions.wkNow = () => { adm.wk.week = mondayOf(todayKey()); rerenderAdmin(); };
+actions.wkMsg = el => {
+  const r = wkRows.find(x => x.s.id === el.dataset.id); if (!r) return;
+  copyText(weeklyMessageUz({ name: r.s.full_name, report: r.rep, payment: r.pay, currency: CONFIG.currency, link: familyLink(), signature: CONFIG.teacher }), 'Message copied');
+};
+actions.wkCsv = () => downloadCsv(`weekly-${adm.wk.group}-${adm.wk.week}.csv`, [['Student', 'Week', 'Lessons', 'Present', 'Late', 'Absent', 'Excused', 'Attendance %', 'Homework done', 'Homework assigned', 'Homework %', 'Payment']]
+  .concat(wkRows.map(({ s, rep, st }) => [s.full_name, rep.weekStart, rep.total, rep.present, rep.late, rep.absent, rep.excused, rep.attendedPct ?? '', rep.homework.done, rep.homework.assigned, rep.homeworkPct ?? '', st])));
+
+// ───── Payments ─────
+let payRows = [];
+async function paymentsTab(body) {
+  const [groups, students] = await Promise.all([store.listGroups(), store.listStudents()]);
+  if (!groups.length) { body.innerHTML = noGroups; return; }
+  adm.pay.group = pickGroup(groups, adm.pay.group);
+  const { group, period } = adm.pay;
+  const pays = await store.listPayments(period), by = new Map(pays.map(p => [p.student_id, p]));
+  payRows = students.filter(s => s.group_code === group && s.active !== false).map(s => ({ s, p: by.get(s.id) }));
+  const sum = k => payRows.reduce((a, { p }) => a + (Number(p?.[k]) || 0), 0), due = sum('amount_due'), paid = sum('amount_paid');
+  body.innerHTML = `<div class="filters" style="margin-top:0">${groupSelect('pay', groups, group)}
+      <button class="btn sm" data-act="payShift" data-d="-1" aria-label="Previous month">←</button><b aria-live="polite">${esc(period)}</b><button class="btn sm" data-act="payShift" data-d="1" aria-label="Next month">→</button>
+      <div class="row" style="margin-left:auto"><input class="inp" id="payFee" type="number" min="0" step="1000" placeholder="Monthly fee (${esc(CONFIG.currency)})" aria-label="Monthly fee" style="width:200px"><button class="btn sm" data-act="payFee">Set for students without a record</button></div></div>
+    <div class="kv"><div><b>${fmtMoney(due)}</b><span>expected (${esc(CONFIG.currency)})</span></div><div><b>${fmtMoney(paid)}</b><span>received</span></div><div><b>${fmtMoney(Math.max(0, due - paid))}</b><span>outstanding</span></div></div>
+    <div class="mt2">${payRows.length ? `<div class="tablewrap"><table><thead><tr><th>Student</th><th>Amount due</th><th>Paid</th><th>Paid on</th><th>Status</th><th class="r"></th></tr></thead><tbody id="payRows">
+      ${payRows.map(({ s, p }) => `<tr data-stu="${s.id}"><td><b>${esc(s.full_name)}</b></td><td><input class="inp due" type="number" min="0" step="1000" value="${p ? Number(p.amount_due) : ''}" aria-label="Amount due for ${esc(s.full_name)}" style="width:130px"></td>
+        <td><input class="inp paid" type="number" min="0" step="1000" value="${p ? Number(p.amount_paid) : ''}" aria-label="Amount paid by ${esc(s.full_name)}" style="width:130px"></td>
+        <td><input class="inp paidon" type="date" value="${esc(p?.paid_on || '')}" aria-label="Payment date" style="width:160px"></td><td>${payBadge(p ? paymentStatus(p.amount_due, p.amount_paid) : 'none')}</td>
+        <td class="r"><button class="btn sm" data-act="payFull" data-id="${s.id}">Mark paid in full</button> <button class="btn sm primary" data-act="paySave" data-id="${s.id}">Save</button></td></tr>`).join('')}
+      </tbody></table></div><p class="muted mt" style="font-size:13px">This page only records payments you received. Nothing is charged online.</p>` : '<div class="empty">This group has no active students.</div>'}</div>`;
+}
+actions.payShift = el => { adm.pay.period = shiftMonth(adm.pay.period, Number(el.dataset.d)); rerenderAdmin(); };
+const rowOf = id => $(`#payRows tr[data-stu="${id}"]`);
+async function savePaymentRow(id) {
+  const tr = rowOf(id); if (!tr) return;
+  const due = Number($('.due', tr).value || 0), paid = Number($('.paid', tr).value || 0);
+  if (!(due >= 0) || !(paid >= 0)) return toast('Amounts cannot be negative', 'bad');
+  try { await store.savePayment({ student_id: id, period: adm.pay.period, amount_due: due, amount_paid: paid, paid_on: $('.paidon', tr).value || null }); toast('Payment saved', 'ok'); rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); }
+}
+actions.paySave = el => savePaymentRow(el.dataset.id);
+actions.payFull = el => {
+  const tr = rowOf(el.dataset.id); if (!tr) return;
+  const due = Number($('.due', tr).value || 0); if (!(due > 0)) return toast('Enter the amount due first', 'bad');
+  $('.paid', tr).value = due; if (!$('.paidon', tr).value) $('.paidon', tr).value = todayKey();
+  savePaymentRow(el.dataset.id);
+};
+actions.payFee = async () => {
+  const fee = Number($('#payFee').value);
+  if (!(fee > 0)) return toast('Enter the monthly fee first', 'bad');
+  const todo = payRows.filter(r => !r.p);
+  if (!todo.length) return toast('Every student already has a record for this month', 'bad');
+  try { for (const { s } of todo) await store.savePayment({ student_id: s.id, period: adm.pay.period, amount_due: fee, amount_paid: 0, paid_on: null }); toast(`Fee set for ${todo.length} student${todo.length > 1 ? 's' : ''}`, 'ok'); rerenderAdmin(); } catch (e) { toast(e.message, 'bad'); }
 };

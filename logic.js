@@ -396,3 +396,113 @@ export function typeBreakdown(test, details) {
   }
   return [...acc.values()].map(a => ({ ...a, pct: Math.round(a.correct / a.total * 100) })).sort((a, b) => a.pct - b.pct);
 }
+
+// ═════════════════ family portal: attendance, homework, payments ═════════════════
+// Dates are plain 'YYYY-MM-DD' strings (no time zones involved). Everything here is pure and unit-tested.
+
+export const ATTENDANCE = ['present', 'late', 'absent', 'excused'];
+export const HOMEWORK = ['done', 'partial', 'missing', 'none'];
+
+const pad = n => String(n).padStart(2, '0');
+const parseDay = s => { const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(Date.UTC(y, m - 1, d)); };
+const keyOf = d => `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+export const addDays = (s, n) => keyOf(new Date(parseDay(s).getTime() + n * 864e5));
+export const todayKey = (now = new Date()) => `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+/** Monday of the week that contains the given day. */
+export const mondayOf = s => { const d = parseDay(s); return addDays(s, -((d.getUTCDay() + 6) % 7)); };
+export const monthOf = s => String(s).slice(0, 7);
+const pct = (a, b) => (b ? Math.round(a / b * 100) : null);
+
+/** One student's lessons ({date, attendance, homework, ...}) -> numbers for a given week (Mon–Sun). */
+export function weekReport(lessons, weekStart) {
+  const end = addDays(weekStart, 6);
+  const list = (lessons || []).filter(l => l.date >= weekStart && l.date <= end).sort((a, b) => a.date.localeCompare(b.date));
+  const c = { present: 0, late: 0, absent: 0, excused: 0 };
+  const h = { done: 0, partial: 0, missing: 0 };
+  for (const l of list) { c[l.attendance] = (c[l.attendance] || 0) + 1; if (h[l.homework] != null) h[l.homework]++; }
+  const counted = list.length - c.excused;               // excused lessons are not held against the student
+  const assigned = h.done + h.partial + h.missing;
+  return {
+    weekStart, weekEnd: end, lessons: list, total: list.length, ...c,
+    attendedPct: pct(c.present + c.late, counted),         // present + late count as attended
+    homework: { ...h, assigned }, homeworkPct: pct(h.done, assigned),   // only fully done counts as done
+  };
+}
+
+/** Last n weeks (oldest first), for a small trend chart. */
+export function weeklyTrend(lessons, now = new Date(), n = 8) {
+  const thisWeek = mondayOf(todayKey(now));
+  return Array.from({ length: n }, (_, i) => weekReport(lessons, addDays(thisWeek, -7 * (n - 1 - i))));
+}
+
+/** The most recent week that has lessons (so a family opening the page on Monday still sees something useful). */
+export function latestWeekWithData(lessons, now = new Date()) {
+  const last = (lessons || []).map(l => l.date).sort().pop();
+  return last ? mondayOf(last) : mondayOf(todayKey(now));
+}
+
+export function paymentStatus(due, paid) {
+  due = Number(due) || 0; paid = Number(paid) || 0;
+  if (due <= 0 && paid <= 0) return 'none';
+  if (paid >= due) return 'paid';
+  return paid > 0 ? 'partial' : 'unpaid';
+}
+export const fmtMoney = n => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+// ---------- personal numbers ----------
+export const CODE_LEN = 12;
+export const normalizeCode = s => String(s ?? '').replace(/\D/g, '');
+export const formatCode = s => normalizeCode(s).replace(/(\d{4})(?=\d)/g, '$1-');
+export const isValidCode = s => normalizeCode(s).length === CODE_LEN;
+/** A random 12-digit number that is not in `taken`. `rnd(n)` must return n random bytes (defaults to Web Crypto). */
+export function makeAccessCode(taken = new Set(), rnd = n => crypto.getRandomValues(new Uint8Array(n))) {
+  for (let tries = 0; tries < 50; tries++) {
+    let s = '';
+    for (const b of rnd(CODE_LEN * 2)) { if (b < 250 && s.length < CODE_LEN) s += String(b % 10); }   // 250 = 25×10, no modulo bias
+    if (s.length === CODE_LEN && !taken.has(s)) return s;
+  }
+  throw new Error('Could not generate a unique number');
+}
+
+// ---------- weekly message for parents (Uzbek) ----------
+const UZ_DAY = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba'];
+export const uzShort = s => { const d = parseDay(s); return `${pad(d.getUTCDate())}.${pad(d.getUTCMonth() + 1)}`; };
+export const uzDay = s => UZ_DAY[parseDay(s).getUTCDay()];
+const ATT_UZ = { present: 'keldi', late: 'kechikdi', absent: 'kelmadi', excused: 'sababli' };
+const HW_UZ = { done: 'bajardi', partial: 'qisman', missing: 'bajarmadi', none: '—' };
+const PAY_UZ = { paid: "to'langan", partial: "qisman to'langan", unpaid: "to'lanmagan", none: "ma'lumot yo'q" };
+export const ATT_LABEL_UZ = ATT_UZ; export const HW_LABEL_UZ = HW_UZ; export const PAY_LABEL_UZ = PAY_UZ;
+
+export function weeklyMessageUz({ name, report, payment, currency = "so'm", link = '', signature = '' }) {
+  const r = report, out = ['Assalomu alaykum! 👋', `${name} uchun ${uzShort(r.weekStart)}–${uzShort(r.weekEnd)} haftalik hisobot:`, ''];
+  const ATT_ICON = { present: '✅', late: '⏰', absent: '❌', excused: '🟦' }, HW_ICON = { done: '✅', partial: '🟡', missing: '❌' };
+  if (!r.total) out.push('Bu hafta darslar belgilanmagan.', '');
+  else {
+    out.push('📚 Darslar:');
+    for (const l of r.lessons) {
+      out.push(`• ${uzShort(l.date)}, ${uzDay(l.date)} — ${ATT_ICON[l.attendance]} ${ATT_UZ[l.attendance]}${l.homework !== 'none' ? ` · uy vazifasi: ${HW_ICON[l.homework]} ${HW_UZ[l.homework]}` : ''}`);
+      if (l.note) out.push(`  💬 ${l.note}`);
+    }
+    out.push('', `📊 Davomat: ${r.attendedPct == null ? '—' : r.attendedPct + '%'} (${r.present + r.late}/${r.total - r.excused})`);
+    out.push(`📝 Uy vazifasi: ${r.homeworkPct == null ? '—' : r.homeworkPct + '%'} (${r.homework.done}/${r.homework.assigned})`);
+  }
+  if (payment) {
+    const st = paymentStatus(payment.amount_due, payment.amount_paid);
+    out.push(`💳 To'lov (${payment.period}): ${PAY_UZ[st]}${st === 'partial' ? ` — ${fmtMoney(payment.amount_paid)} / ${fmtMoney(payment.amount_due)} ${currency}` : ''}${st === 'unpaid' ? ` — ${fmtMoney(payment.amount_due)} ${currency}` : ''}`);
+  }
+  if (r.total && r.attendedPct === 100 && r.homeworkPct === 100) out.push('', 'Ajoyib natija, barakalla! 🎉');
+  else if (r.total && r.homeworkPct != null && r.homeworkPct < 50) out.push('', "Uy vazifalariga e'tibor berishingizni iltimos qilamiz. Birgalikda natijani yaxshilaymiz! 💪");
+  if (link) out.push('', `Batafsil ma'lumot: ${link}`);
+  if (signature) out.push('', 'Hurmat bilan,', signature);
+  return out.join('\n');
+}
+
+export const shiftMonth = (period, n) => { const [y, m] = String(period).split('-').map(Number); const d = new Date(Date.UTC(y, m - 1 + n, 1)); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}`; };
+
+/** The message the teacher sends once to a family with their personal number. */
+export function inviteMessageUz({ name, code, link = '', brand = 'English with Usmonov', signature = '' }) {
+  return ['Assalomu alaykum! 👋', `${name} uchun ${brand} platformasidagi shaxsiy raqam:`, '', `🔑 ${formatCode(code)}`, '',
+    `Shu raqam bilan ${link ? 'quyidagi havola orqali ' : ''}farzandingizning davomati, uy vazifasi va to'lov holatini ko'rishingiz mumkin:`,
+    ...(link ? [link] : []), '', "Iltimos, raqamni boshqa odamlarga bermang.",
+    ...(signature ? ['', 'Hurmat bilan,', signature] : [])].join('\n');
+}

@@ -77,10 +77,27 @@ Supabase Free rejasida bitta fayl 50 MB gacha. Fayl yuklash tugmasi faqat Supaba
 Rejasi: o'quvchi "Continue with Telegram" bosadi → bot orqali tasdiqlanadi → server (Supabase Edge Function) botning `getChatMember` orqali @EnglishwithUsmonov kanaliga a'zoligini tekshiradi → faqat a'zolar kiradi.
 Buning uchun kerak: @BotFather orqali bot (token), botni kanalga admin qilish, sayt uchun HTTPS domen (`/setdomain`). Tayyor bo'lganda `js/ui.js` dagi `requireStudent()` ni almashtirish kifoya — qolgan kod o'zgarmaydi.
 
+## 5b. Ota-onalar portali (davomat, uy vazifasi, to'lov)
+Ota-ona yoki o'quvchi **`#/family`** sahifasiga (saytdagi pastki havola: "Parents · Ota-onalar") o'qituvchi bergan **12 xonali shaxsiy raqam** bilan kiradi va faqat o'z farzandining haftalik davomati, uy vazifasi va to'lov holatini ko'radi (faqat ko'rish).
+
+**Haftalik ish tartibi (o'qituvchi paneli):**
+1. **Students** — guruhni tanlab, ismlarni qo'shing. Har biriga shaxsiy raqam avtomatik yaratiladi. "Taklif" tugmasi ota-onaga yuboriladigan tayyor o'zbekcha xabarni nusxalaydi. Raqam tarqalib qolsa — "Yangi raqam"; o'quvchi ketsa — "Pauza" (kirish darhol yopiladi).
+2. **Attendance** — dars sanasi, mavzu va uy vazifasini kiriting; har o'quvchiga: keldi / kechikdi / kelmadi / sababli, uy vazifasi: bajardi / qisman / bajarmadi.
+3. **Weekly report** — hafta bo'yicha jadval va umumiy ko'rsatkichlar. Past ko'rsatkichlar (davomat 70% dan, vazifa 50% dan kam) qizil. "Xabar" tugmasi har ota-ona uchun chiroyli o'zbekcha haftalik xabar tayyorlaydi (Telegramga joylang), CSV yuklab olish ham bor.
+4. **Payments** — oylik summa va to'langan miqdorni kiriting. Onlayn to'lov yo'q, holatni o'qituvchi qo'lda kiritadi.
+
+**Hisoblash qoidalari:** kechikish — kelgan hisoblanadi; "sababli" davomat foiziga kirmaydi; uy vazifasida faqat "bajardi" hisoblanadi; ma'lumot bo'lmasa foiz o'rniga "—".
+
+**Ishga tushirish uchun shart:** DEMO rejimida ma'lumot faqat sizning brauzeringizda saqlanadi — boshqa telefondagi ota-ona ko'ra olmaydi. Haqiqiy foydalanish uchun Supabase'ni ulang (2-bo'lim) va **yangilangan `schema.sql` ni SQL Editor'da qayta ishga tushiring** (u xavfsiz, qayta ishlatish mumkin). Jadvallarga faqat o'qituvchi kira oladi; ota-ona faqat raqam orqali `portal_report` funksiyasidan o'z farzandining ma'lumotini oladi, noto'g'ri raqamlar urinishi cheklanadi.
+
 ## 6. Muhim cheklovlar (halol ogohlantirish)
 - Test javoblari brauzerga yuklanadi (ish sayt ichida tekshiriladi), shuning uchun texnik bilimli o'quvchi javoblarni ko'rib olishi mumkin. Oddiy o'quvchilar uchun bu muammo emas; jiddiy imtihon uchun keyinroq serverda tekshirishga o'tkazish mumkin.
 - Leaderboard natijalarini kod bilan soxtalashtirish nazariy jihatdan mumkin (faqat to'g'ri guruh kodi bilan). Telegram kirish bu xavfni kamaytiradi.
 - Guruh kodini bilgan har kim kira oladi — kodlarni faqat o'z o'quvchilaringizga bering.
+- Shaxsiy raqamlar (12 xona) parol vazifasini bajaradi: faqat ota-onaga bering, ommaviy guruhga tashlamang. Supabase'da o'qituvchi hisobi yagona bo'lsin va **ro'yxatdan o'tish (sign-ups) o'chirilgan** bo'lsin — aks holda har bir ro'yxatdan o'tgan kishi o'qituvchi hisoblanadi.
+- Demo rejimidagi o'qituvchi paroli (`admin123`) ochiq — haqiqiy ma'lumot kiritishdan oldin Supabase'ga o'ting.
+- Eski `results_read` qoidasi natijalarni hamma o'qiy oladigan qiladi (leaderboard uchun); ota-ona portaliga aloqasi yo'q, lekin bilib qo'ying.
+- Portal SQL'i mahalliy Postgres'da sinalgan; jonli Supabase loyihangizda birinchi marta sinab ko'ring (to'g'ri raqam, noto'g'ri raqam).
 
 ## 7. Yangi simulyatorlarni qayta import qilish
 ```bash

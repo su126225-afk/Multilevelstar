@@ -93,7 +93,7 @@ a.feature:hover{transform:translateY(-4px);background:var(--panel2);border-color
 .feature .go{margin-top:auto;font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;color:#b3a2ff}
 
 /* cards, tests */
-.page{padding:36px 0 70px}
+.page{padding:36px 24px 70px}
 .ptitle{font-size:34px;font-weight:800;letter-spacing:-.035em}
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
 .chip{padding:9px 16px;border-radius:99px;border:1px solid var(--border);background:var(--panel);font-weight:600;font-size:14px;color:var(--muted);transition:.2s}
@@ -478,3 +478,56 @@ a.rrow:hover{background:color-mix(in srgb,var(--primary) 16%,var(--panel2))}
 
 .ptabs{display:flex;gap:8px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin}
 @media (max-width:960px){.ptab{min-height:40px}.run-foot{padding:8px 10px}.fnav .btn{min-height:40px;padding:6px 12px}}
+
+/* family portal & teacher register */
+.badge.bad{background:rgba(251,113,133,.14);color:var(--bad);border-color:rgba(251,113,133,.4)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em;font-size:14px}
+.seg.sm{flex-wrap:nowrap;gap:4px}
+.seg.sm .opt{padding:6px 10px;font-size:13px;border-radius:10px;white-space:nowrap}
+td .inp{padding:8px 10px;min-width:0}
+@media (max-width:560px){.filters .btn,.filters .inp{max-width:none}}
+
+/* family page */
+.nav.famnav .navpills,.nav.famnav .studentchip,.nav.famnav [data-act=signin]{display:none}
+.famroute .bottomnav{display:none}
+@media (max-width:960px){body.famroute:not(.running){padding-bottom:0}}
+.fam-login{max-width:520px;margin:0 auto}
+.fam{max-width:980px;margin:0 auto}
+.famcode{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;letter-spacing:.12em;text-align:center;padding:16px}
+.check{display:flex;gap:10px;align-items:center;margin-top:14px;color:var(--muted);font-size:14px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--primary)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fbig .fval{font-family:'Bricolage Grotesque',var(--font);font-weight:800;font-size:56px;line-height:1;letter-spacing:-.03em;margin:10px 0 14px}
+.cap{text-transform:capitalize}
+.rrow.lesson{align-items:flex-start;flex-wrap:wrap}
+.rrow.lesson .rt small{display:block;white-space:normal}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.fnote{color:var(--text)!important}
+.trend{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;height:170px;margin-top:18px}
+.tcol{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;border-radius:12px;padding:6px 2px;border:1px solid transparent}
+.tcol:hover{background:var(--panel2)}
+.tcol.on{border-color:var(--primary);background:rgba(118,87,255,.12)}
+.tbars2{flex:1;display:flex;gap:3px;align-items:flex-end;justify-content:center;width:100%;min-height:0}
+.tb{display:block;width:36%;max-width:18px;border-radius:6px 6px 2px 2px}
+.tb.a{background:var(--primary)}.tb.h{background:var(--gold)}.tb.na{background:var(--panel2)}
+.tcol small{font-size:11px;color:var(--muted)}
+.legend i.a{background:var(--primary);border-color:transparent}.legend i.h{background:var(--gold);border-color:transparent}
+.famstrip{display:flex;align-items:center;gap:16px;padding:18px 22px;transition:.2s}
+.famstrip:hover{border-color:rgba(118,87,255,.55);background:var(--panel2)}
+.famstrip .bi{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--primary);color:#fff}
+.famstrip .go{color:#c9bdff}
+@media (max-width:640px){.fgrid{grid-template-columns:1fr}.fbig .fval{font-size:46px}.trend{gap:3px}.famcode{font-size:20px;letter-spacing:.08em}}
+
+.meter.prim i{background:var(--primary)}
+.paytable th,.paytable td{padding:12px 10px}
+@media (max-width:560px){.paytable .hm{display:none}.page{padding-left:16px;padding-right:16px}.wrap{padding-left:16px;padding-right:16px}.fam .row.between{gap:10px}}
+@media (max-width:560px){
+  .paytable{font-size:13px}
+  .paytable th,.paytable td{padding:10px 6px}
+  .paytable th{font-size:10px;letter-spacing:.04em}
+  .paytable th:first-child,.paytable td:first-child{padding-left:10px}
+  .paytable .badge{padding:3px 7px;font-size:11px}
+  .rrow.lesson{flex-direction:column;align-items:stretch;gap:8px}
+  .rrow.lesson .rt{min-width:0}
+}
+@media (max-width:560px){.paytable th,.paytable td{white-space:normal}.paytable td:nth-child(2),.paytable td:nth-child(3){white-space:nowrap}}

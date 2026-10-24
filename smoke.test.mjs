@@ -29,7 +29,7 @@ const click = el => el.dispatchEvent(new w.MouseEvent('click', { bubbles: true }
 const waitFor = async (fn, ms = 4000) => { const t = Date.now(); while (Date.now() - t < ms) { const v = fn(); if (v) return v; await sleep(40); } throw new Error('timeout waiting: ' + fn); };
 
 await import('../js/app.js');
-const { prepare, grade } = await import('../js/logic.js');
+const { prepare, grade, mondayOf, addDays, todayKey, formatCode } = await import('../js/logic.js');
 const { toDraft, buildTest } = await import('../js/views-admin.js');
 
 async function answerAll(t) {
@@ -176,6 +176,165 @@ test('runner: flag a question, move between parts with Next / Previous', async (
   click($(`.ptab[data-i="${last}"]`)); await waitFor(() => $('.ptab.on[data-i="' + last + '"]'));
   assert.match($('#rfoot').textContent, /Review & submit/);
   assert.ok($$('[data-act=submitTest]').length >= 2, 'last part offers Review & submit');
+});
+
+// ───────── family portal: teacher tools + parent page ─────────
+const toastText = () => $$('#toasts .toast').map(t => t.textContent).join(' | ');
+const fire = (el, type = 'change') => el.dispatchEvent(new w.Event(type, { bubbles: true }));
+const adminTab = async (k, ready) => { await nav('#/admin'); await waitFor(() => $('[data-act=admTab]')); click($(`[data-act=admTab][data-k=${k}]`)); await waitFor(ready); };
+const MON = mondayOf(todayKey()), TUE = addDays(MON, 1);
+let codes = {};
+
+test('teacher adds students: personal numbers are 12 digits, unique; duplicates and junk are skipped', async () => {
+  await adminTab('students', () => $('#stuNames'));
+  $('#stuNames').value = 'Ali Valiyev; Karim Valiyev\nMadina Karimova\n  ali   VALIYEV \nX';
+  click($('[data-act=addStudents]'));
+  await waitFor(() => $$('#admBody tbody tr').length === 2);
+  assert.match(toastText(), /2 students added, 2 skipped/);
+  const rows = $$('#admBody tbody tr');
+  const list = rows.map(r => ({ name: $('b', r).textContent, code: $('code.mono', r).textContent }));
+  assert.deepEqual(list.map(x => x.name), ['Ali Valiyev', 'Madina Karimova']);
+  for (const x of list) assert.match(x.code, /^\d{4}-\d{4}-\d{4}$/);
+  assert.notEqual(list[0].code, list[1].code);
+  assert.match(rows[0].textContent, /Parent: Karim Valiyev/);
+  codes = { ali: list[0].code, madina: list[1].code };
+});
+
+test('family: group with students cannot be deleted', async () => {
+  await adminTab('groups', () => $('[data-act=delGroup]'));
+  click($('[data-act=delGroup][data-code=DEMO]')); await waitFor(() => $('[data-act=confirmYes]')); click($('[data-act=confirmYes]'));
+  await waitFor(() => /still has students/.test(toastText()));
+  assert.ok($('[data-act=delGroup][data-code=DEMO]'), 'DEMO group still listed');
+});
+
+test('teacher marks two lessons in the attendance register', async () => {
+  const mark = async (date, topic, task, spec) => {
+    await adminTab('attendance', () => $('#attRows') || $('[data-in=admf][data-k=date]'));
+    const d = $('[data-in=admf][data-k=date]'); d.value = date; fire(d);
+    await waitFor(() => $('#attTopic') && $('[data-in=admf][data-k=date]').value === date);
+    $('#attTopic').value = topic; $('#attTask').value = task;
+    for (const tr of $$('#attRows tr[data-stu]')) {
+      const [a, h, note] = spec[$('b', tr).textContent];
+      $(`input[name="a-${tr.dataset.stu}"][value="${a}"]`).checked = true; $(`input[name="h-${tr.dataset.stu}"][value="${h}"]`).checked = true; $('.note', tr).value = note;
+    }
+    click($('[data-act=attSave]'));
+    await waitFor(() => /Lesson saved/.test(toastText()));
+  };
+  await mark(MON, 'Past Simple', 'Ex. 4', { 'Ali Valiyev': ['late', 'done', ''], 'Madina Karimova': ['absent', 'missing', 'Darsga kelmadi'] });
+  await mark(TUE, 'Present Perfect', 'Ex. 7', { 'Ali Valiyev': ['present', 'done', ''], 'Madina Karimova': ['present', 'partial', ''] });
+  // reopening a saved lesson shows what was saved
+  await adminTab('attendance', () => $('#attRows'));
+  const d = $('[data-in=admf][data-k=date]'); d.value = MON; fire(d);
+  await waitFor(() => $('#attTopic')?.value === 'Past Simple');
+  const mad = $$('#attRows tr[data-stu]').find(tr => /Madina/.test(tr.textContent));
+  assert.equal($('input[name^="a-"]:checked', mad).value, 'absent'); assert.equal($('.note', mad).value, 'Darsga kelmadi');
+  assert.match($('#admBody').textContent, /Saved lesson/);
+});
+
+test('weekly report: late counts as attended, only done counts as homework, parent message is written', async () => {
+  await adminTab('weekly', () => $('#admBody tbody tr'));
+  const rows = Object.fromEntries($$('#admBody tbody tr').map(tr => [$('b', tr).textContent, tr]));
+  assert.match(rows['Ali Valiyev'].textContent, /100%.*2\/2.*100%.*2\/2/s);
+  assert.match(rows['Madina Karimova'].textContent, /50%.*1\/2.*0%.*0\/2/s);
+  assert.match($('#admBody .kv').textContent, /2\s*lessons held/);
+  click($('[data-act=wkMsg]', rows['Madina Karimova']));
+  await waitFor(() => $('#copyBox'));
+  const msg = $('#copyBox').value;
+  assert.match(msg, /^Assalomu alaykum!/); assert.match(msg, /Madina Karimova uchun/); assert.match(msg, /❌ kelmadi · uy vazifasi: ❌ bajarmadi/);
+  assert.match(msg, /💬 Darsga kelmadi/); assert.match(msg, /Davomat: 50% \(1\/2\)/); assert.match(msg, /#\/family/); assert.match(msg, /Sardor Usmonov$/);
+  click($('[data-act=closeModal]'));
+});
+
+test('payments: set a fee, record part and full payments, totals add up', async () => {
+  await adminTab('payments', () => $('#payFee'));
+  $('#payFee').value = '500000'; click($('[data-act=payFee]'));
+  await waitFor(() => $$('#payRows .due').every(i => i.value === '500000') && $$('#payRows .due').length === 2);
+  const trOf = name => $$('#payRows tr').find(tr => tr.textContent.includes(name));
+  const ali = trOf('Ali'); $('.paid', ali).value = '200000'; click($('[data-act=paySave]', ali));
+  await waitFor(() => /Partly paid/.test(trOf('Ali').textContent));
+  click($('[data-act=payFull]', trOf('Madina')));
+  await waitFor(() => />Paid</.test(trOf('Madina').innerHTML));
+  assert.match($('#admBody .kv').textContent, /1 000 000\s*expected/); assert.match($('#admBody .kv').textContent, /700 000\s*received/); assert.match($('#admBody .kv').textContent, /300 000\s*outstanding/);
+  $('.due', trOf('Ali')).value = '-5'; click($('[data-act=paySave]', trOf('Ali')));
+  await waitFor(() => /cannot be negative/.test(toastText()));
+});
+
+const famLogin = async code => {
+  await nav('#/family'); await waitFor(() => $('#famCode'));
+  $('#famCode').value = code; fire($('#famCode'), 'input'); click($('#famBtn'));
+};
+
+test('family page: wrong, short and unknown numbers are rejected with clear messages', async () => {
+  await nav('#/family'); await waitFor(() => $('#famCode'));
+  assert.ok($('#nav').classList.contains('famnav'), 'simplified header on the family page');
+  $('#famCode').value = '123'; click($('#famBtn')); await waitFor(() => $('#famErr').textContent);
+  assert.match($('#famErr').textContent, /12 ta raqam/);
+  await famLogin('0000-0000-0000'); await waitFor(() => /topilmadi/.test($('#famErr').textContent));
+  assert.ok(!$('.fam'), 'not logged in');
+  $('#famCode').value = '12345678901234567'; fire($('#famCode'), 'input');
+  assert.equal($('#famCode').value, '1234-5678-9012', 'input is limited to 12 digits and formatted');
+});
+
+test('family page: a parent sees only their own child — attendance, homework, payment', async () => {
+  await famLogin(codes.ali.replace(/\D/g, '')); await waitFor(() => $('.fam'));
+  const txt = () => $('.fam').textContent;
+  assert.match(txt(), /Ali Valiyev/); assert.ok(!/Madina/.test($('#view').textContent), "no other student's name");
+  assert.ok(!/Karim Valiyev/.test($('#view').textContent), 'parent name is not shown');
+  const vals = $$('.fval').map(e => e.textContent); assert.deepEqual(vals, ['100%', '100%']);
+  assert.equal($$('.rrow.lesson').length, 2);
+  assert.match(txt(), /Past Simple/); assert.match(txt(), /Ex\. 7/); assert.match(txt(), /Kechikdi/);
+  assert.match(txt(), /Qisman to'langan/); assert.match($('.banner.pb').textContent, /300 000/);
+  assert.equal($$('.tcol').length, 8);
+  assert.ok(!$('#view').innerHTML.includes(codes.madina.replace(/\D/g, '')), "no other student's number");
+  // English on request, and back
+  click($('[data-act=famLang]')); await waitFor(() => /Attendance/.test($('.fam').textContent));
+  assert.match($('.fam').textContent, /Partly paid/); assert.match($('.fam').textContent, /Late/);
+  click($('[data-act=famLang]')); await waitFor(() => /Davomat/.test($('.fam').textContent));
+  // week navigation
+  click($('[data-act=famShift][data-d="-1"]')); await waitFor(() => /Bu hafta uchun darslar belgilanmagan/.test($('.fam').textContent));
+  assert.deepEqual($$('.fval').map(e => e.textContent), ['—', '—']);
+  click($('[data-act=famNow]')); await waitFor(() => $$('.rrow.lesson').length === 2);
+  click($('[data-act=famLogout]')); await waitFor(() => $('#famCode'));
+});
+
+test('family page: second family sees only their own data, including the teacher comment', async () => {
+  await famLogin(formatCode(codes.madina)); await waitFor(() => $('.fam'));
+  const t = $('#view').textContent;
+  assert.match(t, /Madina Karimova/); assert.ok(!/Ali Valiyev/.test(t));
+  assert.deepEqual($$('.fval').map(e => e.textContent), ['50%', '0%']);
+  assert.match(t, /Darsga kelmadi/); assert.match(t, /Kelmadi/); assert.match(t, /To'langan/);
+  assert.ok(!$('.banner.pb'), 'no payment reminder when paid in full');
+  click($('[data-act=famLogout]')); await waitFor(() => $('#famCode'));
+});
+
+test('teacher pauses a student: their number stops working at once; a new number replaces the old', async () => {
+  await adminTab('students', () => $('#admBody tbody tr'));
+  const rowOf = name => $$('#admBody tbody tr').find(tr => tr.textContent.includes(name));
+  click($('[data-act=stuToggle]', rowOf('Ali'))); await waitFor(() => /Paused/.test(rowOf('Ali').textContent));
+  await famLogin(codes.ali); await waitFor(() => /topilmadi/.test($('#famErr').textContent));
+  await adminTab('students', () => $('#admBody tbody tr'));
+  click($('[data-act=stuToggle]', rowOf('Ali'))); await waitFor(() => /Active/.test(rowOf('Ali').textContent));
+  click($('[data-act=stuNewCode]', rowOf('Madina'))); await waitFor(() => $('[data-act=confirmYes]')); click($('[data-act=confirmYes]'));
+  await waitFor(() => $('code.mono', rowOf('Madina')).textContent !== codes.madina);
+  const fresh = $('code.mono', rowOf('Madina')).textContent;
+  await famLogin(codes.madina); await waitFor(() => /topilmadi/.test($('#famErr').textContent));
+  await famLogin(fresh); await waitFor(() => $('.fam'));
+  assert.match($('.fam').textContent, /Madina Karimova/);
+  click($('[data-act=famLogout]')); await waitFor(() => $('#famCode'));
+});
+
+test('teacher can copy an invitation and deleting a student removes their records', async () => {
+  await adminTab('students', () => $('#admBody tbody tr'));
+  const rowOf = name => $$('#admBody tbody tr').find(tr => tr.textContent.includes(name));
+  click($('[data-act=stuInvite]', rowOf('Ali'))); await waitFor(() => $('#copyBox'));
+  assert.match($('#copyBox').value, /Ali Valiyev uchun English with Usmonov/); assert.match($('#copyBox').value, /🔑 \d{4}-\d{4}-\d{4}/);
+  click($('[data-act=closeModal]'));
+  click($('[data-act=stuDelete]', rowOf('Ali'))); await waitFor(() => $('[data-act=confirmYes]')); click($('[data-act=confirmYes]'));
+  await waitFor(() => !rowOf('Ali'));
+  await famLogin(codes.ali); await waitFor(() => /topilmadi/.test($('#famErr').textContent));
+  const left = JSON.parse(w.localStorage.getItem('ma_records') || '[]'); const pays = JSON.parse(w.localStorage.getItem('ma_payments') || '[]');
+  assert.equal(left.length, 2); assert.equal(pays.length, 1);   // only Madina's two records and one payment remain
+  assert.match(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), /<footer[\s\S]*href="#\/family"/, 'footer links to the family page');
 });
 
 test('no uncaught errors during the walk-through', () => { assert.deepEqual(errors, []); });

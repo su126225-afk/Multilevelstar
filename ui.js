@@ -52,6 +52,12 @@ export function modal(html, wide = false) {
   w.innerHTML = `<div class="backdrop" data-act="closeModal"></div><div class="sheet ${wide ? 'wide' : ''}">${html}</div>`;
   w.classList.add('open');
 }
+export async function copyText(text, okMsg = 'Copied') {
+  try { await navigator.clipboard.writeText(text); toast(okMsg, 'ok'); return true; } catch { /* clipboard blocked: show the text to copy by hand */ }
+  modal(`<h2>Copy this text</h2><textarea class="inp tall" id="copyBox" readonly>${esc(text)}</textarea><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn primary" data-act="closeModal">Done</button></div>`, true);
+  setTimeout(() => { const b = $('#copyBox'); b?.focus(); b?.select(); }, 30);
+  return false;
+}
 export function closeModal() { const w = $('#modal'); w.classList.remove('open'); w.innerHTML = ''; }
 actions.closeModal = () => { closeModal(); resolvers.student?.(null); resolvers.student = null; resolvers.confirm?.(false); resolvers.confirm = null; };
 

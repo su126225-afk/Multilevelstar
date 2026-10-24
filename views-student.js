@@ -86,6 +86,10 @@ export async function home(root) {
     </section>
 
     <section class="section" style="padding-top:0">
+      <a class="card famstrip" href="#/family"><span class="bi">${icon('user', 22)}</span><span class="grow"><b>Ota-onalar va o'quvchilar uchun</b><br><span class="muted">Shaxsiy raqam bilan kiring: davomat, uy vazifasi va to'lov holatini ko'ring · For parents &amp; students</span></span><span class="go">${icon('arrow', 18)}</span></a>
+    </section>
+
+    <section class="section" style="padding-top:0">
       <div class="dash">
         <div class="rcol">
           <div class="card daily">

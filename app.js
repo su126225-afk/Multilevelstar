@@ -4,6 +4,7 @@ import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast } from './ui.js';
 import * as V from './views-student.js';
 import * as A from './views-admin.js';
+import { family } from './views-family.js';
 
 const routes = [
   [/^\/?$/, V.home],
@@ -11,6 +12,7 @@ const routes = [
   [/^\/speaking$/, V.speaking],
   [/^\/leaderboard$/, V.leaderboard],
   [/^\/me$/, V.me],
+  [/^\/family$/, family],
   [/^\/test\/([\w-]+)$/, V.testIntro],
   [/^\/run\/([\w-]+)$/, V.runTest],
   [/^\/result\/([\w-]+)$/, V.resultView],
@@ -20,6 +22,8 @@ const routes = [
 
 function renderNav(path) {
   const st = S.student;
+  const fam = path === '/family';
+  $('#nav').classList.toggle('famnav', fam); document.body.classList.toggle('famroute', fam);
   const link = (href, label, extra = '') => `<a href="${href}" class="${path === href.slice(1) || (href !== '#/' && path.startsWith(href.slice(1))) ? 'active' : ''}">${label}${extra}</a>`;
   $('#nav').innerHTML = `<div class="wrap">
     <a class="brand" href="#/"><span class="logo">${icon('spark', 20)}</span>${esc(CONFIG.brand)}</a>
