@@ -22057,7 +22057,7 @@
    "title": "Recent Real 10.10.2026 · 1-smena · Listening Part 2",
    "duration_min": 10,
    "play_once": true,
-   "published": false,
+   "published": true,
    "data": {
     "recent": {
      "date": "2026-10-10",
@@ -22069,6 +22069,7 @@
     "practice": true,
     "qstart": 9,
     "audio_url": "",
+    "audioPending": true,
     "pdf": "recent-pdf/2026-10-10-s1-listening-2.pdf",
     "parts": [
      {
@@ -22087,7 +22088,7 @@
    "title": "Recent Real 10.10.2026 · 1-smena · Listening Part 4",
    "duration_min": 10,
    "play_once": true,
-   "published": false,
+   "published": true,
    "data": {
     "recent": {
      "date": "2026-10-10",
@@ -22099,6 +22100,7 @@
     "practice": true,
     "qstart": 19,
     "audio_url": "",
+    "audioPending": true,
     "pdf": "recent-pdf/2026-10-10-s1-listening-4.pdf",
     "parts": [
      {
@@ -22182,7 +22184,7 @@
    "title": "Recent Real 10.10.2026 · 2-smena · Listening Part 4",
    "duration_min": 10,
    "play_once": true,
-   "published": false,
+   "published": true,
    "data": {
     "recent": {
      "date": "2026-10-10",
@@ -22194,6 +22196,7 @@
     "practice": true,
     "qstart": 19,
     "audio_url": "",
+    "audioPending": true,
     "pdf": "recent-pdf/2026-10-10-s2-listening-4.pdf",
     "parts": [
      {
@@ -22268,6 +22271,50 @@
       ]
      }
     ]
+   }
+  },
+  {
+   "id": "fe62a87d-a2d2-50ee-938c-cf281b77f8e3",
+   "section": "writing",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Writing",
+   "duration_min": 0,
+   "play_once": false,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 1,
+     "section": "writing",
+     "part": 2
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "pdf": "recent-pdf/2026-10-10-s1-writing.pdf",
+    "parts": []
+   }
+  },
+  {
+   "id": "3035be8b-5e78-534c-947e-a19df00ca943",
+   "section": "writing",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Writing",
+   "duration_min": 0,
+   "play_once": false,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 2,
+     "section": "writing",
+     "part": 2
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "pdf": "recent-pdf/2026-10-10-s2-writing.pdf",
+    "parts": []
    }
   }
  ]
