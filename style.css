@@ -624,3 +624,9 @@ body.running.vscroll{overflow:auto}
 
 #modal.modal{z-index:200}
 #toasts{z-index:300}
+
+/* Recent Real */
+.rrcard{gap:14px}
+.rrsec{display:flex;flex-direction:column;gap:8px}
+.rrname{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.rrcard .tabs{flex-wrap:wrap;gap:8px}

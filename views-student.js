@@ -15,11 +15,50 @@ const fmtLabel = t => t.format === 'multilevel' ? 'Multilevel' : 'IELTS';
 const metaCache = new Map();
 const meta = t => { const k = t.id + (t.created_at || ''); if (!metaCache.has(k)) metaCache.set(k, testMeta(t)); return metaCache.get(k); };
 const secIcon = s => s === 'listening' ? 'headphones' : 'book';
+const isRecentRes = r => String(r.test_title || '').startsWith('Recent Real');
+const isRecentTest = t => !!t.data?.recent;
+
+// "Recent Real": tests that appeared in the latest real exams, grouped by exam date and shift.
+const parseDM = s => { const [d, m, y] = String(s).split('.').map(Number); return new Date(y, m - 1, d).getTime() || 0; };
+function recentGroups(tests, wtasks) {
+  const g = new Map();
+  const slot = (label, shift) => { const k = label + '|' + shift; if (!g.has(k)) g.set(k, { label, shift, parts: [], writing: [] }); return g.get(k); };
+  for (const t of tests) if (isRecentTest(t)) slot(t.data.recent.label, t.data.recent.shift).parts.push(t);
+  for (const w of wtasks) { const m = /^Recent Real (\d\d\.\d\d\.\d{4}) · (\d)-smena/.exec(w.title || ''); if (m) slot(m[1], Number(m[2])).writing.push(w); }
+  return [...g.values()].sort((a, b) => parseDM(b.label) - parseDM(a.label) || a.shift - b.shift);
+}
+const taskName = w => String(w.title).replace(/^Recent Real [\d.]+ · \d-smena · /, '');
+function recentCard(x, best) {
+  const sec = k => x.parts.filter(t => t.section === k).sort((a, b) => a.data.recent.part - b.data.recent.part);
+  const chips = (list) => list.map(t => { const b = best?.get(t.id); return `<a class="chip ${b ? 'on' : ''}" href="#/test/${t.id}">Part ${t.data.recent.part}${b ? ` · ${esc(b.band)}` : ''}</a>`; }).join('');
+  const row = (ic, name, inner) => inner ? `<div class="rrsec"><span class="rrname">${icon(ic, 15)} ${name}</span><div class="tabs">${inner}</div></div>` : '';
+  return `<div class="tcard rrcard">
+    <div class="row between"><span class="badge multi">Multilevel</span><span class="badge">${esc(x.shift)}-smena</span></div>
+    <div><h3>${esc(x.label)}</h3><div class="tmeta">${x.parts.length + x.writing.length} materials · real exam</div></div>
+    ${row('headphones', 'Listening', chips(sec('listening')))}
+    ${row('book', 'Reading', chips(sec('reading')))}
+    ${row('edit', 'Writing', x.writing.map(w => `<a class="chip" href="#/writing/${w.id}">${esc(taskName(w))}</a>`).join(''))}
+  </div>`;
+}
+export async function recent(root) {
+  loading(root);
+  const [tests, results, wt] = await Promise.all([store.listTests({ published: true }), store.listResults().catch(() => []), store.listWritingTasks({ published: true }).catch(() => [])]);
+  const best = new Map();
+  for (const r of myResults(results)) { const c = best.get(r.test_id); if (!c || r.percent > c.percent) best.set(r.test_id, r); }
+  const groups = recentGroups(tests, wt);
+  root.innerHTML = `<div class="wrap page">
+    <h1 class="ptitle">Recent Real</h1>
+    <p class="muted">Tasks from the latest real Multilevel exams, collected by date and shift. Choose a part, work on it online, and download it as a PDF if you want to print it.</p>
+    <div class="tgrid mt">${groups.length ? groups.map(x => recentCard(x, best)).join('') : '<div class="empty" style="grid-column:1/-1">New exam materials will appear here soon.</div>'}</div>
+  </div>`;
+}
 
 // ═════════════════════ HOME ═════════════════════
 export async function home(root) {
   loading(root);
-  const [tests, results] = await Promise.all([store.listTests({ published: true }), store.listResults()]);
+  const [allTests, allResults, wtasks] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listWritingTasks({ published: true }).catch(() => [])]);
+  const tests = allTests.filter(t => !isRecentTest(t)), results = allResults.filter(r => !isRecentRes(r));
+  const rgroups = recentGroups(allTests, wtasks).slice(0, 3);
   const mine = myResults(results).slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
   const board = buildBoard(results).slice(0, 5);
   const best = mine.slice().sort((a, b) => b.percent - a.percent)[0];
@@ -65,6 +104,11 @@ export async function home(root) {
 
     <section class="section">${coursesCard()}</section>
 
+    ${rgroups.length ? `<section class="section">
+      <div class="row between"><div><h2 class="stitle">Recent Real</h2><p class="ssub">Tasks from the latest real exams — practise them online or download as PDF.</p></div><a class="btn sm" href="#/recent">All exams</a></div>
+      <div class="tgrid">${rgroups.map(x => recentCard(x)).join('')}</div>
+    </section>` : ''}
+
     <section class="section">
       <h2 class="stitle">The whole exam. One section at a time.</h2>
       <p class="ssub">Reading, Listening, Speaking — a full test or a single part, exactly as you will see it.</p>
@@ -108,7 +152,7 @@ export async function practice(root, section) {
   const mine = myResults(results);
   const bestBy = new Map();
   for (const r of mine) { const c = bestBy.get(r.test_id); if (!c || r.percent > c.percent) bestBy.set(r.test_id, r); }
-  const all = tests.filter(t => t.section === section);
+  const all = tests.filter(t => t.section === section && !isRecentTest(t));
   root.innerHTML = `
   <div class="wrap page">
     <div class="tabs" style="margin-bottom:26px">
@@ -184,7 +228,8 @@ function activeBoard(acts) {
 }
 export async function leaderboard(root) {
   loading(root);
-  const [tests, results, acts] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listActivity().catch(() => [])]);
+  const [tests0, results0, acts] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listActivity().catch(() => [])]);
+  const tests = tests0.filter(t => !isRecentTest(t)), results = results0.filter(r => !isRecentRes(r));
   const groups = [...new Set(results.map(r => r.group_code))].sort();
   root.innerHTML = `<div class="wrap page">
     <h1 class="ptitle">Leaderboard</h1><p class="muted">Each student's best attempt of every test counts. Ranked by average score.</p>
@@ -245,7 +290,7 @@ export async function testIntro(root, id) {
   const listening = t.section === 'listening';
   const timed = listening && t.data?.audio_url;
   root.innerHTML = `<div class="wrap page"><div class="intro">
-    <a class="muted" href="#/practice/${t.section}">← Back to ${t.section}</a>
+    <a class="muted" href="${isRecentTest(t) ? '#/recent' : '#/practice/' + t.section}">← Back to ${isRecentTest(t) ? 'Recent Real' : t.section}</a>
     <div class="row mt"><span class="badge ${t.format === 'multilevel' ? 'multi' : 'ielts'}">${fmtLabel(t)}</span><span class="badge">${t.section === 'listening' ? 'Listening' : 'Reading'}</span></div>
     <h1 class="ptitle mt" style="font-size:40px">${esc(t.title)}</h1>
     <div class="kv"><div><b>${m.parts.length}</b><span>parts</span></div><div><b>${m.q}</b><span>questions</span></div><div><b>${t.duration_min} min</b><span>${timed ? 'recording length' : 'time limit'}</span></div></div>
@@ -253,7 +298,7 @@ export async function testIntro(root, id) {
       ${listening ? `<li>Use headphones and check your volume.</li>${timed ? '<li>The recording plays straight through, like the real exam. It cannot be paused or rewound.</li><li>You get time to read the questions before each part and time to check your answers after it. The next part opens by itself.</li><li>Your result appears automatically when the recording ends.</li>' : '<li>Press play on each part when you are ready.</li>'}`
         : `<li>You have ${t.duration_min} minutes. The test is submitted automatically when time runs out.</li><li>Move between parts with the tabs at the bottom.</li>${t.data?.glossary ? '<li>Double-click any word in a passage to see its Uzbek translation.</li>' : ''}`}
       <li>Your answers are saved to the leaderboard as <b>${S.student ? esc(S.student.name) : 'you'}</b>${S.student ? ` (${esc(S.student.group)})` : ''}.</li></ul></div>
-    <div class="ctas"><button class="btn primary lg" data-act="beginTest" data-id="${t.id}">${icon('play', 18)} Start test</button></div>
+    <div class="ctas"><button class="btn primary lg" data-act="beginTest" data-id="${t.id}">${icon('play', 18)} Start test</button>${t.data?.pdf ? `<a class="btn lg" href="${esc(t.data.pdf)}" target="_blank" rel="noopener" download>${icon('arrow', 16)} Download PDF</a>` : ''}</div>
   </div></div>`;
 }
 actions.beginTest = async el => { const s = await requireStudent(); if (s) go('#/run/' + el.dataset.id); };
@@ -351,7 +396,8 @@ function drawPart() {
   if (!st.globalAudio && p.audio_url) material.push(`<audio controls ${st.test.play_once ? 'controlsList="nodownload noplaybackrate"' : ''} src="${esc(p.audio_url)}" style="width:100%;margin-top:14px"></audio>`);
   const hasLeft = material.length > 0;
   const ins = p.instruction ? `<div class="qins">${rich(p.instruction)}</div>` : '';
-  const label = `<div class="plabel-top">PART ${p.pi + 1} · QUESTIONS ${p.from}–${p.to}</div>`;
+  const partNo = st.test.data?.recent?.part || p.pi + 1;
+  const label = `<div class="plabel-top">PART ${partNo} · QUESTIONS ${p.from}–${p.to}</div>`;
   const left = hasLeft ? `<div class="pane left${hasQPane ? '' : ' solo'}"><div class="passage">${label}<h2>${esc(p.title || '')}</h2>${ins}${material.join('')}</div></div>` : '';
   const right = hasQPane ? `<div class="pane right">${!hasLeft ? `${label}<h2 style="font-size:24px;margin-bottom:6px">${esc(p.title || '')}</h2>${ins}` : ''}${p.blocks.map(b => {
     if (!b.qs.length && !b.body && !b.instruction) return '';
@@ -436,7 +482,7 @@ function drawFoot() {
   const count = ps => st.prep.flat.filter(q => q.pi === ps.pi).length;
   const doneN = ps => st.prep.flat.filter(q => q.pi === ps.pi && st.answers[q.n] != null && String(st.answers[q.n]).trim() !== '').length;
   const cur = st.prep.parts[st.part];
-  $('#rfoot').innerHTML = st.prep.parts.map(p => `<button class="ptab ${p.pi === st.part ? 'on' : ''}" data-act="gotoPart" data-i="${p.pi}">Part ${p.pi + 1}<small>${doneN(p)}/${count(p)}</small></button>`).join('')
+  $('#rfoot').innerHTML = st.prep.parts.map(p => `<button class="ptab ${p.pi === st.part ? 'on' : ''}" data-act="gotoPart" data-i="${p.pi}">Part ${st.test.data?.recent?.part || p.pi + 1}<small>${doneN(p)}/${count(p)}</small></button>`).join('')
     + `<div class="dots">${st.prep.flat.filter(q => q.pi === cur.pi).map(q => `<button class="dot ${st.answers[q.n] ? 'done' : ''}" data-act="jump" data-n="${q.n}">${q.n}</button>`).join('')}</div>`;
 }
 
@@ -544,7 +590,7 @@ export async function resultView(root, id) {
       <div class="stats" style="grid-template-columns:1fr 1fr"><div><b>${rec.percent}%</b><span>score</span></div><div><b>${fmtTime(rec.time_sec)}</b><span>time</span></div></div>
       ${idx >= 0 ? `<p class="mt"><span class="badge ok">${icon('trophy', 13)} Rank #${idx + 1} of ${board.length} on this test</span></p>` : ''}
       ${rec.demo ? '<p class="muted">Demo test — this result is not saved to the leaderboard.</p>' : rec.saved === false ? '<p class="err">This result was not saved to the leaderboard.</p>' : ''}
-      <div class="ctas" style="justify-content:center"><a class="btn primary" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try again</a><a class="btn" href="${rec.format === 'ielts' ? '#/ielts' : '#/practice/' + rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
+      <div class="ctas" style="justify-content:center"><a class="btn primary" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try again</a><a class="btn" href="${isRecentRes(rec) ? '#/recent' : rec.format === 'ielts' ? '#/ielts' : '#/practice/' + rec.section}">More tests</a><a class="btn" href="#/leaderboard">Leaderboard</a></div>
       <p class="note"><a href="${CONFIG.telegramUrl}" target="_blank" rel="noopener">${icon('send', 14)} ${esc(CONFIG.telegramChannel)}</a></p>
       ${coursesCard('small')}
     </div>

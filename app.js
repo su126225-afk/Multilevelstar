@@ -3,7 +3,7 @@ import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
-import * as V from './views-student.js';
+import * as V from './views-student.js?v=6';
 import * as A from './views-admin.js?v=5';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';
@@ -14,6 +14,7 @@ import { startActivity } from './activity.js';
 const routes = [
   [/^\/?$/, V.home],
   [/^\/practice\/(reading|listening)$/, V.practice],
+  [/^\/recent$/, V.recent],
   [/^\/ielts$/, IE.ieltsHome],
   [/^\/ielts\/listening\/([\w-]+)$/, IE.ieltsListening],
   [/^\/speaking$/, SP.speakingList],
@@ -37,7 +38,7 @@ function renderNav(path) {
   const link = (href, label, extra = '') => `<a href="${href}" class="${path === href.slice(1) || (href !== '#/' && path.startsWith(href.slice(1))) ? 'active' : ''}">${label}${extra}</a>`;
   $('#nav').innerHTML = `<div class="wrap">
     <a class="brand" href="#/"><span class="logo">${icon('spark', 20)}</span>${esc(CONFIG.brand)}</a>
-    <nav class="navpills">${link('#/', 'Home')}${link('#/ielts', 'IELTS')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/writing', 'Writing')}${link('#/vocab', 'Vocabulary')}${link('#/speaking', 'Speaking')}${link('#/leaderboard', 'Leaderboard')}${st ? link('#/me', 'Profile') : ''}</nav>
+    <nav class="navpills">${link('#/', 'Home')}${link('#/ielts', 'IELTS')}${link('#/recent', 'Recent Real')}${link('#/practice/reading', 'Reading')}${link('#/practice/listening', 'Listening')}${link('#/writing', 'Writing')}${link('#/vocab', 'Vocabulary')}${link('#/speaking', 'Speaking')}${link('#/leaderboard', 'Leaderboard')}${st ? link('#/me', 'Profile') : ''}</nav>
     <div class="navright">
       <a class="icon-btn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.coursesTitle)} · ${esc(CONFIG.telegramPersonal)}">${icon('user', 18)}</a>
       <a class="icon-btn" href="${CONFIG.telegramUrl}" target="_blank" rel="noopener" title="${esc(CONFIG.telegramChannel)}">${icon('send', 18)}</a>

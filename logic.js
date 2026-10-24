@@ -101,7 +101,7 @@ const GAP_RE = /\[\[(.+?)\]\]/g;
  * { parts, flat } ready for rendering and grading. Does not mutate the input.
  */
 export function prepare(test) {
-  let n = 0;
+  let n = Math.max(0, (Number(test.data?.qstart) || 1) - 1);   // recent-real parts keep the exam's own numbering (e.g. 30–35)
   const flat = [];
   const gapify = (txt, pi) => String(txt || '').replace(GAP_RE, (_, ans) => {
     n++;
@@ -183,7 +183,9 @@ export function grade(test, answers) {
   const total = flat.length;
   const percent = total ? Math.round(correct / total * 1000) / 10 : 0;
   let band, points, sub;
-  if (test.format === 'multilevel') {
+  if (test.data?.practice) {
+    band = `${correct}/${total}`; points = correct; sub = 'correct';   // single-part practice: no exam score
+  } else if (test.format === 'multilevel') {
     const m = multilevelScore(correct, total, test.section);
     band = m.level; points = m.pts; sub = `${m.pts} / 75`;
   } else {

@@ -62,6 +62,34 @@
    "min_words": 180,
    "prompt": "You are participating in an online discussion. The question is:\n\nSome people think all students should be required to do volunteer work as part of their education. Do you agree or disagree?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
    "max_words": 200
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Task 2 (A) — Tourism and the environment",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "Some people believe that tourism has a positive impact on the natural environment, while others argue that it causes serious environmental problems. Discuss both views.\n\nPost your response, discussing both views and giving reasons and examples.\nWrite 180-200 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Task 2 (B) — Tourism and local communities",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "Some people believe that tourism brings great benefits to local communities, while others argue that it causes damage to the places people live.\n\nPost your response, discussing both views and giving reasons and examples.\nWrite 180-200 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Task 2 (A) — Online education",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "You are participating in an online discussion about education and modern technology. The question is:\n\nSome people believe that online education is more effective than traditional classroom learning, while others argue that face-to-face education provides better learning opportunities.\n\nPost your response, discussing both views and giving reasons and examples.\nWrite 180-200 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Task 2 (B) — Studying online",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "Some people believe that studying online is as effective as studying in a classroom, while others argue that students learn better in a physical school.\n\nPost your response, discussing both views and giving reasons and examples.\nWrite 180-200 words."
   }
  ]
 }
