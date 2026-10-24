@@ -274,3 +274,5 @@ drop policy if exists mock_read on mock_submissions;
 create policy mock_read on mock_submissions for select to authenticated using (true);
 drop policy if exists mock_delete on mock_submissions;
 create policy mock_delete on mock_submissions for delete to authenticated using (true);
+
+alter table mock_submissions add column if not exists test_no int not null default 1;

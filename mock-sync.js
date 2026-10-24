@@ -10,7 +10,10 @@
   function jget(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   function jset(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function rid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  var TN = parseInt((location.pathname.match(/-(\d+)\.html/) || [0, 1])[1], 10) || 1;
   var M = window.MockSync = {
+    testNo: TN,
+    key: function () { return TN === 1 ? 'ielts_mock_v1' : 'ielts_mock_v1_t' + TN; },
     student: function () { var s = jget('ma_student', null); return s && s.name ? s : null; },
     attempt: function () { var a = localStorage.getItem(AK); if (!a) { a = rid(); localStorage.setItem(AK, a); } return a; },
     newAttempt: function () { var a = rid(); localStorage.setItem(AK, a); return a; },
@@ -28,6 +31,7 @@
     send: function (section, data) {
       var s = M.student() || { name: 'Unknown student', group: '-' };
       var row = { attempt_id: M.attempt(), student_name: String(s.name).slice(0, 120), group_code: String(s.group || '-').slice(0, 40), section: section };
+      if (TN > 1) row.test_no = TN;
       for (var k in data) row[k] = data[k];
       return M.post(row).then(function (ok) {
         if (!ok) { var q = jget(QK, []); q.push(row); jset(QK, q); }

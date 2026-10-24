@@ -8,7 +8,7 @@ const st = { rows: [], group: '', body: null };
 function attempts(rows) {
   const map = new Map();
   for (const r of rows) {
-    if (!map.has(r.attempt_id)) map.set(r.attempt_id, { id: r.attempt_id, name: r.student_name, group: r.group_code, date: r.created_at, rows: [], listening: null, reading: null, writing: null });
+    if (!map.has(r.attempt_id)) map.set(r.attempt_id, { id: r.attempt_id, test: r.test_no || 1, name: r.student_name, group: r.group_code, date: r.created_at, rows: [], listening: null, reading: null, writing: null });
     const a = map.get(r.attempt_id);
     a[r.section] = r; a.rows.push(r);
     if (r.created_at < a.date) a.date = r.created_at;
@@ -35,8 +35,8 @@ function draw() {
       <div class="row"><b>${list.length} mock attempts</b>
         <select data-in="mockGroup" style="margin-left:10px"><option value="">All groups</option>${groups.map(g => `<option value="${esc(g)}" ${g === st.group ? 'selected' : ''}>${esc(g)}</option>`).join('')}</select></div>
       <div class="row">${list.length ? `<button class="btn primary sm" data-act="mockWordAll">${icon('download', 16)} Download all (Word)</button>` : ''}</div></div>
-    ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Group</th><th>Listening</th><th>Reading</th><th>Writing</th><th class="r"></th></tr></thead><tbody>
-      ${list.map(a => `<tr><td class="muted">${fmtDateTime(a.date)}</td><td><b>${esc(a.name)}</b></td><td>${esc(a.group)}</td><td>${cell(a.listening)}</td><td>${cell(a.reading)}</td>
+    ${list.length ? `<div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Group</th><th>Test</th><th>Listening</th><th>Reading</th><th>Writing</th><th class="r"></th></tr></thead><tbody>
+      ${list.map(a => `<tr><td class="muted">${fmtDateTime(a.date)}</td><td><b>${esc(a.name)}</b></td><td>${esc(a.group)}</td><td>Test ${a.test}</td><td>${cell(a.listening)}</td><td>${cell(a.reading)}</td>
         <td>${a.writing ? `${a.writing.correct || 0} + ${a.writing.total || 0} words` : '<span class="muted">—</span>'}</td>
         <td class="r"><button class="btn sm" data-act="mockWord" data-id="${esc(a.id)}">${icon('download', 14)} Word</button> <button class="btn sm danger" data-act="mockDel" data-id="${esc(a.id)}">${icon('trash', 14)}</button></td></tr>`).join('')}
       </tbody></table></div>` : '<div class="empty">No mock attempts yet. Students see only “Completed” — all answers come here.</div>'}`;
@@ -62,7 +62,7 @@ function writing(r) {
     <h2>Writing — Task 2 (${w.w2 ?? r.total ?? 0} words)</h2><p class="t">${esc(r.text2 || '')}</p>`;
 }
 function attemptHtml(a) {
-  return `<h1>IELTS Mock — ${esc(a.name)}</h1><p class="m">Group: ${esc(a.group)} · Date: ${esc(fmtDateTime(a.date))}</p>
+  return `<h1>IELTS Mock (Test ${a.test}) — ${esc(a.name)}</h1><p class="m">Group: ${esc(a.group)} · Date: ${esc(fmtDateTime(a.date))}</p>
     <table border="1" cellspacing="0" cellpadding="4" width="100%"><tr><th bgcolor="#e9eef5">Listening</th><th bgcolor="#e9eef5">Reading</th><th bgcolor="#e9eef5">Writing</th></tr><tr><td>${cell(a.listening).replace(/<[^>]+>/g, '')}</td><td>${cell(a.reading).replace(/<[^>]+>/g, '')}</td><td>${a.writing ? `${a.writing.correct || 0} + ${a.writing.total || 0} words` : '—'}</td></tr></table>
     ${qTable('Listening', a.listening)}${qTable('Reading', a.reading)}${writing(a.writing)}`;
 }

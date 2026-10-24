@@ -4616,8 +4616,9 @@ body.rd-dark .rd-tabs button.on,body.rd-yellow .rd-tabs button.on{border-bottom-
       if(window.__rdSubmitted)return;window.__rdSubmitted=true;wait.style.display='flex';
       var data=collect(),t=setTimeout(go,5000);
       function go(){
-        try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.reading={done:true};localStorage.setItem(k,JSON.stringify(st));}catch(e){}
-        location.href='cdi-writing-1.html?mock=1';
+        var N=(location.pathname.match(/-(\d+)\.html/)||[0,1])[1];
+        try{var k=N==1?'ielts_mock_v1':'ielts_mock_v1_t'+N,st=JSON.parse(localStorage.getItem(k))||{};st.reading={done:true};localStorage.setItem(k,JSON.stringify(st));}catch(e){}
+        location.href='cdi-writing-'+N+'.html?mock=1';
       }
       (window.MockSync?MockSync.send('reading',data):Promise.resolve()).then(function(){clearTimeout(t);go();});
     }

@@ -27,22 +27,32 @@ h1{font-weight:400;color:#e4002b;font-size:28px;margin:0 0 26px}
 <div class="foot"><span>English with Usmonov</span><button class="link" id="reset">Start the mock again</button></div>
 </div>
 <script>
-// Edit this list to add sections (the Writing page can be added the same way).
-var SECTIONS=[
-  {key:'listening',title:'Listening',timing:'30 minutes',file:'cdi-listening-1.html',label:'Start Listening'},
-  {key:'reading',title:'Reading',timing:'60 minutes',file:'cdi-reading-1.html',label:'Start Reading'},
-  {key:'writing',title:'Writing',timing:'60 minutes',file:'cdi-writing-1.html',label:'Start Writing'}
-];
-var KEY='ielts_mock_v1';
+var TESTS=[1,2];
+var NQ=parseInt((location.search.match(/[?&]test=(\d+)/)||[0,0])[1],10)||0;
+var N=NQ||1;
+function sections(n){return [
+  {key:'listening',title:'Listening',timing:'30 minutes',file:'cdi-listening-'+n+'.html',label:'Start Listening'},
+  {key:'reading',title:'Reading',timing:'60 minutes',file:'cdi-reading-'+n+'.html',label:'Start Reading'},
+  {key:'writing',title:'Writing',timing:'60 minutes',file:'cdi-writing-'+n+'.html',label:'Start Writing'}];}
+var SECTIONS=sections(N);
+var KEY=N===1?'ielts_mock_v1':'ielts_mock_v1_t'+N;
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};}}
 var TICK='<svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
 function exists(f){return fetch(f,{method:'HEAD'}).then(function(r){return r.ok;}).catch(function(){return false;});}
+function loadKey(k){try{return JSON.parse(localStorage.getItem(k))||{};}catch(e){return {};}}
 var stu=null;try{stu=JSON.parse(localStorage.getItem('ma_student'));}catch(e){}
 if(stu&&!stu.name)stu=null;
+if(!NQ){
+  document.querySelector('h1').textContent='IELTS Mock Test';
+  var h='';
+  TESTS.forEach(function(n){var st=loadKey(n===1?'ielts_mock_v1':'ielts_mock_v1_t'+n),c=['listening','reading','writing'].filter(function(k){return st[k]&&st[k].done;}).length;
+    h+='<div class="card"><div><h2>Test '+n+'</h2><div class="st '+(c===3?'ok':'no')+'">'+(c===3?'Completed':c?c+' of 3 sections completed':'Not started')+'</div><div class="meta">Listening · Reading · Writing</div></div><div><a class="btn" href="?test='+n+'">'+(c===3?'Open':c?'Continue':'Open')+'</a></div></div>';});
+  document.getElementById('list').innerHTML=h;
+}else
 Promise.all(SECTIONS.map(function(s){return exists(s.file);})).then(function(ok){
-  var st=load(),html='',prevDone=true;
+  var st=loadKey(KEY),html='',prevDone=true;
   if(!stu){document.getElementById('list').innerHTML='<div class="card"><div><h2>Please sign in first</h2><div class="meta">Enter your name and group code on the main page, then come back to the mock test.</div></div><div><a class="btn" href="./#/ielts">Sign in</a></div></div>';return;}
-  html+='<div class="meta" style="margin-bottom:18px">Student: <b>'+String(stu.name).replace(/</g,'&lt;')+'</b>'+(stu.group?' · Group: <b>'+String(stu.group).replace(/</g,'&lt;')+'</b>':'')+'</div>';
+  html+='<div class="meta" style="margin-bottom:6px"><a class="link" href="ielts-mock.html">&larr; All tests</a></div><div class="meta" style="margin-bottom:18px"><b>Test '+N+'</b> &nbsp;·&nbsp; Student: <b>'+String(stu.name).replace(/</g,'&lt;')+'</b>'+(stu.group?' · Group: <b>'+String(stu.group).replace(/</g,'&lt;')+'</b>':'')+'</div>';
   SECTIONS.forEach(function(s,i){
     var d=st[s.key]&&st[s.key].done,avail=ok[i],locked=!prevDone;
     var status=d?'<div class="st ok">Completed</div>':locked?'<div class="st lock">Locked — finish the previous section first</div>':avail?'<div class="st no">Not completed</div>':'<div class="st lock">Coming soon</div>';

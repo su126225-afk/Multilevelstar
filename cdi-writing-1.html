@@ -211,7 +211,7 @@ window.WRITING={
 </script>
 <script>
 (function(){
-  var $=function(i){return document.getElementById(i);},body=document.body,W=window.WRITING,isMock=/[?&]mock=1/.test(location.search);
+  var $=function(i){return document.getElementById(i);},body=document.body,W=window.WRITING,TN=parseInt((location.pathname.match(/-(\d+)\.html/)||[0,1])[1],10)||1,isMock=/[?&]mock=1/.test(location.search);
   body.classList.add('exam-mode');
   var cur=1,txt={1:'',2:''},started=false,left=3600,iv=null;
   function words(s){var m=s.trim().match(/\S+/g);return m?m.length:0;}
@@ -255,8 +255,8 @@ window.WRITING={
       wait.innerHTML='Submitting your answers\u2026<small style="font:400 15px Arial,sans-serif;color:#666">Please wait</small>';document.body.appendChild(wait);
       var t=setTimeout(go,5000);
       function go(){
-        try{var k='ielts_mock_v1',st=JSON.parse(localStorage.getItem(k))||{};st.writing={done:true};localStorage.setItem(k,JSON.stringify(st));localStorage.removeItem('ielts_writing_draft');}catch(e){}
-        location.href='ielts-mock.html';
+        try{var k=TN==1?'ielts_mock_v1':'ielts_mock_v1_t'+TN,st=JSON.parse(localStorage.getItem(k))||{};st.writing={done:true};localStorage.setItem(k,JSON.stringify(st));localStorage.removeItem('ielts_writing_draft');}catch(e){}
+        location.href='ielts-mock.html?test='+TN;
       }
       (window.MockSync?MockSync.send('writing',{text1:txt[1],text2:txt[2],correct:w1,total:w2,details:{w1:w1,w2:w2}}):Promise.resolve()).then(function(){clearTimeout(t);go();});
       return;
@@ -266,7 +266,7 @@ window.WRITING={
     try{localStorage.setItem('ielts_writing_last',JSON.stringify({t:Date.now(),w1:w1,w2:w2,t1:txt[1],t2:txt[2]}));localStorage.removeItem('ielts_writing_draft');}catch(e){}
     $('done').classList.add('open');
   }
-  $('dclose').addEventListener('click',function(){if(isMock)location.href='ielts-mock.html';else $('done').classList.remove('open');});
+  $('dclose').addEventListener('click',function(){if(isMock)location.href='ielts-mock.html?test='+TN;else $('done').classList.remove('open');});
   $('dcopy').addEventListener('click',function(){var t=$('dtxt');t.select();try{document.execCommand('copy');$('dcopy').textContent='Copied ✓';}catch(e){}});
   var d=$('deliver-button'),sure=false;
   d.addEventListener('click',function(){
