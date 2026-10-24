@@ -17,6 +17,8 @@ const meta = t => { const k = t.id + (t.created_at || ''); if (!metaCache.has(k)
 const secIcon = s => s === 'listening' ? 'headphones' : 'book';
 const isRecentRes = r => String(r.test_title || '').startsWith('Recent Real');
 const isRecentTest = t => !!t.data?.recent;
+// PDFs live in the site root; tolerate older paths saved in the database (recent-pdf/…, recent-…)
+const pdfUrl = u => String(u || '').split('/').pop().replace(/^recent-(?=\d{4}-)/, '');
 
 // "Recent Real": tests that appeared in the latest real exams, grouped by exam date and shift.
 const parseDM = s => { const [d, m, y] = String(s).split('.').map(Number); return new Date(y, m - 1, d).getTime() || 0; };
@@ -30,7 +32,7 @@ function recentGroups(tests, wtasks) {
 const taskName = w => String(w.title).replace(/^Recent Real [\d.]+ · \d-smena · /, '');
 function recentCard(x, best) {
   const sec = k => x.parts.filter(t => t.section === k).sort((a, b) => a.data.recent.part - b.data.recent.part);
-  const pdf = t => t.data.pdf ? `<a class="chip sm" href="${esc(t.data.pdf)}" target="_blank" rel="noopener" download title="Download PDF with answers">PDF</a>` : '';
+  const pdf = t => t.data.pdf ? `<a class="chip sm" href="${esc(pdfUrl(t.data.pdf))}" download="${esc(pdfUrl(t.data.pdf))}" title="Download PDF with answers">PDF</a>` : '';
   const chips = list => list.map(t => {
     const b = best?.get(t.id), n = t.data.recent.part;
     if (t.data.audioPending && !t.data.audio_url) return `<span class="pgrp"><span class="chip" style="opacity:.75" title="Audio coming soon">Part ${n}</span>${pdf(t)}</span>`;
@@ -304,7 +306,7 @@ export async function testIntro(root, id) {
       ${listening ? `<li>Use headphones and check your volume.</li>${timed ? '<li>The recording plays straight through, like the real exam. It cannot be paused or rewound.</li><li>You get time to read the questions before each part and time to check your answers after it. The next part opens by itself.</li><li>Your result appears automatically when the recording ends.</li>' : '<li>Press play on each part when you are ready.</li>'}`
         : `<li>You have ${t.duration_min} minutes. The test is submitted automatically when time runs out.</li><li>Move between parts with the tabs at the bottom.</li>${t.data?.glossary ? '<li>Double-click any word in a passage to see its Uzbek translation.</li>' : ''}`}
       <li>Your answers are saved to the leaderboard as <b>${S.student ? esc(S.student.name) : 'you'}</b>${S.student ? ` (${esc(S.student.group)})` : ''}.</li></ul></div>
-    <div class="ctas"><button class="btn primary lg" data-act="beginTest" data-id="${t.id}">${icon('play', 18)} Start test</button>${t.data?.pdf ? `<a class="btn lg" href="${esc(t.data.pdf)}" target="_blank" rel="noopener" download>${icon('arrow', 16)} Download PDF</a>` : ''}</div>
+    <div class="ctas"><button class="btn primary lg" data-act="beginTest" data-id="${t.id}">${icon('play', 18)} Start test</button>${t.data?.pdf ? `<a class="btn lg" href="${esc(pdfUrl(t.data.pdf))}" download="${esc(pdfUrl(t.data.pdf))}">${icon('arrow', 16)} Download PDF</a>` : ''}</div>
   </div></div>`;
 }
 actions.beginTest = async el => { const s = await requireStudent(); if (s) go('#/run/' + el.dataset.id); };
