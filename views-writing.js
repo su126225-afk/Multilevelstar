@@ -89,7 +89,7 @@ export async function writingEditor(root, id) {
     <div class="wmain" id="wmain" style="--wl:${fw}fr;--wr:${1 - fw}fr;--wt:${fv}fr;--wb:${1 - fv}fr">
       <div class="wleft"><h2 style="margin-bottom:10px">${esc(t.title)}</h2>
         ${t.image_url ? `<img class="plan" src="${esc(t.image_url)}" alt="Task image">` : ''}<div style="white-space:pre-wrap;line-height:1.7">${esc(t.prompt)}</div>
-        <p class="mt" style="font-size:14px"><b>Word limit:</b> ${limitText(t)}</p></div>
+        <p class="mt" style="font-size:14px"><b>Word limit:</b> ${limitText(t)}</p><div id="wsamples"></div></div>
       <div class="resizer" id="wresizer" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
       <div class="wright"><textarea id="wtext" class="inp wtext" placeholder="Start writing here…" spellcheck="true" data-in="wtext">${esc(draft)}</textarea>
         <div class="wbar"><div class="wcount" id="wcount"></div>
@@ -98,6 +98,12 @@ export async function writingEditor(root, id) {
   document.body.classList.add('running');
   S.cleanup = () => { document.body.classList.remove('running'); };
   inputs.wtext();
+  // Recent Real tasks come with B2 / C1 model answers (hidden until the student opens them)
+  if (/^Recent Real/.test(t.title)) fetch('recent-samples.json').then(r => r.ok ? r.json() : {}).then(j => {
+    const m = j[t.title], box = $('#wsamples'); if (!m || !box) return;
+    const wc = x => (String(x).match(/[A-Za-z0-9’'-]+/g) || []).length;
+    box.innerHTML = ['B2', 'C1'].filter(l => m[l]).map(l => `<details class="mt panel" style="padding:10px 14px"><summary style="cursor:pointer;font-weight:700">Model answer · ${l} <small class="muted">(${wc(m[l])} words)</small></summary><div style="white-space:pre-wrap;line-height:1.7;margin-top:10px;font-size:14px">${esc(m[l])}</div></details>`).join('');
+  }).catch(() => {});
 }
 document.addEventListener('pointerdown', e => {
   const h = e.target.closest('#wresizer'); if (!h) return;
@@ -187,7 +193,7 @@ const refreshW = () => writingTab(writingTab.body);
 actions.wSamples = async () => { for (const s of SAMPLES) await store.saveWritingTask({ id: uid(), published: true, image_url: '', ...s }); refreshW(); };
 actions.wBundle = async () => {
   let list = [];
-  try { const r = await fetch('writing.json'); if (!r.ok) throw new Error(); list = (await r.json()).tasks; } catch { return toast('writing.json not found', 'bad'); }
+  try { const r = await fetch('writing.json?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error(); list = (await r.json()).tasks; } catch { return toast('writing.json not found', 'bad'); }
   const have = new Set((await store.listWritingTasks()).map(t => t.title));
   let n = 0;
   for (const t of list) { if (have.has(t.title)) continue; await store.saveWritingTask({ id: uid(), published: true, image_url: '', ...t }); n++; }
