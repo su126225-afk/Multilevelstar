@@ -45,7 +45,7 @@ function recentCard(x, best) {
     <div><h3>${esc(x.label)}</h3><div class="tmeta">real exam · ${esc(x.shift)}-smena</div></div>
     ${row('headphones', 'Listening', chips(sec('listening')))}
     ${row('book', 'Reading', chips(sec('reading')))}
-    ${row('edit', 'Writing', x.writing.map(w => `<a class="chip" href="#/writing/${w.id}">${esc(taskName(w))}</a>`).join('') + wpdf)}
+    ${row('edit', 'Writing', [...x.writing].sort((a, b) => String(a.title).localeCompare(String(b.title))).map(w => `<a class="chip" href="#/writing/${w.id}">${esc(taskName(w))}</a>`).join('') + wpdf)}
   </div>`;
 }
 export async function recent(root) {

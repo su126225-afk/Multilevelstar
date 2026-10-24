@@ -65,6 +65,34 @@
   },
   {
    "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Task 1.1 — Letter to a friend",
+   "min_words": 50,
+   "max_words": 70,
+   "prompt": "Dear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\n—\nTask 1.1 — Informal letter\nWrite a letter to your friend, who is also a member, telling them about the closure, giving your opinion, and suggesting what the center should do.\nWrite 50-70 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Task 1.2 — Letter to the manager",
+   "min_words": 120,
+   "max_words": 150,
+   "prompt": "Dear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\n—\nTask 1.2 — Formal letter\nWrite a letter to the center manager expressing your views on the planned changes and suggesting how the center could support members while the swimming pool is closed.\nWrite 120-150 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Task 1.1 — Letter to a friend",
+   "min_words": 40,
+   "max_words": 60,
+   "prompt": "You are a student at a local university. You received an email from the university library manager.\n\nDear Student,\n\nWe are writing to inform you about some changes to our university library. Due to plans to improve the study facilities, the library will be transformed into a self-study centre. The renovation work is expected to take approximately one month, and the new centre will reopen after this period. To compensate for the temporary closure, all students will receive one month of free membership.\n\nBefore making the final arrangements, we would like to hear your opinions. How do you feel about transforming the library into a self-study centre? What facilities or services would you like the new centre to offer? Do you have any suggestions for supporting students during the renovation period?\nThank you for sharing your thoughts.\n\nKind regards,\nThe University Library Manager\n\n—\nTask 1.1 — Informal letter\nWrite a letter to your friend, who is also a student at the university, telling them about the proposed changes, explaining how you feel about them, and suggesting what the university should do.\nWrite about 50 words."
+  },
+  {
+   "kind": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Task 1.2 — Letter to the library manager",
+   "min_words": 120,
+   "max_words": 150,
+   "prompt": "You are a student at a local university. You received an email from the university library manager.\n\nDear Student,\n\nWe are writing to inform you about some changes to our university library. Due to plans to improve the study facilities, the library will be transformed into a self-study centre. The renovation work is expected to take approximately one month, and the new centre will reopen after this period. To compensate for the temporary closure, all students will receive one month of free membership.\n\nBefore making the final arrangements, we would like to hear your opinions. How do you feel about transforming the library into a self-study centre? What facilities or services would you like the new centre to offer? Do you have any suggestions for supporting students during the renovation period?\nThank you for sharing your thoughts.\n\nKind regards,\nThe University Library Manager\n\n—\nTask 1.2 — Formal letter\nWrite a letter to the university library manager explaining your feelings about transforming the library into a self-study centre and suggesting facilities or services that should be provided.\nWrite 120–150 words."
+  },
+  {
+   "kind": "multilevel",
    "title": "Recent Real 10.10.2026 · 1-smena · Task 2 (A) — Tourism and the environment",
    "min_words": 180,
    "max_words": 200,

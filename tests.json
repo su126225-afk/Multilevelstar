@@ -21966,6 +21966,35 @@
    }
   },
   {
+   "id": "3056112f-25c5-5c34-9815-9568f0f2b502",
+   "section": "reading",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Reading Part 1",
+   "duration_min": 10,
+   "play_once": false,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 2,
+     "section": "reading",
+     "part": 1
+    },
+    "practice": true,
+    "qstart": 1,
+    "pdf": "2026-10-10-s2-reading-1.pdf",
+    "parts": [
+     {
+      "title": "A Ride to the Top of the Hill",
+      "instruction": "Read the text. Fill in each gap with **ONE word**. You must use a word which is somewhere in the rest of the text.",
+      "text": "Last Saturday, Sam decided to go for a ride on his new bicycle. It was a warm and sunny morning, so he put a bottle of water in his bag and left home early. He wanted to ride his [[bicycle]] all the way to the top of the big hill near his village. Many people say that the view from the top of the [[hill/path]] is the most beautiful in the whole area.\n\nAt first, the ride was easy. Sam followed a narrow path through the fields. But soon the [[hill/path]] became steep and rocky, and he had to ride very slowly. Halfway up, he stopped to have a drink, but when he opened his bag, the bottle was not there. He realised that the [[bottle/water]] had fallen out somewhere on the way. Sam was hot and thirsty, so he sat down to rest in the shade of a tall tree. When he finally stood up and stepped out from under the [[tree]], he noticed something amazing.\n\nAll around him, there were hundreds of beautiful flowers in red, yellow and purple. Sam had never seen so many wild [[flowers]] in one place before. He took out his phone and took lots of photos of them. On the way down, he even found his water bottle lying next to the path. That evening, he showed the photos to his family, and they all agreed to climb the hill together the next weekend.",
+      "blocks": []
+     }
+    ]
+   }
+  },
+  {
    "id": "25cd5640-afaa-51a7-8a8d-57a271f715a6",
    "section": "reading",
    "format": "multilevel",
@@ -22356,6 +22385,161 @@
         ]
        }
       ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "3874c226-e751-5bd5-984d-ee5e6dee4de7",
+   "section": "listening",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Listening Part 6",
+   "duration_min": 10,
+   "play_once": true,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 1,
+     "section": "listening",
+     "part": 6
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "answersOnly": true,
+    "qstart": 30,
+    "answers": [
+     "Decoration",
+     "Friction",
+     "Noise",
+     "Cleansers",
+     "Strategies"
+    ],
+    "pdf": "2026-10-10-s1-listening-6.pdf",
+    "note": "Answers only. Five answers were received for this part.",
+    "parts": [
+     {
+      "title": "Listening Part 6",
+      "text": "",
+      "blocks": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "d1b49d47-4a12-5102-82f0-4e4d20d37ec0",
+   "section": "listening",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Listening Part 2",
+   "duration_min": 10,
+   "play_once": true,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 2,
+     "section": "listening",
+     "part": 2
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "answersOnly": true,
+    "qstart": 9,
+    "answers": [
+     "Cathedral",
+     "Workshop",
+     "Raincoat",
+     "Green",
+     "9",
+     "Cheese / Sweets"
+    ],
+    "pdf": "2026-10-10-s2-listening-2.pdf",
+    "note": "Answers only. (Two versions were reported for the last answer: Cheese and Sweets.)",
+    "parts": [
+     {
+      "title": "Listening Part 2",
+      "text": "",
+      "blocks": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "a681045e-7727-57b2-b83d-859dda5c8e96",
+   "section": "listening",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Listening Part 6",
+   "duration_min": 10,
+   "play_once": true,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 2,
+     "section": "listening",
+     "part": 6
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "answersOnly": true,
+    "qstart": 30,
+    "answers": [
+     "Heat",
+     "Oxygen",
+     "Shrimp",
+     "Hide",
+     "Cancer",
+     "Genes"
+    ],
+    "pdf": "2026-10-10-s2-listening-6.pdf",
+    "note": "The question sheet was not available — answers only.",
+    "parts": [
+     {
+      "title": "Listening Part 6",
+      "text": "",
+      "blocks": []
+     }
+    ]
+   }
+  },
+  {
+   "id": "c7912ec2-6fc1-5328-aecb-e84e0c3a8627",
+   "section": "reading",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 2-smena · Reading Part 5",
+   "duration_min": 10,
+   "play_once": false,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 2,
+     "section": "reading",
+     "part": 5
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "answersOnly": true,
+    "qstart": 30,
+    "answers": [
+     "Location",
+     "Social",
+     "Employment",
+     "Planting",
+     "B",
+     "D"
+    ],
+    "pdf": "2026-10-10-s2-reading-5.pdf",
+    "note": "Answers only — passage about trees and gorillas.",
+    "parts": [
+     {
+      "title": "Reading Part 5",
+      "text": "",
+      "blocks": []
      }
     ]
    }
