@@ -31,14 +31,14 @@ function recentGroups(tests, wtasks) {
 }
 const taskName = w => String(w.title).replace(/^Recent Real [\d.]+ · \d-smena · /, '');
 function recentCard(x, best) {
-  const sec = k => x.parts.filter(t => t.section === k).sort((a, b) => a.data.recent.part - b.data.recent.part);
+  const sec = k => x.parts.filter(t => (t.data.recent.section || t.section) === k).sort((a, b) => a.data.recent.part - b.data.recent.part);
   const pdf = t => t.data.pdf ? `<a class="chip sm" href="${esc(pdfUrl(t.data.pdf))}" download="${esc(pdfUrl(t.data.pdf))}" title="Download PDF with answers">PDF</a>` : '';
   const chips = list => list.map(t => {
     const b = best?.get(t.id), n = t.data.recent.part;
-    if (t.data.audioPending && !t.data.audio_url) return `<span class="pgrp"><span class="chip" style="opacity:.75" title="Audio coming soon">Part ${n}</span>${pdf(t)}</span>`;
+    if ((t.data.audioPending && !t.data.audio_url) || t.data.pdfOnly) return `<span class="pgrp"><span class="chip" style="opacity:.75" title="${t.data.pdfOnly ? 'PDF only' : 'Audio coming soon'}">Part ${n}</span>${pdf(t)}</span>`;
     return `<span class="pgrp"><a class="chip ${b ? 'on' : ''}" href="#/test/${t.id}">Part ${n}${b ? ` · ${esc(b.band)}` : ''}</a>${pdf(t)}</span>`;
   }).join('');
-  const wpdf = x.parts.filter(t => t.section === 'writing').map(pdf).join('');
+  const wpdf = x.parts.filter(t => t.data.recent.section === 'writing').map(pdf).join('');
   const row = (ic, name, inner) => inner ? `<div class="rrsec"><span class="rrname">${icon(ic, 15)} ${name}</span><div class="tabs">${inner}</div></div>` : '';
   return `<div class="tcard rrcard">
     <div class="row between"><span class="badge multi">Multilevel</span><span class="badge">${esc(x.shift)}-smena</span></div>

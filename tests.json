@@ -22051,6 +22051,93 @@
    }
   },
   {
+   "id": "6a477bad-1ad1-5480-ae7b-823c708083a3",
+   "section": "reading",
+   "format": "multilevel",
+   "title": "Recent Real 10.10.2026 · 1-smena · Reading Part 4",
+   "duration_min": 15,
+   "play_once": false,
+   "published": true,
+   "data": {
+    "recent": {
+     "date": "2026-10-10",
+     "label": "10.10.2026",
+     "shift": 1,
+     "section": "reading",
+     "part": 4
+    },
+    "practice": true,
+    "pdfOnly": true,
+    "qstart": 21,
+    "pdf": "2026-10-10-s1-reading-4.pdf",
+    "note": "Questions and answers only — the reading passage was not included in the source.",
+    "parts": [
+     {
+      "title": "Traditional Craftsmanship and Tourism in Uzbekistan",
+      "instruction": "Answer questions 21–24 in your own words, then decide whether statements 25–29 are **TRUE**, **FALSE** or **NOT GIVEN**.",
+      "text": "",
+      "blocks": [
+       {
+        "instruction": "Questions 21–24",
+        "questions": [
+         {
+          "type": "fill",
+          "text": "How craftsmanship is learned in Uzbekistan?",
+          "answer": "They are passed in family traditions"
+         },
+         {
+          "type": "fill",
+          "text": "Uzbek traditional handmade products tend to be...",
+          "answer": "They are more costly but worth their value"
+         },
+         {
+          "type": "fill",
+          "text": "How has tourism affected traditional craftsman process?",
+          "answer": "It became faster and more efficient"
+         },
+         {
+          "type": "fill",
+          "text": "Craft experts concern about faster methods of today's craftsmen...",
+          "answer": "It may lower the cultural and artistic levels of authentic crafts"
+         }
+        ]
+       },
+       {
+        "instruction": "Questions 25–29: TRUE / FALSE / NOT GIVEN",
+        "questions": [
+         {
+          "type": "tfng",
+          "text": "All traditional Uzbek craftsman techniques are written in manuals",
+          "answer": "False"
+         },
+         {
+          "type": "tfng",
+          "text": "Tourism is encouraging young people to continue their family business trails",
+          "answer": "True"
+         },
+         {
+          "type": "tfng",
+          "text": "Every seller in traditional markets sells only hand-made items",
+          "answer": "Not Given"
+         },
+         {
+          "type": "tfng",
+          "text": "Governments have passed a law to ban importing of foreign products",
+          "answer": "Not Given"
+         },
+         {
+          "type": "tfng",
+          "text": "International organizations are helping to preserve traditional methods",
+          "answer": "True"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
    "id": "40f97dc3-bf0c-590f-b89d-2299b5d39f76",
    "section": "listening",
    "format": "multilevel",
@@ -22275,9 +22362,9 @@
   },
   {
    "id": "fe62a87d-a2d2-50ee-938c-cf281b77f8e3",
-   "section": "writing",
+   "section": "reading",
    "format": "multilevel",
-   "title": "Recent Real 10.10.2026 · 1-smena · Writing",
+   "title": "Recent Real 10.10.2026 · 1-smena · Writing (PDF)",
    "duration_min": 0,
    "play_once": false,
    "published": true,
@@ -22297,9 +22384,9 @@
   },
   {
    "id": "3035be8b-5e78-534c-947e-a19df00ca943",
-   "section": "writing",
+   "section": "reading",
    "format": "multilevel",
-   "title": "Recent Real 10.10.2026 · 2-smena · Writing",
+   "title": "Recent Real 10.10.2026 · 2-smena · Writing (PDF)",
    "duration_min": 0,
    "play_once": false,
    "published": true,
