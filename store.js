@@ -1,231 +1,125 @@
+// Ma'lumotlar qatlami: DEMO (shu brauzerda, localStorage) yoki Supabase (bulut). Ikkalasi bir xil metodlarga ega.
 import { CONFIG } from './config.js';
+import { genCode, ymd, addMonths, monthOf, today } from './logic.js';
+
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
+export const cloudConfigured = () => !globalThis.__MG_LOCAL && !!(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+const TABLES = ['groups', 'students', 'lessons', 'attendance', 'payments'];
 
 const LS = {
-  get(k, d) { try { const v = localStorage.getItem('ma_' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-  set(k, v) { localStorage.setItem('ma_' + k, JSON.stringify(v)); },
+  get(k, d) { try { const v = localStorage.getItem('mg_' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { localStorage.setItem('mg_' + k, JSON.stringify(v)); },
 };
-const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
-const byNewest = (a, b) => String(b.created_at).localeCompare(String(a.created_at));
-const RESULT_LIST_COLS = 'id,test_id,test_title,section,format,student_name,group_code,correct,total,percent,band,points,time_sec,created_at';
 
-export const cloudConfigured = () => !!(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
-
-// ───────────── DEMO (localStorage) ─────────────
+// ───────────── DEMO ─────────────
 const local = {
   mode: 'local',
   async init() {
     if (LS.get('seeded')) return;
-    let tests = [];
-    try { const r = await fetch('tests.json'); if (r.ok) tests = (await r.json()).tests || []; } catch { /* no bundle */ }
-    const now = Date.now();
-    LS.set('tests', tests.map((t, i) => ({ published: true, ...t, created_at: new Date(now - i * 1000).toISOString() })));
-    LS.set('groups', [{ code: 'DEMO', name: 'Demo group' }]);
-    LS.set('results', []);
-    LS.set('seeded', 1);
+    const now = new Date(), mk = monthOf(ymd(now)), prev = addMonths(mk, -1);
+    const g1 = { id: uid(), name: 'IELTS 6.5 (kechki)', price: 600000, days: [1, 3, 5], time: '18:00', pay_day: 5, note: '', active: true, created_at: now.toISOString() };
+    const g2 = { id: uid(), name: 'Multilevel B2', price: 450000, days: [2, 4, 6], time: '16:00', pay_day: 10, note: '', active: true, created_at: now.toISOString() };
+    const names = [['Azizbek Karimov', g1], ['Madina Yusupova', g1], ['Jasur Toshmatov', g1], ['Dilnoza Rahimova', g2], ['Sherzod Aliyev', g2]];
+    const taken = new Set();
+    const students = names.map(([name, g], i) => { const code = genCode(taken); taken.add(code); return { id: uid(), group_id: g.id, name, phone: '+998 90 123 45 6' + i, parent_phone: '+998 91 765 43 2' + i, code, price: null, joined: prev + '-01', active: true, note: '', created_at: now.toISOString() }; });
+    const payments = [
+      { id: uid(), student_id: students[0].id, month: prev, amount: 600000, paid_on: prev + '-03', method: 'naqd', note: '', created_at: now.toISOString() },
+      { id: uid(), student_id: students[0].id, month: mk, amount: 600000, paid_on: today(), method: 'karta', note: '', created_at: now.toISOString() },
+      { id: uid(), student_id: students[1].id, month: prev, amount: 600000, paid_on: prev + '-04', method: 'naqd', note: '', created_at: now.toISOString() },
+      { id: uid(), student_id: students[1].id, month: mk, amount: 250000, paid_on: today(), method: 'naqd', note: 'qolgani keyin', created_at: now.toISOString() },
+      { id: uid(), student_id: students[3].id, month: prev, amount: 450000, paid_on: prev + '-08', method: 'karta', note: '', created_at: now.toISOString() },
+    ];
+    LS.set('groups', [g1, g2]); LS.set('students', students); LS.set('payments', payments);
+    LS.set('lessons', []); LS.set('attendance', []); LS.set('seeded', 1);
   },
-  isAdmin: () => sessionStorage.getItem('ma_admin') === '1',
-  async adminLogin(_email, pw) {
-    if (pw !== CONFIG.localAdminPassword) throw new Error('Wrong password');
-    sessionStorage.setItem('ma_admin', '1');
+  isAdmin: () => sessionStorage.getItem('mg_admin') === '1',
+  async login(_e, pw) { if (pw !== CONFIG.localAdminPassword) throw new Error("Parol noto'g'ri"); sessionStorage.setItem('mg_admin', '1'); },
+  async logout() { sessionStorage.removeItem('mg_admin'); },
+  async list(t) { return LS.get(t, []); },
+  async save(t, rec) {
+    const all = LS.get(t, []), i = all.findIndex(x => x.id === rec.id);
+    const r = { ...rec, id: rec.id || uid(), created_at: rec.created_at || new Date().toISOString() };
+    if (i >= 0) all[i] = r; else all.push(r);
+    LS.set(t, all); return r;
   },
-  async adminLogout() { sessionStorage.removeItem('ma_admin'); },
-  async listTests({ published } = {}) {
-    const t = LS.get('tests', []).slice().sort(byNewest);
-    return published ? t.filter(x => x.published) : t;
+  async saveMany(t, recs) {
+    const all = LS.get(t, []), now = new Date().toISOString(), out = recs.map(r => ({ ...r, id: r.id || uid(), created_at: r.created_at || now }));
+    LS.set(t, all.concat(out)); return out;
   },
-  async getTest(id) { return LS.get('tests', []).find(t => t.id === id) || null; },
-  async saveTest(t) {
-    const all = LS.get('tests', []);
-    const i = all.findIndex(x => x.id === t.id);
-    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
-    if (i >= 0) all[i] = rec; else all.push(rec);
-    LS.set('tests', all);
-    return rec;
+  async remove(t, id) {
+    LS.set(t, LS.get(t, []).filter(x => x.id !== id));
+    if (t === 'students') { LS.set('attendance', LS.get('attendance', []).filter(x => x.student_id !== id)); LS.set('payments', LS.get('payments', []).filter(x => x.student_id !== id)); }
+    if (t === 'groups') { LS.set('lessons', LS.get('lessons', []).filter(x => x.group_id !== id)); LS.set('students', LS.get('students', []).map(s => s.group_id === id ? { ...s, group_id: null } : s)); }
   },
-  async saveTests(list) { for (const t of list) await this.saveTest(t); },
-  async deleteTest(id) { LS.set('tests', LS.get('tests', []).filter(t => t.id !== id)); },
-  async checkGroup(code) {
-    const g = LS.get('groups', []).find(g => g.code.toUpperCase() === String(code).trim().toUpperCase());
-    return g ? (g.name || g.code) : null;
+  async saveAttendance(recs) {
+    const all = LS.get('attendance', []);
+    for (const r of recs) { const i = all.findIndex(x => x.student_id === r.student_id && x.day === r.day); if (i >= 0) Object.assign(all[i], r); else all.push({ id: uid(), ...r }); }
+    LS.set('attendance', all);
   },
-  async listGroups() { return LS.get('groups', []); },
-  async saveGroup(g) {
-    const all = LS.get('groups', []).filter(x => x.code !== g.code);
-    all.push(g); LS.set('groups', all);
+  async delAttendance(student_id, day) { LS.set('attendance', LS.get('attendance', []).filter(x => !(x.student_id === student_id && x.day === day))); },
+  async saveLesson(rec) {
+    const all = LS.get('lessons', []), i = all.findIndex(x => x.group_id === rec.group_id && x.day === rec.day);
+    if (i >= 0) all[i] = { ...all[i], ...rec }; else all.push({ id: uid(), cancelled: false, topic: '', ...rec });
+    LS.set('lessons', all);
   },
-  async deleteGroup(code) { LS.set('groups', LS.get('groups', []).filter(g => g.code !== code)); },
-  async saveResult(r) {
-    const rec = { ...r, id: uid(), created_at: new Date().toISOString() };
-    const all = LS.get('results', []); all.push(rec); LS.set('results', all);
-    return rec.id;
+  async portal(code) {
+    const s = LS.get('students', []).find(x => x.code === String(code).trim().toUpperCase() && x.active);
+    if (!s) return null;
+    const g = LS.get('groups', []).find(x => x.id === s.group_id);
+    return {
+      student: { id: s.id, name: s.name, joined: s.joined, price: s.price, freezes: s.freezes || [] },
+      group: g ? { name: g.name, price: g.price, days: g.days, time: g.time, pay_day: g.pay_day } : null,
+      attendance: LS.get('attendance', []).filter(a => a.student_id === s.id).sort((a, b) => b.day.localeCompare(a.day)),
+      payments: LS.get('payments', []).filter(p => p.student_id === s.id).sort((a, b) => b.paid_on.localeCompare(a.paid_on)),
+      lessons: LS.get('lessons', []).filter(l => l.group_id === s.group_id),
+    };
   },
-  async listResults() { return LS.get('results', []).slice().sort(byNewest).map(({ details, ...r }) => r); },
-  async getResult(id) { return LS.get('results', []).find(r => r.id === id) || null; },
-  async deleteResult(id) { LS.set('results', LS.get('results', []).filter(r => r.id !== id)); },
-  async listWritingTasks({ published } = {}) { const t = LS.get('wtasks', []).slice().sort(byNewest); return published ? t.filter(x => x.published) : t; },
-  async getWritingTask(id) { return LS.get('wtasks', []).find(t => t.id === id) || null; },
-  async saveWritingTask(t) {
-    const all = LS.get('wtasks', []), i = all.findIndex(x => x.id === t.id);
-    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
-    if (i >= 0) all[i] = rec; else all.push(rec);
-    LS.set('wtasks', all); return rec;
-  },
-  async deleteWritingTask(id) { LS.set('wtasks', LS.get('wtasks', []).filter(t => t.id !== id)); },
-  async listVocabSets({ published } = {}) { const t = LS.get('vsets', []).slice().sort(byNewest); return published ? t.filter(x => x.published) : t; },
-  async getVocabSet(id) { return LS.get('vsets', []).find(t => t.id === id) || null; },
-  async saveVocabSet(t) {
-    const all = LS.get('vsets', []), i = all.findIndex(x => x.id === t.id);
-    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
-    if (i >= 0) all[i] = rec; else all.push(rec);
-    LS.set('vsets', all); return rec;
-  },
-  async deleteVocabSet(id) { LS.set('vsets', LS.get('vsets', []).filter(t => t.id !== id)); },
-  async saveVocabResult(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('vres', []); a.push(rec); LS.set('vres', a); return rec.id; },
-  async listVocabResults() { return LS.get('vres', []).slice().sort(byNewest); },
-  async deleteVocabResult(id) { LS.set('vres', LS.get('vres', []).filter(r => r.id !== id)); },
-  async listSpeakingTests({ published } = {}) { const a = LS.get('stests', []).slice().sort(byNewest); return published ? a.filter(x => x.published) : a; },
-  async getSpeakingTest(id) { return LS.get('stests', []).find(x => x.id === id) || null; },
-  async saveSpeakingTest(t) {
-    const all = LS.get('stests', []), i = all.findIndex(x => x.id === t.id);
-    const rec = { ...t, created_at: t.created_at || new Date().toISOString() };
-    if (i >= 0) all[i] = rec; else all.push(rec);
-    LS.set('stests', all); return rec;
-  },
-  async deleteSpeakingTest(id) { LS.set('stests', LS.get('stests', []).filter(x => x.id !== id)); },
-  async checkSpeaking() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
-  async saveSpeaking(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('ssubs', []); a.push(rec); LS.set('ssubs', a); return rec.id; },
-  async mySpeakings(name, group) { return LS.get('ssubs', []).filter(w => w.student_name.toLowerCase() === name.toLowerCase() && w.group_code.toUpperCase() === group.toUpperCase()).sort(byNewest); },
-  async listSpeakings() { return LS.get('ssubs', []).slice().sort(byNewest); },
-  async deleteSpeaking(id) { LS.set('ssubs', LS.get('ssubs', []).filter(w => w.id !== id)); },
-  async tgAuth() { throw new Error('Telegram login needs Supabase'); },
-  aiAvailable: false,
-  async checkWriting() { throw new Error('AI tekshiruv faqat Supabase ulanganda ishlaydi (README ga qarang).'); },
-  async saveWriting(r) { const rec = { ...r, id: uid(), created_at: new Date().toISOString() }; const a = LS.get('wsubs', []); a.push(rec); LS.set('wsubs', a); return rec.id; },
-  async myWritings(name, group) { return LS.get('wsubs', []).filter(w => w.student_name.toLowerCase() === name.toLowerCase() && w.group_code.toUpperCase() === group.toUpperCase()).sort(byNewest); },
-  async listWritings() { return LS.get('wsubs', []).slice().sort(byNewest); },
-  async deleteWriting(id) { LS.set('wsubs', LS.get('wsubs', []).filter(w => w.id !== id)); },
-  async listMocks() { return []; },
-  async deleteMock() {},
-  async addActivity(name, group, secs) {
-    const day = new Date().toISOString().slice(0, 10), a = LS.get('activity', []);
-    const r = a.find(x => x.student_name === name && x.group_code === group && x.day === day);
-    if (r) r.seconds += secs; else a.push({ student_name: name, group_code: group, day, seconds: secs });
-    LS.set('activity', a);
-  },
-  async listActivity() { return LS.get('activity', []); },
-  async uploadFile() { throw new Error('Fayl yuklash faqat Supabase ulanganda ishlaydi. Hozircha fayl manzilini (URL) kiriting.'); },
-  canUpload: false,
+  exportAll() { return Object.fromEntries(TABLES.map(t => [t, LS.get(t, [])])); },
+  async resetDemo() { for (const t of TABLES) LS.set(t, []); LS.set('seeded', ''); await this.init(); },
 };
 
-// ───────────── CLOUD (Supabase) ─────────────
+// ───────────── BULUT (Supabase) ─────────────
 async function makeCloud() {
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm');
   const sb = createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
   let session = (await sb.auth.getSession()).data.session;
   sb.auth.onAuthStateChange((_e, s) => { session = s; });
   const ok = async p => { const { data, error } = await p; if (error) throw new Error(error.message); return data; };
+  const T = t => 'mg_' + t;
   return {
     mode: 'cloud',
     async init() {},
     isAdmin: () => !!session,
-    async adminLogin(email, pw) {
+    async login(email, pw) {
       const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
-      if (error) throw new Error(error.message);
+      if (error) throw new Error(error.message === 'Invalid login credentials' ? "Email yoki parol noto'g'ri" : error.message);
       session = data.session;
     },
-    async adminLogout() { await sb.auth.signOut(); session = null; },
-    async listTests({ published } = {}) {
-      let q = sb.from('tests').select('*').order('created_at', { ascending: false });
-      if (published) q = q.eq('published', true);
-      return ok(q);
+    async logout() { await sb.auth.signOut(); session = null; },
+    async list(t) {
+      // PostgREST sukut bo'yicha 1000 qator beradi: katta jadvallarni sahifalab olamiz
+      const out = []; for (let from = 0; ; from += 1000) { const rows = await ok(sb.from(T(t)).select('*').range(from, from + 999)); out.push(...rows); if (rows.length < 1000) break; }
+      return out;
     },
-    async getTest(id) { return ok(sb.from('tests').select('*').eq('id', id).maybeSingle()); },
-    async saveTest(t) { return ok(sb.from('tests').upsert(t).select().single()); },
-    async saveTests(list) { await ok(sb.from('tests').upsert(list)); },
-    async deleteTest(id) { await ok(sb.from('tests').delete().eq('id', id)); },
-    async checkGroup(code) { return ok(sb.rpc('check_group', { c: String(code).trim() })); },
-    async listGroups() { return ok(sb.from('groups').select('code,name').order('code')); },
-    async saveGroup(g) { await ok(sb.from('groups').upsert(g)); },
-    async deleteGroup(code) { await ok(sb.from('groups').delete().eq('code', code)); },
-    async saveResult(r) { return (await ok(sb.from('results').insert(r).select('id').single())).id; },
-    async listResults() { return ok(sb.from('results').select(RESULT_LIST_COLS).order('created_at', { ascending: false }).limit(3000)); },
-    async getResult(id) { return ok(sb.from('results').select('*').eq('id', id).maybeSingle()); },
-    async deleteResult(id) { await ok(sb.from('results').delete().eq('id', id)); },
-    async listWritingTasks({ published } = {}) {
-      let q = sb.from('writing_tasks').select('*').order('created_at', { ascending: false });
-      if (published) q = q.eq('published', true);
-      return ok(q);
+    async save(t, rec) { const r = { ...rec }; if (!r.id) delete r.id; return ok(sb.from(T(t)).upsert(r).select().single()); },
+    async saveMany(t, recs) {
+      const out = []; for (let i = 0; i < recs.length; i += 200) out.push(...await ok(sb.from(T(t)).insert(recs.slice(i, i + 200)).select()));
+      return out;
     },
-    async getWritingTask(id) { return ok(sb.from('writing_tasks').select('*').eq('id', id).maybeSingle()); },
-    async saveWritingTask(t) { return ok(sb.from('writing_tasks').upsert(t).select().single()); },
-    async deleteWritingTask(id) { await ok(sb.from('writing_tasks').delete().eq('id', id)); },
-    async listVocabSets({ published } = {}) {
-      let q = sb.from('vocab_sets').select('*').order('created_at', { ascending: false });
-      if (published) q = q.eq('published', true);
-      return ok(q);
-    },
-    async getVocabSet(id) { return ok(sb.from('vocab_sets').select('*').eq('id', id).maybeSingle()); },
-    async saveVocabSet(t) { return ok(sb.from('vocab_sets').upsert(t).select().single()); },
-    async deleteVocabSet(id) { await ok(sb.from('vocab_sets').delete().eq('id', id)); },
-    async saveVocabResult(r) { return (await ok(sb.from('vocab_results').insert(r).select('id').single())).id; },
-    async listVocabResults() { return ok(sb.from('vocab_results').select('*').order('created_at', { ascending: false }).limit(5000)); },
-    async deleteVocabResult(id) { await ok(sb.from('vocab_results').delete().eq('id', id)); },
-    async listSpeakingTests({ published } = {}) {
-      let q = sb.from('speaking_tests').select('*').order('created_at', { ascending: false });
-      if (published) q = q.eq('published', true);
-      return ok(q);
-    },
-    async getSpeakingTest(id) { return ok(sb.from('speaking_tests').select('*').eq('id', id).maybeSingle()); },
-    async saveSpeakingTest(t) { return ok(sb.from('speaking_tests').upsert(t).select().single()); },
-    async deleteSpeakingTest(id) { await ok(sb.from('speaking_tests').delete().eq('id', id)); },
-    async checkSpeaking(payload) {
-      const { data, error } = await sb.functions.invoke('check-speaking', { body: payload });
-      let msg = data?.error;
-      if (error && !msg) { try { msg = (await error.context.json()).error; } catch { msg = error.message; } }
-      if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
-      return data.feedback;
-    },
-    async saveSpeaking(r) { return (await ok(sb.from('speaking_submissions').insert(r).select('id').single())).id; },
-    async mySpeakings(name, group) { return ok(sb.rpc('my_speakings', { n: name, g: group })); },
-    async listSpeakings() { return ok(sb.from('speaking_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
-    async deleteSpeaking(id) { await ok(sb.from('speaking_submissions').delete().eq('id', id)); },
-    async tgAuth(payload) {
-      const { data, error } = await sb.functions.invoke('tg-auth', { body: payload });
-      let msg = data?.error;
-      if (error && !msg) { try { msg = (await error.context.json()).error; } catch { msg = error.message; } }
-      if (msg) throw new Error(msg);
-      return data;
-    },
-    aiAvailable: true,
-    async checkWriting(payload) {
-      const { data, error } = await sb.functions.invoke('check-writing', { body: payload });
-      let msg = data?.error;
-      if (error && !msg) { try { msg = (await error.context.json()).error; } catch { msg = error.message; } }
-      if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
-      return data.feedback;
-    },
-    async saveWriting(r) { return (await ok(sb.from('writing_submissions').insert(r).select('id').single())).id; },
-    async myWritings(name, group) { return ok(sb.rpc('my_writings', { n: name, g: group })); },
-    async listWritings() { return ok(sb.from('writing_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
-    async deleteWriting(id) { await ok(sb.from('writing_submissions').delete().eq('id', id)); },
-    async listMocks() { return ok(sb.from('mock_submissions').select('*').order('created_at', { ascending: false }).limit(2000)); },
-    async deleteMock(id) { await ok(sb.from('mock_submissions').delete().eq('id', id)); },
-    async addActivity(name, group, secs) { await sb.rpc('add_activity', { n: name, g: group, secs }); },
-    async listActivity() { return ok(sb.from('activity').select('*').limit(20000)); },
-    async uploadFile(file) {
-      const ext = (file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '');
-      const path = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}.${ext}`;
-      const { error } = await sb.storage.from('audio').upload(path, file, { contentType: file.type || undefined });
-      if (error) throw new Error(error.message);
-      return sb.storage.from('audio').getPublicUrl(path).data.publicUrl;
-    },
-    canUpload: true,
+    async remove(t, id) { await ok(sb.from(T(t)).delete().eq('id', id)); },
+    async saveAttendance(recs) { if (recs.length) await ok(sb.from('mg_attendance').upsert(recs, { onConflict: 'student_id,day' })); },
+    async delAttendance(student_id, day) { await ok(sb.from('mg_attendance').delete().eq('student_id', student_id).eq('day', day)); },
+    async saveLesson(rec) { await ok(sb.from('mg_lessons').upsert(rec, { onConflict: 'group_id,day' })); },
+    async portal(code) { return ok(sb.rpc('mg_my_status', { c: String(code).trim() })); },
+    exportAll: null,
   };
 }
 
-export let store = local;
+export const store = {};
 export async function initStore() {
-  if (cloudConfigured()) store = await makeCloud();
+  let impl;
+  if (cloudConfigured()) { try { impl = await makeCloud(); } catch (e) { console.warn('Supabase ulanmadi, DEMO rejimi:', e); impl = local; } } else impl = local;
+  Object.assign(store, impl);
   await store.init();
   return store;
 }

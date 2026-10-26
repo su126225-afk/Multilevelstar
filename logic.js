@@ -1,320 +1,145 @@
-// Pure logic: no DOM, no network. Everything here is unit-tested in tests/logic.test.mjs
-
+// Sof (toza) funksiyalar: sana, to'lov balansi, davomat, eslatma. Testlanadi (tests/logic.test.mjs).
+export const pad = n => String(n).padStart(2, '0');
+export const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;   // mahalliy sana (UTC emas)
+export const parseYmd = s => { const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
+export const today = () => ymd(new Date());
+export const monthOf = s => String(s).slice(0, 7);
+export const addMonths = (mk, n) => { const [y, m] = mk.split('-').map(Number); const d = new Date(y, m - 1 + n, 1); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; };
+export const MONTHS = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'];
+export const monthLabel = mk => { const [y, m] = String(mk).split('-').map(Number); return `${MONTHS[m - 1] || '?'} ${y}`; };
+export const monthsBetween = (from, to) => { const out = []; let c = from; while (c <= to && out.length < 120) { out.push(c); c = addMonths(c, 1); } return out; };
+export const WD = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+export const WDS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Juma', 'Shan'];
+export const WD_ORDER = [1, 2, 3, 4, 5, 6, 0];            // hafta dushanbadan boshlanadi
+export const fmtDate = s => { if (!s) return ''; const d = parseYmd(s); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`; };
+export const money = n => String(Math.round(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " so'm";
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+export const csvCell = v => { const s = String(v ?? ''); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
 
-const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-
-/** Tiny rich-text: blank line = paragraph, "# " heading, "## " label, **bold**, "- " bullet. */
-export function rich(text) {
-  const blocks = String(text || '').replace(/\r/g, '').split(/\n{2,}/);
-  return blocks.map(b => {
-    b = b.trim();
-    if (!b) return '';
-    if (b.startsWith('## ')) return `<h4 class="plabel">${inline(b.slice(3))}</h4>`;
-    if (b.startsWith('# ')) return `<h3>${inline(b.slice(2))}</h3>`;
-    if (/^- /.test(b)) return `<ul>${b.split('\n').map(l => `<li>${inline(l.replace(/^- /, ''))}</li>`).join('')}</ul>`;
-    return `<p>${inline(b).replace(/\n/g, '<br>')}</p>`;
-  }).join('');
+/** Shaxsiy kod (o'xshash harflarsiz: 0/O, 1/I yo'q). */
+export function genCode(taken = new Set(), rnd = Math.random) {
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  for (let n = 0; n < 200; n++) { let c = ''; for (let i = 0; i < 6; i++) c += A[Math.floor(rnd() * A.length)]; if (!taken.has(c)) return c; }
+  throw new Error('Kod yaratib bo\'lmadi');
 }
 
-/** rich() and then swap {{n}} markers for whatever renderGap(n) returns. */
-export function richGaps(text, renderGap) {
-  return rich(text).replace(/\{\{(\d+)\}\}/g, (_, n) => renderGap(Number(n)));
+/** O'quvchining oylik narxi: shaxsiy narx bo'lsa shu, bo'lmasa guruh narxi. */
+export const priceOf = (s, g) => (s && s.price !== null && s.price !== undefined && s.price !== '') ? Number(s.price) : Number(g?.price || 0);
+
+/** Muzlatish: s.freezes = [{from:'2026-10-01', to:'2026-11-01'|null}]. Oxirgisida `to` yo'q bo'lsa hozir muzlatilgan. */
+export const freezesOf = s => (Array.isArray(s?.freezes) ? s.freezes : []);
+export const isFrozen = s => { const f = freezesOf(s); return f.length > 0 && !f[f.length - 1].to; };
+/** Shu oyda to'lov hisoblanmaydimi (muzlatilgan davr oyni qamrasa). `to` oyi o'zi hisoblanadi. */
+export const frozenInMonth = (s, mk) => freezesOf(s).some(f => f.from && monthOf(f.from) <= mk && (!f.to || mk < monthOf(f.to)));
+export const frozenOn = (s, day) => freezesOf(s).some(f => f.from && f.from <= day && (!f.to || day < f.to));
+/** Hozir darsga qatnashadigan (faol va muzlatilmagan) o'quvchi. */
+export const isLive = s => !!s && s.active !== false && !isFrozen(s);
+
+/** Bir oy uchun: to'lashi kerak / to'lagan / qolgan. Qo'shilgan oyidan oldingi oylar uchun qarz yo'q. */
+export function monthBalance(student, group, payments, mk) {
+  const start = monthOf(student.joined || '0000-01-01');
+  const due = mk < start || frozenInMonth(student, mk) ? 0 : priceOf(student, group);
+  const paid = payments.filter(p => p.student_id === student.id && p.month === mk).reduce((a, p) => a + Number(p.amount || 0), 0);
+  const left = Math.max(0, due - paid);
+  const status = due === 0 && paid === 0 ? 'none' : left === 0 ? 'paid' : paid > 0 ? 'partial' : 'unpaid';
+  return { due, paid, left, status };
 }
 
-// ---------- option + question text format ----------
-const TF = { TRUE: 'True', T: 'True', FALSE: 'False', F: 'False', 'NOT GIVEN': 'Not Given', NG: 'Not Given' };
-const YN = { YES: 'Yes', Y: 'Yes', NO: 'No', N: 'No', 'NOT GIVEN': 'Not Given', NG: 'Not Given' };
-
-function parseOptionToken(o, k) {
-  const m = o.match(/^([A-Za-z]|[ivxIVX]{2,5}|\d{1,2})\)\s*(.*)$/) || o.match(/^([A-Za-z])\.\s+(.*)$/);
-  return m ? { label: m[1], text: m[2].trim() } : { label: String.fromCharCode(65 + k), text: o };
+/** Qo'shilgan oyidan hozirgi oygacha jami qarz (har oy alohida hisoblanadi, ortiqcha to'lov boshqa oyni yopmaydi). */
+export function totalDebt(student, group, payments, nowMonth) {
+  return monthsBetween(monthOf(student.joined || nowMonth), nowMonth).reduce((a, mk) => a + monthBalance(student, group, payments, mk).left, 0);
 }
 
-/** "A) text" per line (or separated by |) -> [{label,text}] */
-export function parseOptions(text) {
-  return String(text || '').split(/\n|\|/).map(s => s.trim()).filter(Boolean).map(parseOptionToken);
-}
-export function serializeOptions(opts) {
-  return (opts || []).map(o => `${o.label}) ${o.text}`.trimEnd()).join('\n');
-}
-
-/**
- * One question per line:  text :: options-or-type :: answer
- *   Choose :: A) one | B) two | C) three :: B
- *   Statement :: TFNG :: True        (or YNNG)
- *   Heading for paragraph 1 :: MATCH :: C   (choices come from the shared option list)
- *   The cat is ___ :: GAP :: black / dark
- *   The cat is ___ :: black            (2 fields = gap shortcut)
- */
-export function parseBlock(text, shared = []) {
-  const questions = [], errors = [];
-  String(text || '').split('\n').forEach((raw, i) => {
-    const line = raw.trim();
-    if (!line) return;
-    const ln = i + 1;
-    const f = line.split('::').map(s => s.trim());
-    if (f.length < 2 || (!f[0] && f.length < 3)) return errors.push(`Line ${ln}: use  question :: options or type :: answer`);
-    if (f.length === 2) {
-      if (!f[1]) return errors.push(`Line ${ln}: the answer is empty`);
-      return questions.push({ type: 'fill', text: f[0], answer: f[1] });
-    }
-    const [t, spec, ans] = f;
-    const u = spec.toUpperCase();
-    if (!ans) return errors.push(`Line ${ln}: the answer is empty`);
-    if (u === 'TFNG' || u === 'YNNG') {
-      const a = (u === 'TFNG' ? TF : YN)[ans.toUpperCase()];
-      if (!a) return errors.push(`Line ${ln}: answer must be ${u === 'TFNG' ? 'True / False / Not Given' : 'Yes / No / Not Given'}`);
-      return questions.push({ type: u.toLowerCase(), text: t, answer: a });
-    }
-    if (u === 'GAP') return questions.push({ type: 'fill', text: t, answer: ans });
-    if (u === 'MATCH') {
-      if (!shared.length) return errors.push(`Line ${ln}: MATCH needs a shared option list (fill the "Options" box of this part or group)`);
-      const hit = shared.find(o => o.label.toLowerCase() === ans.toLowerCase());
-      if (!hit) return errors.push(`Line ${ln}: "${ans}" is not one of the option letters`);
-      return questions.push({ type: 'match', text: t, answer: hit.label });
-    }
-    const options = spec.split('|').map(s => s.trim()).filter(Boolean).map(parseOptionToken);
-    if (options.length < 2) return errors.push(`Line ${ln}: need at least 2 options separated by |`);
-    const hit = options.find(o => o.label.toLowerCase() === ans.toLowerCase());
-    if (!hit) return errors.push(`Line ${ln}: answer "${ans}" is not one of the option letters`);
-    questions.push({ type: 'mcq', text: t, options, answer: hit.label });
-  });
-  return { questions, errors };
+/** Davomat statistikasi. Foiz = (keldi + kechikdi) / belgilangan darslar. */
+export function attStats(rows) {
+  const c = { p: 0, a: 0, e: 0, l: 0 };
+  for (const r of rows) if (c[r.status] !== undefined) c[r.status]++;
+  const total = c.p + c.a + c.e + c.l;
+  return { ...c, total, pct: total ? Math.round((c.p + c.l) / total * 100) : null };
 }
 
-export function serializeBlock(questions) {
-  return (questions || []).map(q => {
-    if (q.type === 'fill') return `${q.text} :: GAP :: ${q.answer}`;
-    if (q.type === 'tfng') return `${q.text} :: TFNG :: ${q.answer}`;
-    if (q.type === 'ynng') return `${q.text} :: YNNG :: ${q.answer}`;
-    if (q.type === 'match') return `${q.text} :: MATCH :: ${q.answer}`;
-    return `${q.text} :: ${q.options.map(o => `${o.label}) ${o.text}`).join(' | ')} :: ${q.answer}`;
-  }).join('\n');
-}
-
-// ---------- numbering ----------
-const GAP_RE = /\[\[(.+?)\]\]/g;
-
-/**
- * Walks a test, numbers every question (including [[inline gaps]]) and returns
- * { parts, flat } ready for rendering and grading. Does not mutate the input.
- */
-export function prepare(test) {
-  let n = Math.max(0, (Number(test.data?.qstart) || 1) - 1);   // recent-real parts keep the exam's own numbering (e.g. 30–35)
-  const flat = [];
-  const gapify = (txt, pi) => String(txt || '').replace(GAP_RE, (_, ans) => {
-    n++;
-    flat.push({ n, pi, type: 'fill', inline: true, text: '', answer: ans.trim() });
-    return `{{${n}}}`;
-  });
-  const parts = (test.data?.parts || []).map((p, pi) => {
-    const first = n + 1;
-    const text = gapify(p.text, pi);
-    const blocks = (p.blocks || []).map(b => {
-      const from = n + 1;
-      const body = gapify(b.body, pi);
-      const choices = b.options?.length ? b.options : (p.options || []);
-      const qs = (b.questions || []).map(q => {
-        n++;
-        const o = { ...q, n, pi, choices: q.type === 'match' ? choices : undefined };
-        flat.push(o);
-        return o;
-      });
-      return { ...b, body, qs, from, to: n };
-    });
-    return { ...p, pi, text, blocks, from: first, to: n };
-  });
-  return { parts, flat };
-}
-
-// ---------- grading ----------
-export const norm = s => String(s ?? '').toLowerCase().replace(/[£$.,!?'’"]/g, '').replace(/\s+/g, ' ').trim();
-
-export function isCorrect(q, a) {
-  if (a == null || String(a).trim() === '') return false;
-  if (q.type === 'fill') return String(q.answer).split('/').some(x => norm(x) === norm(a));
-  return norm(q.answer) === norm(a);
-}
-
-function show(q, a, key) {
-  if (a == null || String(a).trim() === '') return '';
-  if (q.type === 'mcq') {
-    const o = (q.options || []).find(o => o.label.toLowerCase() === String(a).toLowerCase());
-    return o ? `${o.label}) ${o.text}` : String(a);
-  }
-  if (q.type === 'fill' && key) return String(a).split('/').map(s => s.trim()).join(' / ');
-  return String(a);
-}
-
-// IELTS raw score (of 40) -> band. Each row is [minimum correct answers, band]; checked from the top.
-const BAND_L = [[39, 9], [37, 8.5], [35, 8], [32, 7.5], [30, 7], [26, 6.5], [23, 6], [18, 5.5], [16, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5], [2, 2], [1, 1]];
-const BAND_R = [[39, 9], [37, 8.5], [35, 8], [33, 7.5], [30, 7], [27, 6.5], [23, 6], [19, 5.5], [15, 5], [13, 4.5], [10, 4], [8, 3.5], [6, 3], [4, 2.5], [2, 2], [1, 1]];
-
-/** Listening and Academic Reading tables. */
-export function ieltsBand(section, correct, total) {
-  if (!total) return 0;
-  const raw = Math.round(correct / total * 40);
-  const table = section === 'listening' ? BAND_L : BAND_R;
-  for (const [m, b] of table) if (raw >= m) return b;
-  return 0;
-}
-
-// Official Multilevel conversion table: number of correct answers (of 35) → score out of 75.
-const ML_L = [0, 23, 26, 28, 30, 33, 34, 36, 38, 39, 41, 42, 44, 45, 47, 48, 50, 51, 53, 54, 55, 57, 58, 60, 61, 63, 65, 66, 68, 70, 72, 73, 74, 75, 75, 75];
-const ML_R = [0, 20, 24, 27, 29, 32, 34, 36, 38, 39, 41, 42, 44, 45, 47, 48, 49, 51, 52, 54, 55, 57, 58, 60, 61, 63, 65, 66, 68, 70, 72, 73, 74, 75, 75, 75];
-export function multilevelScore(correct, total, section = 'reading') {
-  // the table is for 35 questions; a test with another length is scaled to 35 first
-  const raw = total ? Math.min(35, Math.max(0, total === 35 ? correct : Math.round(correct / total * 35))) : 0;
-  const pts = (section === 'listening' ? ML_L : ML_R)[raw];
-  const level = pts >= 65 ? 'C1' : pts >= 51 ? 'B2' : pts >= 38 ? 'B1' : 'Below B1';
-  return { pts, level };
-}
-
-export function grade(test, answers) {
-  const { flat } = prepare(test);
-  let correct = 0;
-  const details = flat.map(q => {
-    const a = answers[q.n];
-    const ok = isCorrect(q, a);
-    if (ok) correct++;
-    return { n: q.n, type: q.type, q: q.text || '', ok, blank: a == null || String(a).trim() === '', your: show(q, a), right: show(q, q.answer, true) };
-  });
-  const total = flat.length;
-  const percent = total ? Math.round(correct / total * 1000) / 10 : 0;
-  let band, points, sub;
-  if (test.data?.practice) {
-    band = `${correct}/${total}`; points = correct; sub = 'correct';   // single-part practice: no exam score
-  } else if (test.format === 'multilevel') {
-    const m = multilevelScore(correct, total, test.section);
-    band = m.level; points = m.pts; sub = `${m.pts} / 75`;
-  } else {
-    const b = ieltsBand(test.section, correct, total);
-    band = b.toFixed(1); points = b; sub = 'Band';
-  }
-  return { correct, total, percent, band, points, sub, details };
-}
-
-// ---------- leaderboard ----------
-export function buildBoard(results, f = {}) {
-  const rows = results.filter(r =>
-    (!f.section || r.section === f.section) && (!f.format || r.format === f.format) &&
-    (!f.testId || r.test_id === f.testId) && (!f.group || r.group_code === f.group) &&
-    (!f.since || new Date(r.created_at) >= f.since));
-  const by = new Map();
-  for (const r of rows) {
-    const key = `${r.group_code}|${String(r.student_name).trim().toLowerCase()}`;
-    let s = by.get(key);
-    if (!s) by.set(key, s = { name: r.student_name, group: r.group_code, tests: new Map(), attempts: 0 });
-    s.attempts++;
-    const cur = s.tests.get(r.test_id);
-    if (!cur || r.percent > cur.percent || (r.percent === cur.percent && r.time_sec < cur.time_sec)) s.tests.set(r.test_id, r);
-  }
-  const out = [...by.values()].map(s => {
-    const best = [...s.tests.values()];
-    const avg = best.reduce((a, r) => a + Number(r.percent), 0) / best.length;
-    const time = best.reduce((a, r) => a + (r.time_sec || 0), 0);
-    const top = best.slice().sort((a, b) => b.percent - a.percent)[0];
-    return { name: s.name, group: s.group, tests: best.length, attempts: s.attempts, avg, time, top };
-  });
-  out.sort((a, b) => b.avg - a.avg || b.tests - a.tests || a.time - b.time);
+/** [from..to] oralig'ida guruh dars kunlari (sana satrlari). */
+export function lessonDays(group, from, to) {
+  const out = [], set = new Set(group?.days || []);
+  const d = parseYmd(from), end = parseYmd(to);
+  for (let n = 0; d <= end && n < 400; n++, d.setDate(d.getDate() + 1)) if (set.has(d.getDay())) out.push(ymd(d));
   return out;
 }
 
-// ---------- misc ----------
-export const fmtTime = sec => {
-  sec = Math.max(0, Math.round(sec || 0));
-  const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
-  return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(s).padStart(2, '0');
-};
-export const fmtDate = d => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-export const fmtDateTime = d => new Date(d).toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-
-/** "1:05" or "65" or "1:02:03" -> seconds; '' -> null */
-export function parseTime(v) {
-  v = String(v ?? '').trim();
-  if (!v) return null;
-  const p = v.split(':').map(Number);
-  if (p.some(isNaN)) return null;
-  return p.reduce((a, x) => a * 60 + x, 0);
+/** To'lov muddatigacha necha kun qoldi (manfiy = muddat o'tgan). */
+export function daysToDue(group, now = new Date()) {
+  const pd = Math.min(28, Math.max(1, Number(group?.pay_day) || 1));
+  return pd - now.getDate();
 }
 
-export function testMeta(test) {
-  const { parts, flat } = prepare(test);
-  return { q: flat.length, parts };
+export const reminderText = (student, group, mk, left, teacher = '') =>
+  `Assalomu alaykum! ${student.name} uchun ${monthLabel(mk)} oyi kurs to'lovi (${money(left)}) hali to'lanmagan. Iltimos, to'lovni amalga oshirishingizni so'raymiz. Rahmat!${teacher ? ' — ' + teacher : ''}`;
+
+export const STATUS = { p: 'Keldi', a: 'Kelmadi', e: 'Sababli', l: 'Kechikdi' };
+export const HW = { y: 'Vazifa bajardi', n: 'Vazifa bajarmadi' };
+export const BEH = { g: 'Tartib yaxshi', b: 'Tartib yomon' };
+
+/** Guruh+oy bo'yicha jadval: o'quvchi qatorlari × dars kunlari ustunlari. */
+export function attendanceGrid(group, students, attendance, lessons, mk) {
+  const [y, m] = mk.split('-').map(Number), last = new Date(y, m, 0).getDate();
+  const days = lessonDays(group, `${mk}-01`, `${mk}-${pad(last)}`);
+  const cancelled = new Set(lessons.filter(l => l.group_id === group.id && l.cancelled).map(l => l.day));
+  const held = days.filter(d => !cancelled.has(d));
+  const map = new Map(attendance.map(a => [a.student_id + '|' + a.day, a.status]));
+  const hwm = new Map(attendance.map(a => [a.student_id + '|' + a.day, a.hw || ''])), bhm = new Map(attendance.map(a => [a.student_id + '|' + a.day, a.beh || '']));
+  return { days: held, rows: students.map(s => ({ student: s, cells: held.map(d => map.get(s.id + '|' + d) || ''), hw: held.map(d => hwm.get(s.id + '|' + d) || ''), beh: held.map(d => bhm.get(s.id + '|' + d) || ''), stats: attStats(held.map(d => ({ status: map.get(s.id + '|' + d) })).filter(x => x.status)) })) };
 }
 
-export function setPath(obj, path, val) {
-  const keys = path.split('.');
-  let o = obj;
-  for (let i = 0; i < keys.length - 1; i++) o = o[keys[i]];
-  o[keys[keys.length - 1]] = val;
+// ───────── Excel ro'yxatdan o'quvchilarni olish ─────────
+/** "91.2626122" yoki "+998 91 262 61 22" → "+998 91 262 61 22". Tanib bo'lmasa o'zini qaytaradi. */
+export function formatPhone(raw) {
+  const t = String(raw ?? '').trim(); if (!t) return '';
+  let d = t.replace(/\D/g, '');
+  if (d.length === 12 && d.startsWith('998')) d = d.slice(3);
+  return d.length === 9 ? `+998 ${d.slice(0, 2)} ${d.slice(2, 5)} ${d.slice(5, 7)} ${d.slice(7)}` : t;
 }
+const looksPhone = v => { const d = String(v ?? '').replace(/\D/g, ''); return typeof v !== 'object' && (d.length === 9 || (d.length === 12 && d.startsWith('998'))) && /^[\d\s.+()-]+$/.test(String(v).trim()); };
 
-export const csvCell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-
-// ---------- progress: XP, levels, streak, achievements ----------
-export const xpFor = r => 20 + Math.round(Number(r.percent) || 0);
-export const levelStart = n => 75 * n * (n - 1) / 2;            // level 1 starts at 0 XP, 2 at 75, 3 at 225, 4 at 450 …
-export function levelOf(xp) { let n = 1; while (levelStart(n + 1) <= xp) n++; return { level: n, into: xp - levelStart(n), span: levelStart(n + 1) - levelStart(n), toNext: levelStart(n + 1) - xp }; }
-const dayKey = d => { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0'); };
-export function gamify(mine, now = new Date()) {
-  const rs = mine.slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
-  const xp = rs.reduce((a, r) => a + xpFor(r), 0), lv = levelOf(xp);
-  const days = new Set(rs.map(r => dayKey(r.created_at)));
-  const step = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1);
-  let streak = 0, d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (!days.has(dayKey(d))) d = step(d);
-  while (days.has(dayKey(d))) { streak++; d = step(d); }
-  let bestStreak = 0, run = 0, prev = null;
-  for (const k of [...days].sort()) { const t = new Date(k + 'T00:00:00'); run = prev && Math.round((t - prev) / 864e5) === 1 ? run + 1 : 1; bestStreak = Math.max(bestStreak, run); prev = t; }
-  const weekAgo = now.getTime() - 7 * 864e5;
-  const week = rs.filter(r => new Date(r.created_at).getTime() >= weekAgo).length;
-  const uniq = sec => new Set(rs.filter(r => r.section === sec).map(r => r.test_id)).size;
-  let pb = 0, beat = false; for (const r of rs) { if (pb && r.percent > pb) beat = true; pb = Math.max(pb, r.percent); }
-  const hi = rs.filter(r => r.percent >= 85).length;
-  const A = (id, title, text, have, need, done) => ({ id, title, text, have: Math.min(have, need), need, done: done ?? have >= need });
-  return { xp, ...lv, streak, bestStreak, today: days.has(dayKey(now)), week, best: pb, count: rs.length,
-    achievements: [
-      A('first', 'First Test Completed', 'Finish your first test.', rs.length, 1),
-      A('streak7', 'Seven-Day Streak', 'Practise on 7 days in a row.', bestStreak, 7),
-      A('acc', 'Accuracy Master', 'Score 85% or more three times.', hi, 3),
-      A('listen', 'Listening Specialist', 'Complete 3 different Listening tests.', uniq('listening'), 3),
-      A('read', 'Reading Champion', 'Complete 10 different Reading tests.', uniq('reading'), 10),
-      A('pb', 'Personal Best', 'Beat your own best score.', beat ? 1 : 0, 1),
-      A('week', 'Weekly Goal Achieved', 'Complete 5 tests in one week.', week, 5),
-    ] };
-}
-export const TYPE_NAMES = { fill: 'Gap-fill', mcq: 'Multiple choice', tfng: 'True / False / Not Given', ynng: 'Yes / No / Not Given', match: 'Matching' };
-export function typeStats(details) {
-  const m = new Map();
-  for (const d of details || []) { if (!d.type) continue; const r = m.get(d.type) || { type: d.type, name: TYPE_NAMES[d.type] || d.type, ok: 0, total: 0 }; r.total++; if (d.ok) r.ok++; m.set(d.type, r); }
-  return [...m.values()].map(r => ({ ...r, pct: Math.round(r.ok / r.total * 100) }));
-}
-
-
-// ---------- writing: inline error annotation ----------
-/** Splits `text` into plain and marked segments using the AI's corrections ({original, better, why, type}). */
-export function annotate(text, corrections) {
-  const marks = [];
-  let cursor = 0;
-  const free = (i, e) => !marks.some(m => i < m.e && e > m.s);
-  for (const c of corrections || []) {
-    const o = String(c.original || '').trim();
-    if (!o) continue;
-    let i = text.indexOf(o, cursor);
-    if (i < 0) { i = text.toLowerCase().indexOf(o.toLowerCase()); }
-    if (i < 0 || !free(i, i + o.length)) continue;
-    marks.push({ s: i, e: i + o.length, c });
-    cursor = i + o.length;
+/** Excel varag'i (qatorlar massivi) → o'quvchilar. Sarlavha qatorini o'zi topadi (Student Name / Full Name, Parent's Phone, Category…). */
+export function parseRegister(rows) {
+  const lower = c => String(c ?? '').toLowerCase();
+  let hi = rows.findIndex((r, i) => i < 15 && (r || []).some(c => /name/.test(lower(c))));
+  if (hi < 0) return { students: [], skipped: 0, error: "Sarlavha qatori topilmadi (Student Name / Full Name ustuni kerak)" };
+  const head = rows[hi], col = re => head.findIndex(c => re.test(lower(c)));
+  const cName = col(/name/), cPhone = col(/phone/), cStart = col(/start/), cStatus = col(/tuition|status/), cCat = col(/categor/);
+  const out = [], seen = new Set(); let skipped = 0;
+  for (const r of rows.slice(hi + 1)) {
+    if (!r) continue;
+    let name = String(r[cName] ?? '').replace(/\s+/g, ' ').trim();
+    if (!name) {   // ba'zi qatorlarda ism bir ustun chapga siljib ketgan
+      const alt = r.find(c => typeof c === 'string' && /[A-Za-z\u0400-\u04FF]{3,}/.test(c) && !/^\s*(summary|total|paid|on leave|due|missing|no info|overdue)/i.test(c) && !/paid|due\b|overdue|leave|info/i.test(c));
+      if (alt) name = alt.replace(/\s+/g, ' ').trim();
+    }
+    if (!name || /^\d+$/.test(name) || name.length < 2) { if (r.some(c => c != null && String(c).trim() && !/^\d+$/.test(String(c).trim()))) skipped++; continue; }
+    const key = name.toLowerCase(); if (seen.has(key)) { skipped++; continue; } seen.add(key);
+    let ph = cPhone >= 0 ? r[cPhone] : ''; if (!looksPhone(ph)) ph = r.find((c, i) => i !== cName && looksPhone(c)) ?? '';
+    const cat = String(cPhone === cCat ? '' : (r[cCat] ?? '')).trim(), status = String(r[cStatus] ?? '').trim(), start = r[cStart];
+    const startTxt = typeof start === 'string' && !looksPhone(start) ? start.trim() : '';
+    const bits = [status && `To'lov (Excel): ${status}`, startTxt && `Boshlagan: ${startTxt}`, cat && `Toifa: ${cat}`].filter(Boolean);
+    out.push({ name, parent_phone: formatPhone(ph), note: bits.join(' · '), frozen: /leave|freez|frozen|muzla/i.test(cat) });
   }
-  marks.sort((a, b) => a.s - b.s);
-  const segs = []; let p = 0;
-  for (const m of marks) {
-    if (m.s > p) segs.push({ t: text.slice(p, m.s) });
-    segs.push({ t: text.slice(m.s, m.e), c: m.c });
-    p = m.e;
-  }
-  if (p < text.length) segs.push({ t: text.slice(p) });
-  return segs;
+  return { students: out, skipped };
+}
+
+// ───────── Kuzatuv: e'tibor kerak bo'lgan o'quvchilar ─────────
+/** Oxirgi darslardan boshlab ketma-ket «kelmadi» soni («sababli» zanjirni uzmaydi, hisoblanmaydi). */
+export function absentStreak(rows) {
+  let n = 0;
+  for (const r of rows.slice().sort((a, b) => b.day.localeCompare(a.day))) { if (r.status === 'a') n++; else if (r.status === 'e') continue; else break; }
+  return n;
+}
+/** O'quvchi uchun ogohlantirishlar: ketma-ket qoldirish, oxirgi 30 kunda past davomat, to'lov qarzi. */
+export function studentWatch(student, group, att, payments, now = new Date()) {
+  const mk = monthOf(ymd(now)), mine = att.filter(a => a.student_id === student.id), reasons = [];
+  const streak = absentStreak(mine); if (streak >= 2) reasons.push({ k: 'streak', n: streak });
+  const since = ymd(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30)), st = attStats(mine.filter(a => a.day >= since));
+  if (st.total >= 3 && st.pct < 70) reasons.push({ k: 'low', pct: st.pct });
+  const bal = monthBalance(student, group, payments, mk);
+  if (bal.left > 0) reasons.push({ k: 'debt', left: bal.left, overdue: group ? daysToDue(group, now) < 0 : false });
+  return reasons;
 }
