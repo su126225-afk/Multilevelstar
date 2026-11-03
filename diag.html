@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Diagnostika</title>
+<style>body{font:15px/1.5 system-ui,sans-serif;background:#111;color:#eee;padding:20px}.ok{color:#4ade80}.bad{color:#f87171;font-weight:700}pre{white-space:pre-wrap;margin:2px 0 8px 18px;color:#fca5a5}</style></head>
+<body><h2>Sayt diagnostikasi</h2><div id="o">Tekshirilmoqda…</div>
+<script type="module">
+const o=document.getElementById('o'); o.innerHTML='';
+const line=(ok,t,e)=>{o.insertAdjacentHTML('beforeend',`<div class="${ok?'ok':'bad'}">${ok?'✓':'✗'} ${t}</div>${e?`<pre>${String(e).replace(/</g,'&lt;')}</pre>`:''}`)};
+for (const f of ['marathon.json','tests.json','marathon-d1-listening-5.mp3','marathon-d1-reading-4.pdf']) {
+  try{const r=await fetch(f,{method:'HEAD',cache:'no-store'});line(r.ok,`fayl ${f} — HTTP ${r.status}`)}catch(e){line(false,`fayl ${f}`,e)}
+}
+const mods=['config.js','prefs.js','logic.js','ui.js','marlogic.js','store.js','activity.js','views-writing.js','views-marathon.js','views-vocab.js','views-speaking.js','views-ielts.js?v=5','views-student.js?v=8','views-marathon-admin.js','views-admin.js?v=7'];
+for (const m of mods) {
+  try{ await import('./'+m+(m.includes('?')?'&':'?')+'d='+Date.now()); line(true,`modul ${m}`)}catch(e){line(false,`modul ${m}`,e&&(e.stack||e.message||e))}
+}
+try{
+  const s=await import('./store.js');
+  const t=setTimeout(()=>line(false,'initStore: 8 soniyada javob bermadi (Supabase ulanishi qotib qoldi)'),8000);
+  await s.initStore(); clearTimeout(t); line(true,'initStore (ma\'lumotlar bazasiga ulanish)');
+  try{const l=await s.store.listTests({published:true});line(true,`testlar o'qildi: ${l.length} ta`)}catch(e){line(false,'listTests',e)}
+}catch(e){line(false,'initStore',e&&(e.stack||e.message||e))}
+o.insertAdjacentHTML('beforeend','<p>Tayyor. Shu ekranning skrinshotini yuboring.</p>');
+</script></body></html>
