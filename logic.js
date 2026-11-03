@@ -100,6 +100,21 @@ const GAP_RE = /\[\[(.+?)\]\]/g;
  * Walks a test, numbers every question (including [[inline gaps]]) and returns
  * { parts, flat } ready for rendering and grading. Does not mutate the input.
  */
+/** Anti-cheating: a copy of the test with questions (and A/B/C options) in a random order. Same seed -> same order, so a page refresh keeps the attempt consistent. */
+export function shuffleTest(test, seed) {
+  let a = (Number(seed) >>> 0) || 1;
+  const rnd = () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const shuf = arr => { const x = arr.slice(); for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
+  const data = { ...test.data, parts: (test.data?.parts || []).map(p => ({ ...p, blocks: (p.blocks || []).map(b => ({ ...b, questions: shuf(b.questions || []).map(q => {
+    if (q.type !== 'mcq' || !q.options?.length) return q;
+    const old = q.options, order = shuf(old), L = 'ABCDEFGH';
+    const right = old.find(o => String(o.label).toLowerCase() === String(q.answer).toLowerCase());
+    const opts = order.map((o, i) => ({ ...o, label: L[i] }));
+    return { ...q, options: opts, answer: right ? L[order.indexOf(right)] : q.answer };
+  }) })) })) };
+  return { ...test, data };
+}
+
 export function prepare(test) {
   let n = Math.max(0, (Number(test.data?.qstart) || 1) - 1);   // recent-real parts keep the exam's own numbering (e.g. 30–35)
   const flat = [];
