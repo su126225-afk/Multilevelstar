@@ -201,6 +201,8 @@ actions.gPick = async el => {
 function drawSpeaking(root) {
   const { t } = TK;
   root.innerHTML = `<div class="wrap page">${backLink()}<h1 class="ptitle mt" style="font-size:30px">${esc(t.title)}</h1>
+    ${t.note ? `<p class="muted">${esc(t.note)}</p>` : ''}
+    ${(t.images || []).length ? `<div class="row mt" style="gap:12px;flex-wrap:wrap">${t.images.map(u => `<img src="${esc(u)}" alt="Speaking rasmi" style="max-width:100%;width:360px;border-radius:14px;border:1px solid var(--border)">`).join('')}</div>` : ''}
     <div class="panel mt"><b>Savollar</b><ol style="margin:8px 0 0;padding-left:22px;line-height:1.8">${(t.questions || []).map(q => `<li>${esc(q)}</li>`).join('')}</ol></div>
     <div class="panel mt"><b>Qanday topshiriladi?</b><ol style="margin:8px 0 0;padding-left:22px;line-height:1.8"><li>Telefondan ovoz yozib oling (har bir javob ~30–60 soniya).</li><li>Ovozli xabarni Telegramda ustozga yuboring: <a href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener"><b>${esc(CONFIG.telegramPersonal)}</b></a>. Xabarga ismingiz, guruhingiz va kun raqamini yozing.</li><li>Yuborgach, pastdagi tugmani bosing.</li></ol>
       <div class="ctas"><a class="btn" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">${icon('send', 15)} Telegramni ochish</a><a class="btn" href="#/speaking">AI bilan mashq qilish</a></div></div>
