@@ -1,11 +1,12 @@
 import { store } from './store.js';
 import { CONFIG } from './config.js';
-import { esc, rich, richGaps, prepare, grade, buildBoard, gamify, levelOf, xpFor, typeStats, fmtTime, fmtDate, fmtDateTime, testMeta } from './logic.js';
+import { esc, rich, richGaps, prepare, shuffleTest, grade, buildBoard, gamify, levelOf, xpFor, typeStats, fmtTime, fmtDate, fmtDateTime, testMeta } from './logic.js';
 import { mySeconds, fmtHours } from './activity.js';
 import { feedbackHTML, KINDS } from './views-writing.js';
 import { settingsButton, applyPrefs, getSplit, saveSplit, getVSplit, saveVSplit } from './prefs.js';
 import * as HL from './highlight.js';
-import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials } from './ui.js';
+import { getCtx, marTaskDone, reasonText } from './views-marathon.js';
+import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials, modal } from './ui.js';
 
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
 const notFound = (msg = 'Not found') => `<div class="wrap page"><div class="empty">${esc(msg)}<br><br><a class="btn" href="#/">Back home</a></div></div>`;
@@ -15,7 +16,8 @@ const fmtLabel = t => t.format === 'multilevel' ? 'Multilevel' : 'IELTS';
 const metaCache = new Map();
 const meta = t => { const k = t.id + (t.created_at || ''); if (!metaCache.has(k)) metaCache.set(k, testMeta(t)); return metaCache.get(k); };
 const secIcon = s => s === 'listening' ? 'headphones' : 'book';
-const isRecentRes = r => String(r.test_title || '').startsWith('Recent Real');
+const isRecentRes = r => /^(Recent Real|Marathon)/.test(String(r.test_title || ''));
+const isHidden = t => !!t.data?.recent || !!t.data?.marathon;
 const isRecentTest = t => !!t.data?.recent;
 // PDFs live in the site root; tolerate older paths saved in the database (recent-pdf/…, recent-…)
 const pdfUrl = u => String(u || '').split('/').pop().replace(/^recent-(?=\d{4}-)/, '');
@@ -65,7 +67,7 @@ export async function recent(root) {
 export async function home(root) {
   loading(root);
   const [allTests, allResults, wtasks] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listWritingTasks({ published: true }).catch(() => [])]);
-  const tests = allTests.filter(t => !isRecentTest(t)), results = allResults.filter(r => !isRecentRes(r));
+  const tests = allTests.filter(t => !isHidden(t)), results = allResults.filter(r => !isRecentRes(r));
   const rgroups = recentGroups(allTests, wtasks).slice(0, 3);
   const mine = myResults(results).slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
   const board = buildBoard(results).slice(0, 5);
@@ -160,7 +162,7 @@ export async function practice(root, section) {
   const mine = myResults(results);
   const bestBy = new Map();
   for (const r of mine) { const c = bestBy.get(r.test_id); if (!c || r.percent > c.percent) bestBy.set(r.test_id, r); }
-  const all = tests.filter(t => t.section === section && !isRecentTest(t));
+  const all = tests.filter(t => t.section === section && !isHidden(t));
   root.innerHTML = `
   <div class="wrap page">
     <div class="tabs" style="margin-bottom:26px">
@@ -237,7 +239,7 @@ function activeBoard(acts) {
 export async function leaderboard(root) {
   loading(root);
   const [tests0, results0, acts] = await Promise.all([store.listTests({ published: true }), store.listResults(), store.listActivity().catch(() => [])]);
-  const tests = tests0.filter(t => !isRecentTest(t)), results = results0.filter(r => !isRecentRes(r));
+  const tests = tests0.filter(t => !isHidden(t)), results = results0.filter(r => !isRecentRes(r));
   const groups = [...new Set(results.map(r => r.group_code))].sort();
   root.innerHTML = `<div class="wrap page">
     <h1 class="ptitle">Leaderboard</h1><p class="muted">Each student's best attempt of every test counts. Ranked by average score.</p>
@@ -298,13 +300,13 @@ export async function testIntro(root, id) {
   const listening = t.section === 'listening';
   const timed = listening && t.data?.audio_url;
   root.innerHTML = `<div class="wrap page"><div class="intro">
-    <a class="muted" href="${isRecentTest(t) ? '#/recent' : '#/practice/' + t.section}">← Back to ${isRecentTest(t) ? 'Recent Real' : t.section}</a>
+    ${(() => { const c = getCtx(); return c && c.ref === t.id ? `<a class="muted" href="#/marathon/${c.day}">← Marafon · ${c.day}-kun</a>` : `<a class="muted" href="${isRecentTest(t) ? '#/recent' : '#/practice/' + t.section}">← Back to ${isRecentTest(t) ? 'Recent Real' : t.section}</a>`; })()}
     <div class="row mt"><span class="badge ${t.format === 'multilevel' ? 'multi' : 'ielts'}">${fmtLabel(t)}</span><span class="badge">${t.section === 'listening' ? 'Listening' : 'Reading'}</span></div>
     <h1 class="ptitle mt" style="font-size:40px">${esc(t.title)}</h1>
     <div class="kv"><div><b>${m.parts.length}</b><span>parts</span></div><div><b>${m.q}</b><span>questions</span></div><div><b>${t.duration_min} min</b><span>${timed ? 'recording length' : 'time limit'}</span></div></div>
     <div class="panel"><b>Before you start</b><ul>
       ${listening ? `<li>Use headphones and check your volume.</li>${timed ? '<li>The recording plays straight through, like the real exam. It cannot be paused or rewound.</li><li>You get time to read the questions before each part and time to check your answers after it. The next part opens by itself.</li><li>Your result appears automatically when the recording ends.</li>' : '<li>Press play on each part when you are ready.</li>'}`
-        : `<li>You have ${t.duration_min} minutes. The test is submitted automatically when time runs out.</li><li>Move between parts with the tabs at the bottom.</li>${t.data?.glossary ? '<li>Double-click any word in a passage to see its Uzbek translation.</li>' : ''}`}
+        : `<li>You have ${t.duration_min} minutes. The test is submitted automatically when time runs out.</li><li>Move between parts with the tabs at the bottom.</li>${t.data?.glossary ? '<li>Tap (or double-click) any word in a passage to see its Uzbek translation.</li>' : ''}`}
       <li>Your answers are saved to the leaderboard as <b>${S.student ? esc(S.student.name) : 'you'}</b>${S.student ? ` (${esc(S.student.group)})` : ''}.</li></ul></div>
     <div class="ctas"><button class="btn primary lg" data-act="beginTest" data-id="${t.id}">${icon('play', 18)} Start test</button>${t.data?.pdf ? `<a class="btn lg" href="${esc(pdfUrl(t.data.pdf))}" download="${esc(pdfUrl(t.data.pdf))}">${icon('arrow', 16)} Download PDF</a>` : ''}</div>
   </div></div>`;
@@ -341,18 +343,21 @@ const optionList = (title, opts) => {
 
 export async function runTest(root, id) {
   loading(root);
-  const test = await store.getTest(id);
+  let test = await store.getTest(id);
   if (!test) { root.innerHTML = notFound('This test was not found.'); return; }
   if (!S.student) { const s = await requireStudent(); if (!s) return go('#/test/' + id); }
+  const key = 'ma_run_' + id;
+  let saved = null; try { saved = JSON.parse(sessionStorage.getItem(key)); } catch { /* none */ }
+  const seed = saved?.seed || (Math.floor(Math.random() * 2 ** 31) + 1);
+  if (test.data?.shuffle) test = shuffleTest(test, seed);
   const prep = prepare(test);
   if (!prep.flat.length) { root.innerHTML = notFound('This test has no questions yet.'); return; }
   const listening = test.section === 'listening';
   const globalAudio = listening && !!test.data?.audio_url;
-  const key = 'ma_run_' + id;
-  let saved = null; try { saved = JSON.parse(sessionStorage.getItem(key)); } catch { /* none */ }
-  const st = { test, prep, listening, globalAudio, answers: saved?.answers || {}, part: Math.min(saved?.part || 0, prep.parts.length - 1), start: listening ? null : (saved?.start || Date.now()), done: false, auto: -1, mobileLeft: false, hl: saved?.hl || {} };
+  const mctx = getCtx(), mar = mctx && mctx.ref === id ? mctx : null;
+  const st = { mar, test, prep, listening, globalAudio, answers: saved?.answers || {}, part: Math.min(saved?.part || 0, prep.parts.length - 1), start: listening ? null : (saved?.start || Date.now()), done: false, auto: -1, mobileLeft: false, hl: saved?.hl || {} };
   RUN = st;
-  const persist = () => sessionStorage.setItem(key, JSON.stringify({ answers: st.answers, start: st.start, part: st.part, hl: st.hl }));
+  const persist = () => sessionStorage.setItem(key, JSON.stringify({ answers: st.answers, start: st.start, part: st.part, hl: st.hl, seed }));
   st.persist = persist;
   const total = test.duration_min * 60;
   document.body.classList.add('running');
@@ -505,7 +510,7 @@ actions.jump = el => { const t = document.getElementById('q' + el.dataset.n); if
 actions.paneTab = el => { const m = $('#rmain'); if (!m) return; m.classList.toggle('showleft', el.dataset.v === 'l'); if (RUN) RUN.mobileLeft = el.dataset.v === 'l'; $$('.paneswitch .chip').forEach(c => c.classList.toggle('on', c === el)); };
 actions.exitTest = async () => {
   if (!(await confirmBox('Leave the test?', 'Your answers will not be saved.', 'Leave', true))) return;
-  const t = RUN?.test; sessionStorage.removeItem('ma_run_' + t?.id); if (RUN) RUN.done = true; go('#/practice/' + (t?.section || 'reading'));
+  const t = RUN?.test, mar = RUN?.mar; sessionStorage.removeItem('ma_run_' + t?.id); if (RUN) RUN.done = true; go(mar ? '#/marathon/' + mar.day : '#/practice/' + (t?.section || 'reading'));
 };
 actions.exitHome = async () => {
   if (!(await confirmBox('Go to the home page?', 'Your answers in this test will not be saved.', 'Go home', true))) return;
@@ -566,7 +571,9 @@ async function finish(st, auto) {
     correct: g.correct, total: g.total, percent: g.percent, band: g.band, points: g.points, time_sec: timeSec, details: g.details };
   let id = 'unsaved', saved = true;
   try { id = await store.saveResult(rec); } catch (e) { saved = false; toast('Result could not be saved: ' + e.message, 'bad'); }
-  sessionStorage.setItem('ma_last', JSON.stringify({ ...rec, id, created_at: new Date().toISOString(), saved, sub: g.sub }));
+  let mar = null;
+  if (st.mar && saved) { mar = await marTaskDone(st.mar.day, st.mar.task, g.correct, g.total); mar = { ...mar, day: st.mar.day }; }
+  sessionStorage.setItem('ma_last', JSON.stringify({ ...rec, id, created_at: new Date().toISOString(), saved, sub: g.sub, mar }));
   sessionStorage.removeItem('ma_run_' + t.id);
   if (auto) toast(st.listening ? 'The recording has finished.' : 'Time is up. Your test was submitted.', 'ok');
   go('#/result/' + id);
@@ -578,6 +585,19 @@ function coursesCard(cls = '') {
     <a class="btn primary" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">${icon('send', 15)} ${esc(CONFIG.telegramPersonal)}</a></div>`;
 }
 
+let LASTREC = null;
+actions.resPdf = () => {
+  const r = LASTREC; if (!r) return;
+  const foot = `<div class="printfoot"><b>${esc(CONFIG.teacher)}</b><br>Telegram: ${esc(CONFIG.telegramChannel)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}</div>`;
+  const wrong = r.details.filter(d => !d.ok && !d.blank).length, blank = r.details.filter(d => d.blank).length;
+  modal(`<div class="row between noprint-x"><h2>${esc(r.test_title)}</h2><div class="row"><button class="btn sm primary" data-act="printNow">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div>
+    <p class="muted">${esc(r.student_name)} · ${esc(r.group_code)} · ${fmtDateTime(r.created_at || new Date().toISOString())} · time ${fmtTime(r.time_sec)}</p>
+    <p><b>Result: ${esc(r.band)}</b> · ${r.correct} correct · ${wrong} wrong · ${blank} empty · ${r.percent}%</p>
+    <div class="tablewrap"><table><thead><tr><th>#</th><th>Question</th><th>Your answer</th><th>Correct answer</th></tr></thead><tbody>
+    ${r.details.map(d => `<tr><td>${d.n}</td><td>${esc(d.q || '')}</td><td>${d.blank ? '(no answer)' : esc(d.your)} ${d.ok ? '✓' : '✗'}</td><td>${d.ok ? '' : esc(d.right)}</td></tr>`).join('')}</tbody></table></div>${foot}`, true);
+};
+actions.printNow = () => window.print();
+
 export async function resultView(root, id) {
   loading(root);
   let rec = null;
@@ -587,10 +607,13 @@ export async function resultView(root, id) {
   const results = await store.listResults().catch(() => []);
   const board = buildBoard(results, { testId: rec.test_id });
   const idx = board.findIndex(r => r.name.trim().toLowerCase() === String(rec.student_name).trim().toLowerCase() && r.group === rec.group_code);
+  LASTREC = rec;
+  const tst = rec.demo ? null : await store.getTest(rec.test_id).catch(() => null);
   const wrong = rec.details.filter(d => !d.ok && !d.blank).length, blank = rec.details.filter(d => d.blank).length;
   const sub = rec.sub || (rec.format === 'multilevel' ? `${rec.points} / 75` : 'Band');
   root.innerHTML = `<div class="wrap page"><div class="rwrap">
     <div class="panel center">
+      ${rec.mar ? (rec.mar.ok ? `<div class="marbanner ok">✓ Marafon vazifasi bajarildi${rec.mar.day_done ? ` — ${rec.mar.day} -kun tugadi! 🎉` : ''}<br><a class="btn sm primary" href="#/marathon/${rec.mar.day}">${rec.mar.day}-kunga qaytish</a></div>` : `<div class="marbanner bad">${esc(reasonText(rec.mar))}</div>`) : ''}
       <div class="ring" style="--p:${rec.percent}"><div><b>${esc(rec.band)}</b><span>${esc(sub)}</span></div></div>
       <h2 style="margin-top:18px;font-size:22px">${esc(rec.test_title)}</h2>
       <div class="muted">${esc(rec.student_name)} · ${esc(rec.group_code)}</div>
@@ -610,7 +633,8 @@ export async function resultView(root, id) {
       + (ts.length ? `<div class="panel mt"><h3 style="font-size:20px">Performance by question type</h3><small class="muted">Based on this attempt.</small><div class="perf mt">${ts.map(t => `<div><div class="row between"><span>${esc(t.name)}</span><b>${t.ok} / ${t.total} · ${t.pct}%</b></div><div class="meter ${t.pct >= 80 ? 'ok' : ''}"><i style="width:${t.pct}%"></i></div></div>`).join('')}</div></div>` : '')
       + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
     })()}
-      <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2>
+      ${tst?.data?.script ? `<details class="panel mt" open><summary style="cursor:pointer;font-weight:700">${icon('headphones', 16)} Script (audio matni)</summary><div class="script">${scriptHTML(tst.data.script)}</div></details>` : ''}
+      <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2><button class="btn sm" data-act="resPdf">Save as PDF</button>
       <div class="tabs"><button class="chip on" data-act="revFilter" data-v="">All</button><button class="chip" data-act="revFilter" data-v="no">Wrong</button><button class="chip" data-act="revFilter" data-v="blank">Empty</button></div></div>
       <div class="rev" id="rev">${rec.details.map(d => `<div class="rv ${d.ok ? 'ok' : 'no'}" data-k="${d.ok ? 'ok' : d.blank ? 'blank no' : 'no'}"><span class="mk">${icon(d.ok ? 'check' : 'x', 16)}</span><span class="n">${d.n}</span>
         <div class="grow"><div>${d.ok ? esc(d.your) : d.blank ? '<span class="muted">(no answer)</span>' : esc(d.your)}</div>${d.ok ? '' : `<small>Correct answer: <b>${esc(d.right)}</b></small>`}${d.q ? `<small>${esc(d.q.length > 140 ? d.q.slice(0, 140) + '…' : d.q)}</small>` : ''}</div></div>`).join('')}</div></div>
@@ -622,19 +646,39 @@ actions.revFilter = el => {
   $$('#rev .rv').forEach(r => { r.style.display = !v || r.dataset.k.split(' ').includes(v) ? '' : 'none'; });
 };
 
-// ═════════════════════ glossary (double-click a word) ═════════════════════
-document.addEventListener('dblclick', e => {
-  if (!RUN || !RUN.test.data?.glossary || !e.target.closest('.passage')) return;
-  const w = String(window.getSelection()).trim().toLowerCase().replace(/[^a-z'-]/g, '');
-  if (!w) return;
-  const g = RUN.test.data.glossary;
-  const uz = g[w] || g[w.replace(/(ies)$/, 'y')] || g[w.replace(/(es|s|ed|ing)$/, '')];
+// ═════════════════════ glossary (double-click / tap a word) ═════════════════════
+const scriptHTML = sc => (Array.isArray(sc) ? sc : [{ text: String(sc) }]).map(x => x.h ? `<h4>${esc(x.h)}</h4>` : `<p>${x.who ? `<b>${esc(x.who)}:</b> ` : ''}${esc(x.text)}</p>`).join('');
+function lookupGloss(raw, rect) {
+  const w = String(raw).trim().toLowerCase().replace(/[^a-z'-]/g, '');
   $('#gloss')?.remove();
+  if (!w || !RUN?.test.data?.glossary) return;
+  const g = RUN.test.data.glossary;
+  const uz = g[w] || g[w.replace(/(ies)$/, 'y')] || g[w.replace(/(es|s|ed|ing)$/, '')] || g[w.replace(/(ing|ed)$/, 'e')];
   if (!uz) return;
-  const r = window.getSelection().getRangeAt(0).getBoundingClientRect();
   const d = document.createElement('div');
   d.id = 'gloss'; d.className = 'gloss'; d.innerHTML = `<b>${esc(w)}</b> — ${esc(uz)}`;
-  d.style.left = Math.min(r.left, innerWidth - 240) + 'px'; d.style.top = (r.bottom + 8) + 'px';
+  d.style.left = Math.max(8, Math.min(rect.left, innerWidth - 240)) + 'px'; d.style.top = (rect.bottom + 8) + 'px';
   document.body.appendChild(d);
+}
+document.addEventListener('dblclick', e => {
+  if (!RUN || !RUN.test.data?.glossary || !e.target.closest('.passage')) return;
+  const sel = window.getSelection(); if (!sel.rangeCount) return;
+  lookupGloss(String(sel), sel.getRangeAt(0).getBoundingClientRect());
+});
+// Marafon: bitta bosish (telefonda ham) yetarli
+document.addEventListener('click', e => {
+  if (!RUN?.mar || !RUN.test.data?.glossary || !e.target.closest('.passage') || e.target.closest('input,select,button,.gloss')) return;
+  if (String(window.getSelection()).trim()) return;
+  let node, off;
+  if (document.caretPositionFromPoint) { const p = document.caretPositionFromPoint(e.clientX, e.clientY); node = p?.offsetNode; off = p?.offset; }
+  else if (document.caretRangeFromPoint) { const r = document.caretRangeFromPoint(e.clientX, e.clientY); node = r?.startContainer; off = r?.startOffset; }
+  if (!node || node.nodeType !== 3) return;
+  const t = node.textContent, isW = c => /[A-Za-z'’-]/.test(c || '');
+  let a = off, b = off;
+  while (a > 0 && isW(t[a - 1])) a--;
+  while (b < t.length && isW(t[b])) b++;
+  if (b <= a) return;
+  const rg = document.createRange(); rg.setStart(node, a); rg.setEnd(node, b);
+  lookupGloss(t.slice(a, b).replace(/’/g, "'"), rg.getBoundingClientRect());
 });
 document.addEventListener('mousedown', e => { if (!e.target.closest('#gloss')) $('#gloss')?.remove(); });

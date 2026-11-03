@@ -5,6 +5,7 @@ import { writingTab, studentsTab } from './views-writing.js';
 import { vocabTab } from './views-vocab.js';
 import { speakingTab } from './views-speaking.js';
 import { mockTab } from './views-mock.js';
+import { marathonTab } from './views-marathon-admin.js';
 import { $, $$, actions, inputs, toast, icon, go, confirmBox, modal, closeModal } from './ui.js';
 
 const adm = { tab: 'tests', rf: { section: '', group: '' } };
@@ -19,7 +20,7 @@ export async function adminHome(root) {
   root.innerHTML = `<div class="wrap page">
     <div class="row between wrapx"><div><h1 class="ptitle">Teacher panel</h1><p class="muted">${store.mode === 'cloud' ? 'Connected to your database.' : 'Demo mode: data is stored only in this browser. Connect Supabase to go live (see README).'}</p></div>
       <button class="btn sm" data-act="adminLogout">${icon('logout', 16)} Log out</button></div>
-    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results'], ['writing', 'Writing'], ['vocab', 'Vocabulary'], ['speaking', 'Speaking'], ['mock', 'IELTS Mock'], ['students', 'Students']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
+    <div class="tabs mt">${[['tests', 'Tests'], ['groups', 'Groups'], ['results', 'Results'], ['writing', 'Writing'], ['vocab', 'Vocabulary'], ['speaking', 'Speaking'], ['marathon', 'Marathon'], ['mock', 'IELTS Mock'], ['students', 'Students']].map(([k, l]) => `<button class="chip ${adm.tab === k ? 'on' : ''}" data-act="admTab" data-k="${k}">${l}</button>`).join('')}</div>
     <div class="mt2" id="admBody"><div class="loading">Loading…</div></div></div>`;
   const body = $('#admBody');
   try {
@@ -28,6 +29,7 @@ export async function adminHome(root) {
     else if (adm.tab === 'writing') await writingTab(body);
     else if (adm.tab === 'vocab') await vocabTab(body);
     else if (adm.tab === 'speaking') await speakingTab(body);
+    else if (adm.tab === 'marathon') await marathonTab(body);
     else if (adm.tab === 'mock') await mockTab(body);
     else if (adm.tab === 'students') await studentsTab(body);
     else await resultsTab(body);
@@ -118,7 +120,7 @@ async function resultsTab(body) {
   body.innerHTML = `<div class="filters" style="margin-top:0">
     <select class="sel" data-in="rf" data-k="section"><option value="">All sections</option><option value="reading">Reading</option><option value="listening">Listening</option></select>
     <select class="sel" data-in="rf" data-k="group"><option value="">All groups</option>${groups.map(g => `<option>${esc(g)}</option>`).join('')}</select>
-    <button class="btn sm" data-act="exportCsv" style="margin-left:auto">Export CSV</button></div><div id="resBody"></div>`;
+    <button class="btn sm" data-act="pdfResults" style="margin-left:auto">Download PDF</button> <button class="btn sm" data-act="exportCsv">Export CSV</button></div><div id="resBody"></div>`;
   $$('select[data-in=rf]').forEach(s => { s.value = adm.rf[s.dataset.k]; });
   drawResults();
 }
@@ -136,6 +138,17 @@ actions.delResult = async el => {
   if (!(await confirmBox('Delete this result?', 'It will disappear from the leaderboard too.', 'Delete', true))) return;
   await store.deleteResult(el.dataset.id); lastResults = lastResults.filter(r => r.id !== el.dataset.id); drawResults();
 };
+actions.pdfResults = () => {
+  const rs = filteredResults();
+  if (!rs.length) return toast('No results to export', 'bad');
+  const flt = [adm.rf.section ? adm.rf.section[0].toUpperCase() + adm.rf.section.slice(1) : 'All sections', adm.rf.group || 'All groups'].join(' · ');
+  const foot = `<div class="printfoot"><b>${esc(CONFIG.teacher)}</b><br>Telegram: ${esc(CONFIG.telegramChannel)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}</div>`;
+  modal(`<div class="row between noprint-x"><h2>Results</h2><div class="row"><button class="btn sm primary" data-act="printNow">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div>
+    <p class="muted">${esc(flt)} · ${rs.length} result${rs.length === 1 ? '' : 's'} · ${fmtDateTime(new Date().toISOString())}</p>
+    <div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Group</th><th>Test</th><th>Score</th><th>Level</th><th>Time</th></tr></thead><tbody>
+    ${rs.map(r => `<tr><td>${fmtDateTime(r.created_at)}</td><td><b>${esc(r.student_name)}</b></td><td>${esc(r.group_code)}</td><td>${esc(r.test_title)}</td><td>${r.correct}/${r.total} (${r.percent}%)</td><td><b>${esc(r.band)}</b></td><td>${fmtTime(r.time_sec)}</td></tr>`).join('')}</tbody></table></div>${foot}`, true);
+};
+actions.printNow = () => window.print();
 actions.exportCsv = () => {
   const rows = [['Date', 'Student', 'Group', 'Test', 'Section', 'Format', 'Correct', 'Total', 'Percent', 'Band/Level', 'Time (s)']]
     .concat(filteredResults().map(r => [r.created_at, r.student_name, r.group_code, r.test_title, r.section, r.format, r.correct, r.total, r.percent, r.band, r.time_sec]));

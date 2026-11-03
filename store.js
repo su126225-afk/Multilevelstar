@@ -1,4 +1,5 @@
 import { CONFIG } from './config.js';
+import * as ML from './marlogic.js';
 
 const LS = {
   get(k, d) { try { const v = localStorage.getItem('ma_' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
@@ -113,6 +114,17 @@ const local = {
     LS.set('activity', a);
   },
   async listActivity() { return LS.get('activity', []); },
+  // ── Marafon (demo: brauzerda) ──
+  _mar() { return LS.get('mar', null) || ML.newState(); },
+  async marStatus(n, g) { const st = this._mar(); const r = ML.status(st, n, g, ML.todayStr(), uid); LS.set('mar', st); return r; },
+  async marComplete(n, g, d, t, sc, tot) { const st = this._mar(); const r = ML.complete(st, n, g, d, t, sc, tot, ML.todayStr()); LS.set('mar', st); return r; },
+  async marAdminLoad() { return this._mar(); },
+  async marSaveGroups(codes) { const st = this._mar(); st.groups = codes; LS.set('mar', st); },
+  async marSaveDays(days) { const st = this._mar(); st.days = { ...st.days, ...days }; LS.set('mar', st); },
+  async marSaveSettings(s) { const st = this._mar(); st.settings = s; LS.set('mar', st); },
+  async marUnlock(id) { const st = this._mar(); ML.unlock(st, id, ML.todayStr()); LS.set('mar', st); },
+  async marPatchStudent(id, patch) { const st = this._mar(); const s = st.students.find(x => x.id === id); if (s) Object.assign(s, patch); LS.set('mar', st); },
+  async marDeleteStudent(id) { const st = this._mar(); st.students = st.students.filter(x => x.id !== id); st.progress = st.progress.filter(p => p.student_id !== id); LS.set('mar', st); },
   async uploadFile() { throw new Error('Fayl yuklash faqat Supabase ulanganda ishlaydi. Hozircha fayl manzilini (URL) kiriting.'); },
   canUpload: false,
 };
@@ -212,6 +224,24 @@ async function makeCloud() {
     async deleteMock(id) { await ok(sb.from('mock_submissions').delete().eq('id', id)); },
     async addActivity(name, group, secs) { await sb.rpc('add_activity', { n: name, g: group, secs }); },
     async listActivity() { return ok(sb.from('activity').select('*').limit(20000)); },
+    async marStatus(n, g) { return ok(sb.rpc('mar_status', { n, g })); },
+    async marComplete(n, g, d, t, sc, tot) { return ok(sb.rpc('mar_complete', { n, g, d, t, sc, tot })); },
+    async marAdminLoad() {
+      const [settings, groups, days, students, progress] = await Promise.all([
+        ok(sb.from('mar_settings').select('*').eq('id', 1).maybeSingle()), ok(sb.from('mar_groups').select('code')), ok(sb.from('mar_days').select('*')),
+        ok(sb.from('mar_students').select('*').order('created_at')), ok(sb.from('mar_progress').select('*').limit(20000))]);
+      return { settings: settings || { miss_limit: 2, window_days: 10 }, groups: (groups || []).map(x => x.code), days: Object.fromEntries((days || []).map(x => [x.day, x.tasks])), students: students || [], progress: progress || [] };
+    },
+    async marSaveGroups(codes) {
+      const cur = (await ok(sb.from('mar_groups').select('code'))).map(x => x.code);
+      const del = cur.filter(c => !codes.includes(c)); if (del.length) await ok(sb.from('mar_groups').delete().in('code', del));
+      if (codes.length) await ok(sb.from('mar_groups').upsert(codes.map(code => ({ code }))));
+    },
+    async marSaveDays(days) { await ok(sb.from('mar_days').upsert(Object.entries(days).map(([day, tasks]) => ({ day: Number(day), tasks })))); },
+    async marSaveSettings(s) { await ok(sb.from('mar_settings').upsert({ id: 1, miss_limit: s.miss_limit, window_days: s.window_days })); },
+    async marUnlock(id) { await ok(sb.rpc('mar_admin_unlock', { sid: id })); },
+    async marPatchStudent(id, patch) { await ok(sb.from('mar_students').update(patch).eq('id', id)); },
+    async marDeleteStudent(id) { await ok(sb.from('mar_students').delete().eq('id', id)); },
     async uploadFile(file) {
       const ext = (file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '');
       const path = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}.${ext}`;

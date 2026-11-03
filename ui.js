@@ -31,6 +31,7 @@ const P = {
   spark: '<path d="M12 2l2.2 6.3L21 10l-6.8 1.7L12 18l-2.2-6.3L3 10l6.8-1.7z"/>',
   chart: '<path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/>',
   send: '<path d="M21.9 4.6 18.7 20c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-4.9 9-8.1L6 12.3l-4.8-1.5L20.6 3z"/>',
+  lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
   logout: '<path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/>',
 };
 export const icon = (n, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n] || ''}</svg>`;

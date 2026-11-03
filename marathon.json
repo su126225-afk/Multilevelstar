@@ -1,0 +1,731 @@
+{
+ "title": "35 kunlik Multilevel marafon",
+ "days": [
+  {
+   "day": 1,
+   "title": "Boshlanish: lug'at, reading va birinchi writing",
+   "focus": "Mavzu: Tabiat va kutubxonalar",
+   "tasks": [
+    {
+     "id": "vocab",
+     "type": "vocab",
+     "title": "Mavzu lug'ati: Tabiat va kutubxonalar",
+     "minutes": 8,
+     "words": [
+      {
+       "w": "species",
+       "uz": "tur",
+       "ex": "A plant lover found a new species of orchid in Japan."
+      },
+      {
+       "w": "orchid",
+       "uz": "orkideya",
+       "ex": "A plant lover found a new species of orchid in Japan."
+      },
+      {
+       "w": "scientists",
+       "uz": "olimlar",
+       "ex": "Scientists studied the new orchid carefully before confirming that it had never been recorded before."
+      },
+      {
+       "w": "researchers",
+       "uz": "tadqiqotchilar",
+       "ex": ""
+      },
+      {
+       "w": "coastal",
+       "uz": "qirg'oqbo'yi",
+       "ex": "Beyond their ecological significance, coral reefs provide substantial economic value to coastal communities around the world."
+      },
+      {
+       "w": "skeleton",
+       "uz": "skelet",
+       "ex": ""
+      },
+      {
+       "w": "depend",
+       "uz": "bog'liq bo'lmoq",
+       "ex": ""
+      },
+      {
+       "w": "shelter",
+       "uz": "boshpana",
+       "ex": ""
+      },
+      {
+       "w": "healthy",
+       "uz": "sog'lom",
+       "ex": ""
+      },
+      {
+       "w": "energy",
+       "uz": "energiya",
+       "ex": ""
+      },
+      {
+       "w": "library",
+       "uz": "kutubxona",
+       "ex": ""
+      },
+      {
+       "w": "relationship",
+       "uz": "munosabat",
+       "ex": ""
+      }
+     ]
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (Multilevel Reading 18)",
+     "minutes": 36,
+     "ref": "e71f0b01-2d4d-5afa-92ac-19f71a47099a"
+    },
+    {
+     "id": "words",
+     "type": "words",
+     "title": "Matndan yangi so'zlar — o'yin",
+     "minutes": 5,
+     "words": [
+      {
+       "w": "countless",
+       "uz": "sanoqsiz",
+       "ex": ""
+      },
+      {
+       "w": "breeding",
+       "uz": "zot yetishtirish",
+       "ex": ""
+      },
+      {
+       "w": "tissue",
+       "uz": "to'qima",
+       "ex": ""
+      },
+      {
+       "w": "bleached",
+       "uz": "oqargan",
+       "ex": ""
+      },
+      {
+       "w": "uncovered",
+       "uz": "ochildi",
+       "ex": "We uncovered one of them last week."
+      },
+      {
+       "w": "unusual",
+       "uz": "odatiy bo'lmagan",
+       "ex": "It is unusual to find new plants in Japan."
+      },
+      {
+       "w": "confirming",
+       "uz": "tasdiqlovchi",
+       "ex": "Scientists studied the new orchid carefully before confirming that it had never been recorded before."
+      },
+      {
+       "w": "identify",
+       "uz": "aniqlamoq",
+       "ex": "A professor who helped identify the flower said that discoveries like this show there is still much to learn, even in everyday places."
+      }
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1.1 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "ec266b7d-0c2b-5298-ba26-fb79228c4fab"
+    }
+   ]
+  },
+  {
+   "day": 2,
+   "title": "Listening va speaking",
+   "focus": "Mavzu: Tarix va tibbiyot",
+   "tasks": [
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · A new course",
+     "minutes": 7,
+     "ref": "ea4b3b55-2089-5cc4-95f6-4ee319153136"
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (Multilevel Reading 18)",
+     "minutes": 24,
+     "ref": "2fd0cdbe-fb32-5f6d-8fdf-82a8e81ad38e"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 1 (shaxsiy savollar)",
+     "minutes": 10,
+     "questions": [
+      "Tell me about your hometown. What do you like about it?",
+      "What do you usually do at the weekend?",
+      "Why are you learning English, and how often do you practise?",
+      "Describe your typical morning."
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1.2 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "83090d46-e049-5afa-b202-e48dfd26e5ac"
+    }
+   ]
+  },
+  {
+   "day": 3,
+   "title": "Yangi reading va Task 2 (essay)",
+   "focus": "Mavzu: Dinozavrlar, muzeylar va qushlar",
+   "tasks": [
+    {
+     "id": "vocab",
+     "type": "vocab",
+     "title": "Mavzu lug'ati: Dinozavrlar, muzeylar va qushlar",
+     "minutes": 8,
+     "words": [
+      {
+       "w": "fossil",
+       "uz": "qazilma",
+       "ex": "The scientists examined a rare fossil."
+      },
+      {
+       "w": "muscles",
+       "uz": "mushaklar",
+       "ex": "They now have a good idea of what the muscles around the voice box looked like."
+      },
+      {
+       "w": "species",
+       "uz": "turlar",
+       "ex": "Migratory behaviour varies enormously across the roughly ten thousand bird species found worldwide."
+      },
+      {
+       "w": "journey",
+       "uz": "sayohat",
+       "ex": ""
+      },
+      {
+       "w": "flight",
+       "uz": "parvoz",
+       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
+      },
+      {
+       "w": "migration",
+       "uz": "migratsiya, ko'chish",
+       "ex": "The decision to begin migration is rarely sudden or arbitrary."
+      },
+      {
+       "w": "migratory",
+       "uz": "ko'chib yuruvchi",
+       "ex": "Few natural phenomena rival the sheer distances covered by migratory birds each year."
+      },
+      {
+       "w": "research",
+       "uz": "tadqiqot",
+       "ex": "The research was led by Professor Junki Yoshida, a dinosaur researcher at the Fukushima Museum in Japan."
+      },
+      {
+       "w": "probably",
+       "uz": "ehtimol",
+       "ex": "The scientists believe the shape of the creature's voice box means it probably made bird-like sounds."
+      },
+      {
+       "w": "prepare",
+       "uz": "tayyorlamoq",
+       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
+      },
+      {
+       "w": "length",
+       "uz": "uzunlik",
+       "ex": ""
+      },
+      {
+       "w": "museum",
+       "uz": "muzey",
+       "ex": "The research was led by Professor Junki Yoshida, a dinosaur researcher at the Fukushima Museum in Japan."
+      }
+     ]
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (Multilevel Reading 19)",
+     "minutes": 36,
+     "ref": "729f04ec-96c2-586d-9ada-ac462d71952b"
+    },
+    {
+     "id": "words",
+     "type": "words",
+     "title": "Matndan yangi so'zlar — o'yin",
+     "minutes": 5,
+     "words": [
+      {
+       "w": "associated",
+       "uz": "bog'liq",
+       "ex": ""
+      },
+      {
+       "w": "demands",
+       "uz": "talab qiladi",
+       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
+      },
+      {
+       "w": "course",
+       "uz": "yo'nalish",
+       "ex": "Of course, there are many movies with dinosaurs making all kinds of roars, screeches and screams."
+      },
+      {
+       "w": "changes",
+       "uz": "o'zgarishlar",
+       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
+      },
+      {
+       "w": "summer",
+       "uz": "yoz",
+       "ex": ""
+      },
+      {
+       "w": "sounds",
+       "uz": "tovushlar",
+       "ex": "A new discovery has given scientists a better idea of the kinds of sounds dinosaurs made."
+      },
+      {
+       "w": "dinosaur",
+       "uz": "dinozavr",
+       "ex": "Dinosaurs disappeared 65 million years ago, so we don't really know what they sounded like."
+      },
+      {
+       "w": "scientists",
+       "uz": "olimlar",
+       "ex": "A new discovery has given scientists a better idea of the kinds of sounds dinosaurs made."
+      }
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 2 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "1ca97e09-e1d1-57ca-ae8f-855454bc3906"
+    }
+   ]
+  },
+  {
+   "day": 4,
+   "title": "Listening, speaking va xabar yozish",
+   "focus": "Mavzu: Fotografiya va uyqu",
+   "tasks": [
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · A weekend trip",
+     "minutes": 7,
+     "ref": "e3deb9ea-7c6b-5c8f-8cad-7f6d53dd203a"
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (Multilevel Reading 19)",
+     "minutes": 24,
+     "ref": "ae685f0e-9eba-5288-b8a1-fea99bdfc401"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 2 (rasm / mavzu bo'yicha)",
+     "minutes": 10,
+     "questions": [
+      "Describe a person who has helped you a lot. Who is he or she?",
+      "How did this person help you?",
+      "Why is this person important to you?",
+      "Would you like to help other people in the same way? Why?"
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1.1 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "42c307b3-3df9-5e20-8a86-21890bf272e2"
+    }
+   ]
+  },
+  {
+   "day": 5,
+   "title": "Reading va rasmiy xat",
+   "focus": "Mavzu: Kutubxona, ko'ngillilar va shahar yashil hududlari",
+   "tasks": [
+    {
+     "id": "vocab",
+     "type": "vocab",
+     "title": "Mavzu lug'ati: Kutubxona, ko'ngillilar va shahar yashil hududlari",
+     "minutes": 8,
+     "words": [
+      {
+       "w": "library",
+       "uz": "kutubxona",
+       "ex": "Ben loved going to the library, especially on Friday."
+      },
+      {
+       "w": "residents",
+       "uz": "aholi",
+       "ex": ""
+      },
+      {
+       "w": "neighbourhoods",
+       "uz": "mahallalar",
+       "ex": ""
+      },
+      {
+       "w": "benefits",
+       "uz": "foydalar",
+       "ex": "Among the most consistently documented of these benefits is the positive effect of nearby nature on mental wellbeing."
+      },
+      {
+       "w": "access",
+       "uz": "kirish imkoniyati",
+       "ex": ""
+      },
+      {
+       "w": "health",
+       "uz": "salomatlik",
+       "ex": ""
+      },
+      {
+       "w": "stress",
+       "uz": "stress",
+       "ex": ""
+      },
+      {
+       "w": "gardens",
+       "uz": "bog'lar",
+       "ex": ""
+      },
+      {
+       "w": "vegetation",
+       "uz": "o'simlik qoplami",
+       "ex": ""
+      },
+      {
+       "w": "surrounding",
+       "uz": "atrofdagi",
+       "ex": ""
+      },
+      {
+       "w": "buildings",
+       "uz": "binolar",
+       "ex": ""
+      },
+      {
+       "w": "report",
+       "uz": "hisobot",
+       "ex": "He finished the book and wrote a short report."
+      }
+     ]
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (Multilevel Reading 20)",
+     "minutes": 36,
+     "ref": "7bbdf393-5f75-55fc-b61d-b755fa9587b5"
+    },
+    {
+     "id": "words",
+     "type": "words",
+     "title": "Matndan yangi so'zlar — o'yin",
+     "minutes": 5,
+     "words": [
+      {
+       "w": "measurable",
+       "uz": "o'lchanadigan",
+       "ex": ""
+      },
+      {
+       "w": "demonstrating",
+       "uz": "namoyish etish",
+       "ex": ""
+      },
+      {
+       "w": "nearby",
+       "uz": "yaqin atrofda",
+       "ex": "Among the most consistently documented of these benefits is the positive effect of nearby nature on mental wellbeing."
+      },
+      {
+       "w": "periods",
+       "uz": "davrlar",
+       "ex": ""
+      },
+      {
+       "w": "temperatures",
+       "uz": "haroratlar",
+       "ex": ""
+      },
+      {
+       "w": "multiple",
+       "uz": "ko'plab",
+       "ex": ""
+      },
+      {
+       "w": "provide",
+       "uz": "ta'minlamoq",
+       "ex": ""
+      },
+      {
+       "w": "likely",
+       "uz": "ehtimol",
+       "ex": ""
+      }
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1.2 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "f1d43657-b14f-508d-b80c-2098eb0fe837"
+    }
+   ]
+  },
+  {
+   "day": 6,
+   "title": "Listening, speaking va essay",
+   "focus": "Mavzu: Olimpiya va sun'iy intellekt",
+   "tasks": [
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Lost property",
+     "minutes": 7,
+     "ref": "892032bd-9ad8-5bf8-98b1-a7166d64efc7"
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (Multilevel Reading 20)",
+     "minutes": 24,
+     "ref": "eb262b6f-7f1d-521d-9cd8-f1671b848c99"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 3 (fikr bildirish)",
+     "minutes": 10,
+     "questions": [
+      "Some people think online lessons are better than classroom lessons. What is your opinion?",
+      "Give two advantages of studying online.",
+      "Give two disadvantages of studying online.",
+      "What would you choose for yourself, and why?"
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 2 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "b2ae47aa-2113-54a8-89e8-1a4f00934c85"
+    }
+   ]
+  },
+  {
+   "day": 7,
+   "title": "Hafta yakuni: reading va writing",
+   "focus": "Mavzu: Yozuv tarixi, kasalxona va kuz",
+   "tasks": [
+    {
+     "id": "vocab",
+     "type": "vocab",
+     "title": "Mavzu lug'ati: Yozuv tarixi, kasalxona va kuz",
+     "minutes": 8,
+     "words": [
+      {
+       "w": "ancient",
+       "uz": "qadimiy",
+       "ex": ""
+      },
+      {
+       "w": "script",
+       "uz": "yozuv tizimi",
+       "ex": ""
+      },
+      {
+       "w": "system",
+       "uz": "tizim",
+       "ex": ""
+      },
+      {
+       "w": "symbols",
+       "uz": "belgilar",
+       "ex": ""
+      },
+      {
+       "w": "scribes",
+       "uz": "kotiblar",
+       "ex": ""
+      },
+      {
+       "w": "earliest",
+       "uz": "eng qadimgi",
+       "ex": ""
+      },
+      {
+       "w": "emerged",
+       "uz": "paydo bo'ldi",
+       "ex": ""
+      },
+      {
+       "w": "chemical",
+       "uz": "kimyoviy",
+       "ex": "It is because of a chemical called chlorophyll."
+      },
+      {
+       "w": "sunlight",
+       "uz": "quyosh nuri",
+       "ex": "This chemical helps plants to make food from sunlight."
+      },
+      {
+       "w": "winter",
+       "uz": "qish",
+       "ex": "Days become shorter and there is not enough sunlight in winter."
+      },
+      {
+       "w": "leaves",
+       "uz": "barglar/tark etadi",
+       "ex": "It is a time when leaves turn to beautiful red, orange and yellow colors."
+      },
+      {
+       "w": "animals",
+       "uz": "hayvonlar",
+       "ex": "Also, animals such as bears and bats sleep in winter."
+      }
+     ]
+    },
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (Multilevel Reading 21)",
+     "minutes": 36,
+     "ref": "2056e25e-c4fc-5656-bbff-454033a33b02"
+    },
+    {
+     "id": "words",
+     "type": "words",
+     "title": "Matndan yangi so'zlar — o'yin",
+     "minutes": 5,
+     "words": [
+      {
+       "w": "administrative",
+       "uz": "ma'muriy",
+       "ex": ""
+      },
+      {
+       "w": "significant",
+       "uz": "muhim",
+       "ex": ""
+      },
+      {
+       "w": "further",
+       "uz": "yanada",
+       "ex": ""
+      },
+      {
+       "w": "directly",
+       "uz": "bevosita",
+       "ex": ""
+      },
+      {
+       "w": "rather",
+       "uz": "aksincha",
+       "ex": ""
+      },
+      {
+       "w": "needed",
+       "uz": "kerak bo'lgan",
+       "ex": ""
+      },
+      {
+       "w": "centuries",
+       "uz": "asrlar",
+       "ex": ""
+      },
+      {
+       "w": "across",
+       "uz": "bo'ylab; narigi tomonga",
+       "ex": ""
+      }
+     ]
+    },
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1.1 (AI tekshiradi)",
+     "minutes": 25,
+     "ref": "3804be34-453d-5a87-be6a-41cc5a7a7059"
+    }
+   ]
+  }
+ ],
+ "writing": [
+  {
+   "id": "ec266b7d-0c2b-5298-ba26-fb79228c4fab",
+   "kind": "multilevel",
+   "title": "Marathon D1 · Task 1.1 — Message to a friend",
+   "prompt": "You received this message from your friend:\n\nHi! I'm moving into a new flat next month and I'm going to have a small housewarming party on Saturday evening. Can you come? Also, do you have any ideas for food and music? Tell me soon!\n\nBest wishes,\nSam\n\nTask 1.1\nWrite a message to Sam. Say whether you can come and give two ideas for the party. Write 50 words.",
+   "min_words": 50,
+   "max_words": 60
+  },
+  {
+   "id": "83090d46-e049-5afa-b202-e48dfd26e5ac",
+   "kind": "multilevel",
+   "title": "Marathon D2 · Task 1.2 — Email to a language school",
+   "prompt": "You saw this advertisement:\n\nEVENING ENGLISH COURSES at Bright Future Language School\nSmall classes · Experienced teachers · Courses start in September\nWrite to us for more information!\n\nTask 1.2\nWrite an email to the school director. Say why you want to study English, and ask about the timetable, the price and the size of the classes. Write 120–150 words.",
+   "min_words": 120,
+   "max_words": 150
+  },
+  {
+   "id": "1ca97e09-e1d1-57ca-ae8f-855454bc3906",
+   "kind": "multilevel",
+   "title": "Marathon D3 · Task 2 — Online discussion — school uniforms",
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people think that all students should wear a school uniform. Others believe that students should be able to wear what they like. What do you think?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
+   "min_words": 180,
+   "max_words": 200
+  },
+  {
+   "id": "42c307b3-3df9-5e20-8a86-21890bf272e2",
+   "kind": "multilevel",
+   "title": "Marathon D4 · Task 1.1 — Message to a neighbour",
+   "prompt": "You received this message from your neighbour:\n\nHello! Sorry to bother you. I'm going away for a week and I need someone to water my plants and feed my cat. Would you be able to help? Please let me know if you can, and tell me if you have any questions.\n\nThank you,\nMrs Davis\n\nTask 1.1\nWrite a message to Mrs Davis. Say whether you can help and ask two questions. Write 50 words.",
+   "min_words": 50,
+   "max_words": 60
+  },
+  {
+   "id": "f1d43657-b14f-508d-b80c-2098eb0fe837",
+   "kind": "multilevel",
+   "title": "Marathon D5 · Task 1.2 — Letter to the council",
+   "prompt": "You received this notice from your local council:\n\nThe council is planning to close the city centre to cars every Saturday. We would like to hear the views of local residents. How would this change affect you? What do you suggest?\n\nTask 1.2\nWrite a letter to the council. Explain how the change would affect you and suggest what the council could do to help residents. Write 120–150 words.",
+   "min_words": 120,
+   "max_words": 150
+  },
+  {
+   "id": "b2ae47aa-2113-54a8-89e8-1a4f00934c85",
+   "kind": "multilevel",
+   "title": "Marathon D6 · Task 2 — Online discussion — city or countryside",
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people prefer to live in a big city, while others think the countryside is a better place to live. Which do you think is better?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
+   "min_words": 180,
+   "max_words": 200
+  },
+  {
+   "id": "3804be34-453d-5a87-be6a-41cc5a7a7059",
+   "kind": "multilevel",
+   "title": "Marathon D7 · Task 1.1 — Message to a colleague",
+   "prompt": "You received this message from your colleague:\n\nHi! Our team meeting is on Friday at 10 a.m., but the manager wants to move it to Thursday afternoon. Is that OK for you? If not, what time would be better? Please reply today.\n\nThanks,\nAlex\n\nTask 1.1\nWrite a message to Alex. Say whether Thursday afternoon is possible and suggest another time if necessary. Write 50 words.",
+   "min_words": 50,
+   "max_words": 60
+  }
+ ]
+}

@@ -4,6 +4,7 @@ import { esc, fmtDateTime, csvCell, annotate } from './logic.js';
 import { $, $$, actions, inputs, toast, icon, go, S, requireStudent, confirmBox, modal, closeModal } from './ui.js';
 import { fmtHours } from './activity.js';
 import { CONFIG } from './config.js';
+import { getCtx, marTaskDone, reasonText } from './views-marathon.js';
 
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + Math.random().toString(16).slice(2));
@@ -57,7 +58,7 @@ export function feedbackHTML(fb, text = '') {
 let wf = { kind: '' };
 export async function writingList(root) {
   loading(root);
-  const tasks = await store.listWritingTasks({ published: true });
+  const tasks = (await store.listWritingTasks({ published: true })).filter(t => !/^Marathon/.test(t.title));
   const mine = S.student ? await store.myWritings(S.student.name, S.student.group).catch(() => []) : [];
   const best = id => { const l = mine.filter(w => w.task_id === id); return l[0]; };
   root.innerHTML = `<div class="wrap page"><h1 class="ptitle">Writing</h1>
@@ -84,7 +85,7 @@ export async function writingEditor(root, id) {
   const lsGet = (k, d) => { try { const v = Number(localStorage.getItem(k)); return v >= 0.2 && v <= 0.8 ? v : d; } catch { return d; } };
   const fw = lsGet('ma_wsplit', 0.5), fv = lsGet('ma_wvsplit', 0.4);
   root.innerHTML = `<div class="runner wr">
-    <div class="run-top"><a class="icon-btn" href="#/" title="Home">${icon('home', 18)}</a><a class="icon-btn" href="#/writing" title="All writing tasks">${icon('x', 18)}</a>
+    <div class="run-top"><a class="icon-btn" href="#/" title="Home">${icon('home', 18)}</a><a class="icon-btn" href="${(() => { const c = getCtx(); return c && c.ref === id ? '#/marathon/' + c.day : '#/writing'; })()}" title="Back">${icon('x', 18)}</a>
       <h2>${esc(t.title)}</h2><span class="badge ${t.kind === 'multilevel' ? 'multi' : 'ielts'}">${KINDS[t.kind]}</span></div>
     <div class="wmain" id="wmain" style="--wl:${fw}fr;--wr:${1 - fw}fr;--wt:${fv}fr;--wb:${1 - fv}fr">
       <div class="wleft"><h2 style="margin-bottom:10px">${esc(t.title)}</h2>
@@ -148,6 +149,11 @@ actions.wCheck = async () => {
     try {
       await store.saveWriting({ task_id: t.id, task_title: t.title, kind: t.kind, student_name: st.name, group_code: st.group, body: text, words, band: String(fb.overall ?? ''), feedback: fb });
       toast('Saved to your history', 'ok');
+      const mc = getCtx();
+      if (mc && mc.ref === t.id) {
+        if (words < Math.ceil(t.min_words * 0.7)) toast(`Marafon uchun kamida ${Math.ceil(t.min_words * 0.7)} so'z yozing (siz ${words} ta yozdingiz).`, 'bad');
+        else { const r = await marTaskDone(mc.day, mc.task, Number(fb.overall) || null, null); toast(r.ok ? (r.day_done ? `🎉 ${mc.day}-kun tugadi!` : 'Marafon vazifasi bajarildi ✓') : reasonText(r), r.ok ? 'ok' : 'bad'); }
+      }
     } catch (e) { toast('Feedback shown but not saved: ' + e.message, 'bad'); }
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
