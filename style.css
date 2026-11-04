@@ -665,3 +665,9 @@ a.mday:hover{transform:translateY(-3px);border-color:rgba(91,108,255,.6)}
 .marbanner.bad{background:rgba(251,113,133,.12);border:1px solid var(--bad);color:var(--bad)}.marbanner .btn{margin-top:8px}
 .script{margin-top:12px;line-height:1.75;font-size:15px}.script h4{margin:14px 0 4px}.script p{margin:6px 0}
 @media(max-width:560px){.gamegrid{gap:10px}.gcell{padding:11px;font-size:14px}}
+
+.vid{position:relative;padding-top:56.25%;margin-top:14px}.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:14px}
+.awords{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:12px}
+.aw{border:1px solid var(--border);border-radius:14px;padding:14px;background:var(--panel)}.aw b{font-size:17px}
+.aw .awq{font-style:italic;color:var(--muted);margin:8px 0 6px;font-size:14px}.aw mark{background:rgba(251,191,36,.3);color:inherit;border-radius:4px;padding:0 2px}
+.aw .awn{font-size:14px;margin:0}

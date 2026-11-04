@@ -633,6 +633,7 @@ export async function resultView(root, id) {
       + (ts.length ? `<div class="panel mt"><h3 style="font-size:20px">Performance by question type</h3><small class="muted">Based on this attempt.</small><div class="perf mt">${ts.map(t => `<div><div class="row between"><span>${esc(t.name)}</span><b>${t.ok} / ${t.total} · ${t.pct}%</b></div><div class="meter ${t.pct >= 80 ? 'ok' : ''}"><i style="width:${t.pct}%"></i></div></div>`).join('')}</div></div>` : '')
       + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
     })()}
+      ${tst?.data?.analysis ? analysisHTML(tst.data.analysis) : ''}
       ${tst?.data?.script ? `<details class="panel mt" open><summary style="cursor:pointer;font-weight:700">${icon('headphones', 16)} Script (audio matni)</summary><div class="script">${scriptHTML(tst.data.script)}</div></details>` : ''}
       <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2><button class="btn sm" data-act="resPdf">Save as PDF</button>
       <div class="tabs"><button class="chip on" data-act="revFilter" data-v="">All</button><button class="chip" data-act="revFilter" data-v="no">Wrong</button><button class="chip" data-act="revFilter" data-v="blank">Empty</button></div></div>
@@ -645,6 +646,17 @@ actions.revFilter = el => {
   const v = el.dataset.v;
   $$('#rev .rv').forEach(r => { r.style.display = !v || r.dataset.k.split(' ').includes(v) ? '' : 'none'; });
 };
+
+// ═════════════════════ Reading tahlili: video + so'zlar (matndan, izoh bilan) ═════════════════════
+const ytId = u => { const m = String(u || '').match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m ? m[1] : ''; };
+function analysisHTML(a) {
+  const id = ytId(a.video), hl = (txt, w) => esc(txt).replace(new RegExp('(' + w.split(' ')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\w*)', 'i'), '<mark>$1</mark>');
+  return `<div class="panel mt analysis"><h2 style="font-size:24px">${icon('book', 20)} Reading tahlili</h2>
+    ${id ? `<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Reading tahlili" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><p class="note"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTube'da ochish</a></p>` : ''}
+    <h3 class="mt">Kerakli so'zlar va ularning matndagi joyi</h3>
+    <div class="awords">${(a.words || []).map(w => `<div class="aw"><div class="row between"><b>${esc(w.w)}</b><span class="badge ok">${esc(w.uz)}</span></div>
+      <p class="awq">“${hl(w.where, w.w)}”</p>${w.note ? `<p class="awn">💡 ${esc(w.note)}</p>` : ''}</div>`).join('')}</div></div>`;
+}
 
 // ═════════════════════ glossary (double-click / tap a word) ═════════════════════
 const scriptHTML = sc => (Array.isArray(sc) ? sc : [{ text: String(sc) }]).map(x => x.h ? `<h4>${esc(x.h)}</h4>` : `<p>${x.who ? `<b>${esc(x.who)}:</b> ` : ''}${esc(x.text)}</p>`).join('');
