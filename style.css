@@ -704,3 +704,5 @@ a.mday:hover{transform:translateY(-3px);border-color:rgba(91,108,255,.6)}
 .gopt:hover:not(:disabled){border-color:var(--primary)}.gopt.ok{border-color:var(--ok);background:rgba(52,211,153,.2)}.gopt.bad{border-color:var(--bad);background:rgba(251,113,133,.2);animation:shake .3s}
 .gres{font-size:72px}.gpop h2{margin:6px 0}
 @media(max-width:620px){.gopts{grid-template-columns:1fr}.board .team b{display:none}.board .score{font-size:36px}.pitch{height:140px}.gprompt{font-size:23px}}
+
+.gslot{margin-top:12px;padding:14px;border-radius:14px;border:1px dashed var(--border);text-align:center}

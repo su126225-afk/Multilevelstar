@@ -4,15 +4,8 @@
   {
    "day": 1,
    "title": "Boshlanish: reading, listening, xat yozish va speaking",
-   "focus": "Mavzu: energiya, lochinlar, sport markazi, sog'lom ovqatlanish",
+   "focus": "Mavzu: lochinlar, sport markazi, sog'lom ovqatlanish",
    "tasks": [
-    {
-     "id": "reading4",
-     "type": "reading",
-     "title": "Reading · Part 4 (Energy, 21–26)",
-     "minutes": 14,
-     "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
-    },
     {
      "id": "reading5",
      "type": "reading",
@@ -80,9 +73,16 @@
   },
   {
    "day": 2,
-   "title": "Listening va speaking",
+   "title": "Energy reading, listening va speaking",
    "focus": "Mavzu: Tarix va tibbiyot",
    "tasks": [
+    {
+     "id": "reading4",
+     "type": "reading",
+     "title": "Reading · Part 4 (Energy, 21–26)",
+     "minutes": 14,
+     "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
+    },
     {
      "id": "listening",
      "type": "listening",
