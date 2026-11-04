@@ -73,8 +73,8 @@
   },
   {
    "day": 2,
-   "title": "Energy reading, listening va speaking",
-   "focus": "Mavzu: Tarix va tibbiyot",
+   "title": "Energiya, shahar transporti, xarita va shimpanzelar",
+   "focus": "Mavzu: energiya, transport, maktab xaritasi, shimpanzelar, sog'lom ovqatlanish",
    "tasks": [
     {
      "id": "reading4",
@@ -84,37 +84,60 @@
      "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
     },
     {
+     "id": "reading5",
+     "type": "reading",
+     "title": "Reading · Part 5 (Urban Transportation, 30–35)",
+     "minutes": 14,
+     "ref": "a73d9cbf-94f7-531e-9f98-8b5985df4e37"
+    },
+    {
      "id": "listening",
      "type": "listening",
-     "title": "Listening · A new course",
-     "minutes": 7,
-     "ref": "ea4b3b55-2089-5cc4-95f6-4ee319153136"
+     "title": "Listening · Xarita (Rivermead School, 15–20)",
+     "minutes": 4,
+     "ref": "0f6e89bf-f5ca-58ea-ab59-900f5cc3369b"
     },
     {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (Multilevel Reading 18)",
-     "minutes": 24,
-     "ref": "2fd0cdbe-fb32-5f6d-8fdf-82a8e81ad38e"
-    },
-    {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 1 (shaxsiy savollar)",
+     "id": "listening6",
+     "type": "listening",
+     "title": "Listening · Part 6 (Chimpanzees, 30–35)",
      "minutes": 10,
-     "questions": [
-      "Tell me about your hometown. What do you like about it?",
-      "What do you usually do at the weekend?",
-      "Why are you learning English, and how often do you practise?",
-      "Describe your typical morning."
-     ]
+     "ref": "f68f7f6c-8a84-59a7-86cc-6fbc24eaed42"
     },
     {
      "id": "writing",
      "type": "writing",
-     "title": "Writing · Task 1.2 (AI tekshiradi)",
-     "minutes": 25,
-     "ref": "83090d46-e049-5afa-b202-e48dfd26e5ac"
+     "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
+     "minutes": 40,
+     "ref": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 2 (Sharing a secret)",
+     "minutes": 4,
+     "note": "1 daqiqa tayyorgarlik, 2 daqiqa gapiring. Barcha savollarga bitta hikoyada javob bering.",
+     "questions": [
+      "Describe a time when someone told you a secret.",
+      "Who told you the secret, and what was it about?",
+      "Did you keep the secret? Why or why not?",
+      "How did you feel about knowing it?"
+     ]
+    },
+    {
+     "id": "speaking2",
+     "type": "speaking",
+     "title": "Speaking · Part 3 (Calorie information in restaurants)",
+     "minutes": 4,
+     "note": "Mavzu: «Restaurants should show calorie information on their menus.» 1 daqiqa tayyorgarlik, 2 daqiqa gapiring: ikki tomonni muhokama qilib, o'z fikringizni ayting.",
+     "questions": [
+      "FOR: It helps people make healthier choices.",
+      "FOR: It raises awareness of obesity and diet-related diseases.",
+      "FOR: It encourages restaurants to offer healthier dishes.",
+      "AGAINST: It can take away the enjoyment of eating out.",
+      "AGAINST: It is expensive for small restaurants to calculate calories.",
+      "AGAINST: Calories alone do not show whether food is healthy."
+     ]
     }
    ]
   },
@@ -674,6 +697,14 @@
    "prompt": "You received this message from your colleague:\n\nHi! Our team meeting is on Friday at 10 a.m., but the manager wants to move it to Thursday afternoon. Is that OK for you? If not, what time would be better? Please reply today.\n\nThanks,\nAlex\n\nTask 1.1\nWrite a message to Alex. Say whether Thursday afternoon is possible and suggest another time if necessary. Write 50 words.",
    "min_words": 50,
    "max_words": 60
+  },
+  {
+   "id": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48",
+   "kind": "multilevel",
+   "title": "Marathon D2 · Task 2 — Public sports facilities (online discussion)",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "You are participating in an online discussion. The question is:\n\nSome people believe that local governments should spend more money on public sports facilities, such as swimming pools and sports centres. Others think this money should be spent on other services, such as healthcare and education. What is your opinion?\n\nPost your response, giving reasons and examples. Write 180–200 words."
   }
  ]
 }
