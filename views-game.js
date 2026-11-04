@@ -45,8 +45,30 @@ export async function gameView(root, id) {
   if (!t || words.length < 4) { root.innerHTML = '<div class="wrap page"><div class="empty">Bu test uchun o\'yin so\'zlari yo\'q.<br><br><a class="btn" href="#/">Bosh sahifa</a></div></div>'; return; }
   G = { t, words, me: LS.get('club', null), rival: null, step: 'pick' };
   S.cleanup = () => clearInterval(G?.tm);
-  drawPick(root);
+  drawCards(root);
 }
+
+// 1-bosqich: so'z kartalari (bosganda tarjima chiqadi), hammasi ko'rilgach o'yin ochiladi
+function drawCards(root = $('#view')) {
+  G.seen = new Set();
+  root.innerHTML = `<div class="wrap page game">
+    <a class="muted" href="#/" data-act="gBack">← Natijaga qaytish</a>
+    <h1 class="ptitle mt" style="font-size:34px">🃏 Avval so'zlarni yodlang</h1>
+    <p class="muted">${esc(G.t.title)} · har bir kartani bosing, tarjimasini ko'ring. Hammasini ko'rgach, o'yin ochiladi.</p>
+    <div class="meter mt"><i id="cprog" style="width:0"></i></div><small class="muted" id="ccount">0 / ${G.words.length}</small>
+    <div class="vgrid mt">${G.words.map((w, i) => `<div class="vcard" data-act="gFlip" data-i="${i}"><div class="vw"><b>${esc(w.w)}</b></div>
+      <div class="vuz" hidden><b>${esc(w.uz)}</b>${w.where ? `<small class="muted">${esc(w.where)}</small>` : ''}</div><small class="muted vhint">bosing</small></div>`).join('')}</div>
+    <div class="ctas mt2"><button class="btn primary lg" id="cgo" data-act="gToPick" disabled>⚽ O'yinga o'tish</button></div></div>`;
+}
+actions.gFlip = el => {
+  if (!G) return;
+  el.classList.add('flipped'); $('.vuz', el).hidden = false; $('.vhint', el).hidden = true;
+  G.seen.add(Number(el.dataset.i));
+  const n = G.words.length;
+  $('#cprog').style.width = Math.round(G.seen.size / n * 100) + '%'; $('#ccount').textContent = `${G.seen.size} / ${n}`;
+  if (G.seen.size >= n) $('#cgo').disabled = false;
+};
+actions.gToPick = () => drawPick();
 
 function drawPick(root = $('#view')) {
   const won = LS.get('conquered', []);

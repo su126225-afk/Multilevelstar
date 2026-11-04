@@ -3,7 +3,7 @@ import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
-import * as V from './views-student.js?v=10';
+import * as V from './views-student.js?v=11';
 import * as A from './views-admin.js?v=7';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';

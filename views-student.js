@@ -646,8 +646,6 @@ export async function resultView(root, id) {
 const gameModal = tst => modal(`<div class="center gpop"><div style="font-size:54px">⚽</div><h2>Lug'at kubogi</h2><p class="muted">${tst.section === 'listening' ? 'Listening' : 'Reading'}dan chiqqan ${tst.data.analysis.words.length} ta so'zni o'yinda takrorlang: klub tanlang va raqibni zabt eting!</p>
       <div class="ctas" style="justify-content:center"><button class="btn primary lg" data-act="gGo" data-id="${tst.id}">${icon('play', 18)} O'ynash</button><button class="btn" data-act="closeModal">Keyinroq</button></div></div>`);
 function unlockGame(tst, popup) {
-  const slot = $('#gameSlot'); if (!slot) return;
-  slot.innerHTML = `<a class="btn primary lg" href="#/game/${tst.id}">⚽ Lug'at o'yini — so'zlarni takrorlash</a>`;
   if (popup && location.hash.startsWith('#/result/')) gameModal(tst);
 }
 /** Video bo'lsa: o'yin video tugagach ochiladi va o'zi taklif qilinadi. Video bo'lmasa: natijadan keyin taklif qilinadi. */
@@ -684,9 +682,9 @@ const ytId = u => { const m = String(u || '').match(/(?:youtu\.be\/|v=|\/shorts\
 function analysisHTML(a, t) {
   const id = ytId(a.video), hl = (txt, w) => esc(txt).replace(new RegExp('(' + w.split(' ')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\w*)', 'i'), '<mark>$1</mark>');
   const nw = (a.words || []).length;
-  return `<div class="panel mt analysis"><div class="row between wrapx"><h2 style="font-size:24px">${icon(t?.section === 'listening' ? 'headphones' : 'book', 20)} ${t?.section === 'listening' ? 'Listening' : 'Reading'} tahlili</h2>${nw >= 4 && !id ? `<a class="btn primary" href="#/game/${t.id}">⚽ Lug'at o'yini</a>` : ''}</div>
+  return `<div class="panel mt analysis"><div class="row between wrapx"><h2 style="font-size:24px">${icon(t?.section === 'listening' ? 'headphones' : 'book', 20)} ${t?.section === 'listening' ? 'Listening' : 'Reading'} tahlili</h2>${nw >= 4 ? `<a class="btn primary" href="#/game/${t.id}">🃏 So'zlar + ⚽ o'yin</a>` : ''}</div>
     ${id ? `<div class="vid"><iframe id="ytv" src="https://www.youtube.com/embed/${id}?enablejsapi=1&rel=0&origin=${encodeURIComponent(location.origin)}" title="Tahlil videosi" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
-    ${nw >= 4 ? `<div class="gslot" id="gameSlot"><span class="muted">🔒 ⚽ Lug'at o'yini video tugagach ochiladi</span></div>` : ''}<p class="note"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTube'da ochish</a></p>` : ''}
+<p class="note"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTube'da ochish</a></p>` : ''}
     <h3 class="mt">Kerakli so'zlar va ularning ${t?.section === 'listening' ? 'transcriptdagi' : 'matndagi'} joyi</h3>
     <div class="awords">${(a.words || []).map(w => `<div class="aw"><div class="row between"><b>${esc(w.w)}</b><span class="badge ok">${esc(w.uz)}</span></div>
       <p class="awq">“${hl(w.where, w.w)}”</p>${w.note ? `<p class="awn">💡 ${esc(w.note)}</p>` : ''}</div>`).join('')}</div></div>`;
