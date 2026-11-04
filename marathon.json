@@ -73,16 +73,9 @@
   },
   {
    "day": 2,
-   "title": "Energiya, shahar transporti, xarita va shimpanzelar",
-   "focus": "Mavzu: energiya, transport, maktab xaritasi, shimpanzelar, sog'lom ovqatlanish",
+   "title": "Shahar transporti, xarita va shimpanzelar",
+   "focus": "Mavzu: transport, maktab xaritasi, shimpanzelar, sog'lom ovqatlanish",
    "tasks": [
-    {
-     "id": "reading4",
-     "type": "reading",
-     "title": "Reading · Part 4 (Energy, 21–26)",
-     "minutes": 14,
-     "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
-    },
     {
      "id": "reading5",
      "type": "reading",
