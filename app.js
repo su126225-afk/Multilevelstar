@@ -3,13 +3,14 @@ import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
-import * as V from './views-student.js?v=8';
+import * as V from './views-student.js?v=9';
 import * as A from './views-admin.js?v=7';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';
 import * as SP from './views-speaking.js';
 import * as IE from './views-ielts.js?v=5';
 import * as MA from './views-marathon.js';
+import * as GM from './views-game.js';
 import { startActivity } from './activity.js';
 
 const routes = [
@@ -21,6 +22,7 @@ const routes = [
   [/^\/marathon$/, MA.marathonHome],
   [/^\/marathon\/(\d+)$/, MA.marathonDay],
   [/^\/marathon\/(\d+)\/([\w-]+)$/, MA.marathonTask],
+  [/^\/game\/([\w-]+)$/, GM.gameView],
   [/^\/speaking$/, SP.speakingList],
   [/^\/speaking\/run\/([\w-]+)$/, SP.speakingRun],
   [/^\/vocab$/, VC.vocabList],

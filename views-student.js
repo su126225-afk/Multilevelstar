@@ -6,7 +6,7 @@ import { feedbackHTML, KINDS } from './views-writing.js';
 import { settingsButton, applyPrefs, getSplit, saveSplit, getVSplit, saveVSplit } from './prefs.js';
 import * as HL from './highlight.js';
 import { getCtx, marTaskDone, reasonText } from './views-marathon.js';
-import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials, modal } from './ui.js';
+import { $, $$, actions, inputs, toast, icon, lineChart, go, S, requireStudent, confirmBox, initials, modal, closeModal } from './ui.js';
 
 const loading = root => { root.innerHTML = '<div class="loading">Loading…</div>'; };
 const notFound = (msg = 'Not found') => `<div class="wrap page"><div class="empty">${esc(msg)}<br><br><a class="btn" href="#/">Back home</a></div></div>`;
@@ -633,14 +633,24 @@ export async function resultView(root, id) {
       + (ts.length ? `<div class="panel mt"><h3 style="font-size:20px">Performance by question type</h3><small class="muted">Based on this attempt.</small><div class="perf mt">${ts.map(t => `<div><div class="row between"><span>${esc(t.name)}</span><b>${t.ok} / ${t.total} · ${t.pct}%</b></div><div class="meter ${t.pct >= 80 ? 'ok' : ''}"><i style="width:${t.pct}%"></i></div></div>`).join('')}</div></div>` : '')
       + (weak && weak.pct < 100 ? `<div class="panel mt rec"><span class="aic">${icon('arrow', 18)}</span><div><div class="lab2">Recommended next</div><h3 style="font-size:20px">Work on ${esc(weak.name)}</h3><p class="muted" style="margin:4px 0 12px">You got ${weak.ok} of ${weak.total} right (${weak.pct}%). Retake this test and focus on that question type, then check the explanations below.</p><a class="btn primary sm" href="${rec.demo ? '#/ielts' : '#/test/' + rec.test_id}">Try this test again ${icon('arrow', 14)}</a></div></div>` : '');
     })()}
-      ${tst?.data?.analysis ? analysisHTML(tst.data.analysis) : ''}
-      ${tst?.data?.script ? `<details class="panel mt" open><summary style="cursor:pointer;font-weight:700">${icon('headphones', 16)} Script (audio matni)</summary><div class="script">${scriptHTML(tst.data.script)}</div></details>` : ''}
+      ${tst?.data?.analysis ? analysisHTML(tst.data.analysis, tst) : ''}
+      ${tst?.data?.marks && tst.section === 'reading' ? `<details class="panel mt"><summary style="cursor:pointer;font-weight:700">${icon('book', 16)} Matn: javoblar qayerda (tagiga chizilgan)</summary><div class="script">${passageMarked(tst)}</div></details>` : ''}
+      ${tst?.data?.script ? `<details class="panel mt" open><summary style="cursor:pointer;font-weight:700">${icon('headphones', 16)} Script (audio matni)</summary><div class="script">${scriptHTML(tst.data.script, tst.data.marks)}</div></details>` : ''}
       <div class="row between mt2"><h2 class="ptitle" style="font-size:24px">Answer review</h2><button class="btn sm" data-act="resPdf">Save as PDF</button>
       <div class="tabs"><button class="chip on" data-act="revFilter" data-v="">All</button><button class="chip" data-act="revFilter" data-v="no">Wrong</button><button class="chip" data-act="revFilter" data-v="blank">Empty</button></div></div>
       <div class="rev" id="rev">${rec.details.map(d => `<div class="rv ${d.ok ? 'ok' : 'no'}" data-k="${d.ok ? 'ok' : d.blank ? 'blank no' : 'no'}"><span class="mk">${icon(d.ok ? 'check' : 'x', 16)}</span><span class="n">${d.n}</span>
         <div class="grow"><div>${d.ok ? esc(d.your) : d.blank ? '<span class="muted">(no answer)</span>' : esc(d.your)}</div>${d.ok ? '' : `<small>Correct answer: <b>${esc(d.right)}</b></small>`}${d.q ? `<small>${esc(d.q.length > 140 ? d.q.slice(0, 140) + '…' : d.q)}</small>` : ''}</div></div>`).join('')}</div></div>
   </div></div>`;
+  gamePopup(tst, id);
 }
+function gamePopup(tst, rid) {
+  if (!((tst?.data?.analysis?.words || []).length >= 4)) return;
+  const k = 'ma_gpop_' + rid; try { if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, '1'); } catch { /* ignore */ }
+  setTimeout(() => { if (!location.hash.startsWith('#/result/')) return;
+    modal(`<div class="center gpop"><div style="font-size:54px">⚽</div><h2>Lug'at kubogi</h2><p class="muted">${tst.section === 'listening' ? 'Listening' : 'Reading'}dan chiqqan ${tst.data.analysis.words.length} ta so'zni o'yinda takrorlang: klub tanlang va raqibni zabt eting!</p>
+      <div class="ctas" style="justify-content:center"><button class="btn primary lg" data-act="gGo" data-id="${tst.id}">${icon('play', 18)} O'ynash</button><button class="btn" data-act="closeModal">Keyinroq</button></div></div>`); }, 1400);
+}
+actions.gGo = el => { closeModal(); go('#/game/' + el.dataset.id); };
 actions.revFilter = el => {
   $$('.tabs .chip', el.parentElement).forEach(c => c.classList.toggle('on', c === el));
   const v = el.dataset.v;
@@ -649,17 +659,30 @@ actions.revFilter = el => {
 
 // ═════════════════════ Reading tahlili: video + so'zlar (matndan, izoh bilan) ═════════════════════
 const ytId = u => { const m = String(u || '').match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/); return m ? m[1] : ''; };
-function analysisHTML(a) {
+function analysisHTML(a, t) {
   const id = ytId(a.video), hl = (txt, w) => esc(txt).replace(new RegExp('(' + w.split(' ')[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\w*)', 'i'), '<mark>$1</mark>');
-  return `<div class="panel mt analysis"><h2 style="font-size:24px">${icon('book', 20)} Reading tahlili</h2>
+  const nw = (a.words || []).length;
+  return `<div class="panel mt analysis"><div class="row between wrapx"><h2 style="font-size:24px">${icon(t?.section === 'listening' ? 'headphones' : 'book', 20)} ${t?.section === 'listening' ? 'Listening' : 'Reading'} tahlili</h2>${nw >= 4 ? `<a class="btn primary" href="#/game/${t.id}">⚽ Lug'at o'yini</a>` : ''}</div>
     ${id ? `<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Reading tahlili" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div><p class="note"><a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">YouTube'da ochish</a></p>` : ''}
-    <h3 class="mt">Kerakli so'zlar va ularning matndagi joyi</h3>
+    <h3 class="mt">Kerakli so'zlar va ularning ${t?.section === 'listening' ? 'transcriptdagi' : 'matndagi'} joyi</h3>
     <div class="awords">${(a.words || []).map(w => `<div class="aw"><div class="row between"><b>${esc(w.w)}</b><span class="badge ok">${esc(w.uz)}</span></div>
       <p class="awq">“${hl(w.where, w.w)}”</p>${w.note ? `<p class="awn">💡 ${esc(w.note)}</p>` : ''}</div>`).join('')}</div></div>`;
 }
 
 // ═════════════════════ glossary (double-click / tap a word) ═════════════════════
-const scriptHTML = sc => (Array.isArray(sc) ? sc : [{ text: String(sc) }]).map(x => x.h ? `<h4>${esc(x.h)}</h4>` : `<p>${x.who ? `<b>${esc(x.who)}:</b> ` : ''}${esc(x.text)}</p>`).join('');
+/** Javob chiqadigan joyni tagiga chizib, oxiriga savol raqamini qo'yadi. */
+function markAnswers(html, marks, used) {
+  for (const m of marks || []) {
+    if (used.has(m.n)) continue;
+    const q = esc(m.q), i = html.indexOf(q);
+    if (i < 0) continue;
+    used.add(m.n);
+    html = html.slice(0, i) + `<u class="ansu">${q}</u><b class="anum">${m.n}</b>` + html.slice(i + q.length);
+  }
+  return html;
+}
+const scriptHTML = (sc, marks) => { const used = new Set(); return (Array.isArray(sc) ? sc : [{ text: String(sc) }]).map(x => x.h ? `<h4>${esc(x.h)}</h4>` : `<p>${x.who ? `<b>${esc(x.who)}:</b> ` : ''}${markAnswers(esc(x.text), marks, used)}</p>`).join(''); };
+const passageMarked = t => { const used = new Set(); return (t.data.parts || []).map(p => `<h4>${esc(p.title || '')}</h4>` + String(p.text || '').replace(/\[\[(.+?)\]\]/g, '$1').split(/\n\s*\n/).filter(x => x.trim() && !/^#/.test(x.trim())).map(x => `<p>${markAnswers(esc(x.trim()), t.data.marks, used)}</p>`).join('')).join(''); };
 function lookupGloss(raw, rect) {
   const w = String(raw).trim().toLowerCase().replace(/[^a-z'-]/g, '');
   $('#gloss')?.remove();
