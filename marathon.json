@@ -3,138 +3,15 @@
  "days": [
   {
    "day": 1,
-   "title": "Boshlanish: energiya, conversations, xat yozish va speaking",
-   "focus": "Mavzu: energiya, sog'lom ovqatlanish, sport markazi",
+   "title": "Boshlanish: reading, listening, xat yozish va speaking",
+   "focus": "Mavzu: lochinlar, sport markazi, sog'lom ovqatlanish",
    "tasks": [
     {
-     "id": "vocab",
-     "type": "vocab",
-     "title": "Mavzu lug'ati: Energiya",
-     "minutes": 8,
-     "words": [
-      {
-       "w": "renewable",
-       "uz": "tiklanuvchi",
-       "ex": "Renewable energy sources will never run out."
-      },
-      {
-       "w": "fossil fuels",
-       "uz": "qazilma yoqilg'i",
-       "ex": "Coal, crude oil and natural gas are fossil fuels."
-      },
-      {
-       "w": "pollution",
-       "uz": "ifloslanish",
-       "ex": "Green energy does not cause pollution."
-      },
-      {
-       "w": "electricity",
-       "uz": "elektr energiyasi",
-       "ex": "The blades turn a generator to produce electricity."
-      },
-      {
-       "w": "generator",
-       "uz": "generator",
-       "ex": ""
-      },
-      {
-       "w": "turbine",
-       "uz": "turbina",
-       "ex": "Wind turbines include tall towers and propeller-like blades."
-      },
-      {
-       "w": "reservoir",
-       "uz": "suv ombori",
-       "ex": "Dams create artificial lakes or reservoirs."
-      },
-      {
-       "w": "dam",
-       "uz": "to'g'on",
-       "ex": "Power plants are usually located on large dams."
-      },
-      {
-       "w": "solar",
-       "uz": "quyosh (energiyasi)",
-       "ex": "Solar energy comes from the Sun."
-      },
-      {
-       "w": "biomass",
-       "uz": "biomassa",
-       "ex": "Biomass energy comes from recently living plants."
-      },
-      {
-       "w": "geothermal",
-       "uz": "geotermal (yer osti issiqligi)",
-       "ex": "Geothermal energy uses heat from the core of the Earth."
-      },
-      {
-       "w": "greenhouse gases",
-       "uz": "issiqxona gazlari",
-       "ex": "Renewable energy helps reduce greenhouse gases."
-      }
-     ]
-    },
-    {
-     "id": "reading",
+     "id": "reading5",
      "type": "reading",
-     "title": "Reading · Part 1 (gap-fill)",
-     "minutes": 12,
-     "ref": "e71f0b01-2d4d-5afa-92ac-19f71a47099a"
-    },
-    {
-     "id": "reading4",
-     "type": "reading",
-     "title": "Reading · Part 4 (Energy, 21–26)",
+     "title": "Reading · Part 5 (Falcons, 30–35)",
      "minutes": 14,
-     "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
-    },
-    {
-     "id": "words",
-     "type": "words",
-     "title": "Matndan yangi so'zlar — o'yin",
-     "minutes": 5,
-     "words": [
-      {
-       "w": "uncovered",
-       "uz": "ochildi",
-       "ex": "We uncovered one of them last week."
-      },
-      {
-       "w": "unusual",
-       "uz": "odatiy bo'lmagan",
-       "ex": "It is unusual to find new plants in Japan."
-      },
-      {
-       "w": "identify",
-       "uz": "aniqlamoq",
-       "ex": "A professor who helped identify the flower said discoveries like this show there is still much to learn."
-      },
-      {
-       "w": "diversity",
-       "uz": "xilma-xillik",
-       "ex": "The discovery is good news for scientists who study plant diversity."
-      },
-      {
-       "w": "abundant",
-       "uz": "mo'l-ko'l",
-       "ex": "Water is abundant."
-      },
-      {
-       "w": "consumption",
-       "uz": "iste'mol",
-       "ex": "About 10% of total energy consumption was from renewable sources."
-      },
-      {
-       "w": "advantages",
-       "uz": "afzalliklar",
-       "ex": "There are advantages and disadvantages."
-      },
-      {
-       "w": "environment",
-       "uz": "atrof-muhit",
-       "ex": "Renewable sources are better for the environment."
-      }
-     ]
+     "ref": "17ada295-8155-5550-954d-4849f0bc0fca"
     },
     {
      "id": "listening",
@@ -196,9 +73,16 @@
   },
   {
    "day": 2,
-   "title": "Listening va speaking",
+   "title": "Energy reading, listening va speaking",
    "focus": "Mavzu: Tarix va tibbiyot",
    "tasks": [
+    {
+     "id": "reading4",
+     "type": "reading",
+     "title": "Reading · Part 4 (Energy, 21–26)",
+     "minutes": 14,
+     "ref": "76d00d8a-6e9b-5b0b-b016-b987e5a97214"
+    },
     {
      "id": "listening",
      "type": "listening",
