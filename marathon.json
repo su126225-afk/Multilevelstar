@@ -140,6 +140,13 @@
    "focus": "Mavzu: sayohatlar, mahalliy biznes, shahar va qishloq, sun'iy intellekt",
    "tasks": [
     {
+     "id": "reading3",
+     "type": "reading",
+     "title": "Reading · Part 3 (Slow Travel, 15–20)",
+     "minutes": 12,
+     "ref": "48a04882-751d-5934-b9e5-4d02e47a15cd"
+    },
+    {
      "id": "listening3",
      "type": "listening",
      "title": "Listening · Part 3 (Trips, 15–18)",
