@@ -706,3 +706,13 @@ a.mday:hover{transform:translateY(-3px);border-color:rgba(91,108,255,.6)}
 @media(max-width:620px){.gopts{grid-template-columns:1fr}.board .team b{display:none}.board .score{font-size:36px}.pitch{height:140px}.gprompt{font-size:23px}}
 
 .gslot{margin-top:12px;padding:14px;border-radius:14px;border:1px dashed var(--border);text-align:center}
+
+/* ═════ Marafon reklamasi ═════ */
+.promo-hi{font-size:18px;margin:0 0 4px}.promo-t{font-size:28px;margin:0 0 10px}
+.promo-lead{font-size:16px;line-height:1.6;margin:0 0 14px}
+.promo-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px 18px;margin:6px 0 14px}
+.promo-list div{display:flex;gap:10px;align-items:flex-start}.promo-list span{font-size:22px;line-height:1.2}.promo-list p{margin:0;line-height:1.5;font-size:15px}
+.promo-note{margin:6px 0;font-size:15px}
+.promo-panel{border-color:rgba(251,191,36,.5);background:linear-gradient(135deg,rgba(91,108,255,.12),rgba(251,191,36,.06))}
+.marlocked{filter:grayscale(.4)}
+.acc-msg{white-space:pre-wrap;font-family:inherit;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;line-height:1.6;margin:10px 0}

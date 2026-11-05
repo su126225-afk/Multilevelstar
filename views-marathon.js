@@ -3,7 +3,7 @@ import { store } from './store.js';
 import { CONFIG } from './config.js';
 import { esc } from './logic.js';
 import { dayState, dm } from './marlogic.js';
-import { $, $$, actions, toast, icon, go, S, requireStudent } from './ui.js';
+import { $, $$, actions, toast, icon, go, S, modal, closeModal } from './ui.js';
 
 const TOTAL_DAYS = 35;
 const loading = root => { root.innerHTML = '<div class="loading">Yuklanmoqda…</div>'; };
@@ -13,7 +13,7 @@ const shuffle = a => { const r = a.slice(); for (let i = r.length - 1; i > 0; i-
 let CONTENT = null;
 async function content() {
   if (CONTENT) return CONTENT;
-  try { const r = await fetch('marathon.json?v=1'); CONTENT = r.ok ? await r.json() : { days: [] }; } catch { CONTENT = { days: [] }; }
+  try { const r = await fetch('marathon.json', { cache: 'no-cache' }); CONTENT = r.ok ? await r.json() : { days: [] }; } catch { CONTENT = { days: [] }; }
   return CONTENT;
 }
 export const getCtx = () => { try { return JSON.parse(sessionStorage.getItem(CTX)); } catch { return null; } };
@@ -24,20 +24,31 @@ const TYPE = {
   writing: { ic: 'edit', name: 'Writing (AI tekshiradi)' }, speaking: { ic: 'mic', name: 'Speaking' }, words: { ic: 'spark', name: "Yangi so'zlar o'yini" },
 };
 
+// ── Login (pullik kirish) ──
+const ACC = 'ma_macc';
+export const getAcc = () => { try { return JSON.parse(localStorage.getItem(ACC)); } catch { return null; } };
+const setAcc = a => { try { if (a) localStorage.setItem(ACC, JSON.stringify(a)); else localStorage.removeItem(ACC); } catch { /* ignore */ } };
+const syncStudent = a => {   // testlar va writing natijalari shu login nomiga yoziladi
+  const s = S.student;
+  if (!s || s.name !== a.name || s.group !== a.group) S.student = { name: a.name, group: a.group, groupName: a.group, ...(s?.tg ? { tg: s.tg } : {}) };
+};
+
 let ST = null; // oxirgi holat
 async function load() {
-  const st = S.student || await requireStudent();
-  if (!st) return null;
-  ST = await store.marStatus(st.name, st.group);
+  const a = getAcc();
+  if (!a?.token) return { noacc: true };
+  ST = await store.marStatus(a.token);
+  if (ST?.error === 'auth') { setAcc(null); return { noacc: true, relogin: true }; }
+  if (!ST?.error) syncStudent(a);
   return ST;
 }
 
 /** Vazifani bajarilgan deb belgilash (test/writing sahifalaridan ham chaqiriladi). */
 export async function marTaskDone(day, task, score = null, total = null) {
-  const st = S.student; if (!st) return { ok: false, reason: 'no_student' };
-  try { return await store.marComplete(st.name, st.group, day, task, score, total); } catch (e) { return { ok: false, reason: 'error', message: e.message }; }
+  const a = getAcc(); if (!a?.token) return { ok: false, reason: 'auth' };
+  try { return await store.marComplete(a.token, day, task, score, total); } catch (e) { return { ok: false, reason: 'error', message: e.message }; }
 }
-const REASONS = { locked: 'Tizim qulflangan — ustoz ochishi kerak.', day_locked: 'Bu kun hali ochilmagan.', unknown_task: 'Bu vazifa kunga biriktirilmagan.', not_enrolled: "Siz marafonga qo'shilmagansiz.", error: 'Xatolik, qayta urinib ko‘ring.' };
+const REASONS = { locked: 'Tizim qulflangan — ustoz ochishi kerak.', day_locked: 'Bu kun hali ochilmagan.', unknown_task: 'Bu vazifa kunga biriktirilmagan.', not_enrolled: "Siz marafonga qo'shilmagansiz.", auth: 'Marafonga login bilan qayta kiring.', expired: "Marafon muddati tugagan — ustozga yozing.", inactive: "Login o'chirilgan — ustozga yozing.", error: 'Xatolik, qayta urinib ko‘ring.' };
 export const reasonText = r => REASONS[r?.reason] || 'Vazifa belgilanmadi.';
 
 const warnBox = s => {
@@ -55,9 +66,8 @@ const lockScreen = s => `<div class="wrap page"><div class="panel center marlock
 export async function marathonHome(root) {
   loading(root);
   const [s, C] = await Promise.all([load(), content()]);
-  if (!s) { root.innerHTML = '<div class="wrap page"><div class="empty">Marafonga kirish uchun ism va guruh kodini kiriting.<br><br><button class="btn primary" data-act="signin">Kirish</button></div></div>'; return; }
-  if (s.error) { root.innerHTML = '<div class="wrap page"><div class="empty">Guruh topilmadi.</div></div>'; return; }
-  if (!s.enabled) { root.innerHTML = `<div class="wrap page"><h1 class="ptitle">35 kunlik marafon</h1><div class="empty">Sizning guruhingiz uchun marafon hali ochilmagan.<br><small>Ustozingizdan so'rang.</small></div></div>`; return; }
+  if (s.noacc) { root.innerHTML = promoScreen(C); if (s.relogin) toast('Marafonga qayta kiring', 'bad'); return; }
+  if (s.error) { root.innerHTML = expiredScreen(s); return; }
   if (s.locked) { root.innerHTML = lockScreen(s); return; }
   const has = d => (s.days[d] || []).length > 0;
   const doneDays = [...Array(TOTAL_DAYS)].map((_, i) => i + 1).filter(d => has(d) && dayState(s, d, s.days[d]).done).length;
@@ -69,7 +79,8 @@ export async function marathonHome(root) {
     return soon || !ds.open ? `<div class="mday ${cls}">${inner}</div>` : `<a class="mday ${cls}" href="#/marathon/${d}">${inner}</a>`;
   }).join('');
   root.innerHTML = `<div class="wrap page"><h1 class="ptitle">35 kunlik marafon</h1>
-    <p class="muted">Multilevel imtihoniga tayyorgarlik. Har kuni vazifalarni bajaring — keyingi kun faqat bugungi kun tugagach ochiladi. Bugun: <b>${dm(s.today)}</b> · ${esc(s.name)}</p>
+    <div class="row between wrapx"><p class="muted" style="margin:0">Multilevel imtihoniga tayyorgarlik. Har kuni vazifalarni bajaring — keyingi kun faqat bugungi kun tugagach ochiladi. Bugun: <b>${dm(s.today)}</b> · ${esc(getAcc()?.name || s.name)}${s.expires ? ` · muddat: <b>${dm(s.expires)}.${String(s.expires).slice(0, 4)}</b> gacha` : ''}</p>
+      <button class="btn sm" data-act="marLogout">${icon('logout', 14)} Chiqish</button></div>
     ${warnBox(s)}
     <div class="kv mt"><div><b>${doneDays}</b><span>kun bajarildi</span></div><div><b>${cur}</b><span>hozirgi kun</span></div><div><b>${s.miss_limit - s.missed.length}</b><span>qolgan "imkoniyat"</span></div></div>
     <div class="panel mt"><div class="row between"><b>Qoidalar</b></div><ul style="margin:8px 0 0;padding-left:20px;line-height:1.7"><li>Har kuni kamida bitta vazifa bajarilgan bo'lishi kerak.</li><li>Oxirgi ${s.window_days} kun ichida <b>${s.miss_limit} kun</b> dars qilmasangiz — tizim qulflanadi (ustoz ochadi).</li><li>Kunning barcha vazifalari tugagach, keyingi kun ochiladi.</li></ul></div>
@@ -84,7 +95,7 @@ export async function marathonDay(root, dStr) {
   const d = Number(dStr);
   loading(root);
   const [s, C] = await Promise.all([load(), content()]);
-  if (!s || !s.enabled) return go('#/marathon');
+  if (!s || s.noacc || s.error) return go('#/marathon');
   if (s.locked) { root.innerHTML = lockScreen(s); return; }
   const def = dayDef(C, d), ids = s.days[d] || [];
   if (!def || !ids.length) { root.innerHTML = '<div class="wrap page"><div class="empty">Bu kun kontenti tez kunda.<br><br><a class="btn" href="#/marathon">Xaritaga</a></div></div>'; return; }
@@ -123,7 +134,7 @@ export async function marathonTask(root, dStr, task) {
   const day = Number(dStr);
   loading(root);
   const [s, C] = await Promise.all([load(), content()]);
-  if (!s || !s.enabled || s.locked || day > s.open_upto) return go('#/marathon');
+  if (!s || s.noacc || s.error || s.locked || day > s.open_upto) return go('#/marathon');
   const t = dayDef(C, day)?.tasks.find(x => x.id === task);
   if (!t) return go('#/marathon/' + day);
   TK = { day, t, seen: new Set(), s };
@@ -211,3 +222,81 @@ function drawSpeaking(root) {
 }
 actions.spCheck = el => { $('#spDone').disabled = !el.checked; };
 actions.spDone = async el => { el.disabled = true; if (!(await finishTask(null, null))) el.disabled = false; };
+
+// ═════════════ reklama, qulflangan xarita, login ═════════════
+const TG = () => `<a class="btn primary lg" href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">${icon('send', 17)} Qo'shilish — ustozga yozing</a>`;
+export const PROMO_LIST = [
+  ['📖', 'Reading', 'real imtihon formatida (Part 1–5), PDF bilan'],
+  ['🎧', 'Listening', 'real audio, transcript, javob chiqadigan joylar belgilangan'],
+  ['✍️', 'Writing', 'Task 1.1, 1.2 va Task 2 — AI darhol tekshiradi (ball + xatolar)'],
+  ['🗣', 'Speaking', 'Part 1–3 savollari, ovozli javobni ustoz tekshiradi'],
+  ['🎥', 'Video tahlil', 'har bir reading uchun ustozning video tushuntirishi'],
+  ['🃏', "So'zlar", "matndan olingan so'zlar kartalar bilan + ⚽ Lug'at kubogi o'yini"],
+  ['🔐', 'Shaxsiy kabinet', "har bir o'quvchiga alohida login va parol"],
+  ['📅', 'Intizom', "kunlar ketma-ket ochiladi; 10 kun ichida 2 kun qoldirsangiz — tizim qulflanadi"],
+];
+export function promoHTML() {
+  return `<div class="promo">
+    <p class="promo-hi">Assalomu alaykum! 👋</p>
+    <h2 class="promo-t">🔥 35 kunlik Multilevel marafon</h2>
+    <p class="promo-lead"><b>Dekabrda imtihon topshirmoqchimisiz?</b> Bu marafon aynan siz uchun: 35 kun davomida har kuni real imtihon formatidagi vazifalar bilan tayyorlanasiz.</p>
+    <div class="promo-list">${PROMO_LIST.map(([e, t, d]) => `<div><span>${e}</span><p><b>${t}</b> — ${d}</p></div>`).join('')}</div>
+    <p class="promo-note">💳 Marafon pullik. ⏳ Qabul faqat <b>3–5 kun</b> davom etadi — joyingizni oldindan band qiling!</p>
+    <p class="promo-note">Sotib olmoqchi bo'lsangiz yoki savolingiz bo'lsa, ustozga yozing: <b>${esc(CONFIG.telegramPersonal)}</b></p></div>`;
+}
+function promoScreen() {
+  const tiles = [...Array(TOTAL_DAYS)].map((_, i) => `<div class="mday lockd"><b>${i + 1}</b><small>${icon('lock', 13)}</small></div>`).join('');
+  return `<div class="wrap page"><h1 class="ptitle">35 kunlik marafon</h1>
+    <div class="panel mt promo-panel">${promoHTML()}
+      <div class="ctas">${TG()}<button class="btn lg" data-act="marLoginOpen">${icon('user', 17)} Loginim bor — kirish</button></div></div>
+    <div class="row between mt2"><h3>Marafon xaritasi</h3><span class="badge">${icon('lock', 12)} login bilan ochiladi</span></div>
+    <div class="mgrid mt marlocked">${tiles}</div></div>`;
+}
+function expiredScreen(s) {
+  const msg = s.error === 'expired' ? `Marafon muddati tugagan${s.expires ? ` (${dm(s.expires)}.${String(s.expires).slice(0, 4)})` : ''}.` : s.error === 'inactive' ? "Loginingiz o'chirilgan." : 'Kirishda xatolik.';
+  return `<div class="wrap page"><div class="panel center marlock"><div class="lockic">${icon('lock', 44)}</div><h1 class="ptitle" style="font-size:28px">${msg}</h1>
+    <p class="muted">Davom ettirish uchun ustozga yozing.</p><div class="ctas" style="justify-content:center">${TG()}<button class="btn" data-act="marLogout">Boshqa login bilan kirish</button></div></div></div>`;
+}
+actions.marLoginOpen = () => {
+  modal(`<div class="row between"><h2>Marafonga kirish</h2><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div>
+    <p class="muted">Login va parolni ustozingiz beradi.</p>
+    <label class="lbl">Login</label><input class="inp" id="mlLogin" autocomplete="username" autocapitalize="off" spellcheck="false">
+    <label class="lbl">Parol</label><input class="inp" id="mlPass" type="password" inputmode="numeric" autocomplete="current-password">
+    <div class="err" id="mlErr"></div><button class="btn primary" style="width:100%" id="mlBtn" data-act="marLoginGo">Kirish</button>
+    <p class="note center">Login yo'qmi? <a href="${CONFIG.telegramPersonalUrl}" target="_blank" rel="noopener">Ustozga yozing</a></p>`);
+  setTimeout(() => $('#mlLogin')?.focus(), 50);
+};
+const LOGIN_ERR = { bad: "Login yoki parol noto'g'ri.", wait: "Ko'p marta xato kiritildi. 10 daqiqadan keyin urinib ko'ring.", expired: 'Marafon muddati tugagan — ustozga yozing.', inactive: "Login o'chirilgan — ustozga yozing." };
+actions.marLoginGo = async () => {
+  const l = $('#mlLogin').value.trim(), p = $('#mlPass').value.trim(), err = $('#mlErr'), btn = $('#mlBtn');
+  if (!l || !p) { err.textContent = 'Login va parolni kiriting.'; return; }
+  btn.disabled = true; err.textContent = '';
+  try {
+    const r = await store.marLogin(l, p);
+    if (!r || r.error || !r.token) { err.textContent = LOGIN_ERR[r?.error] || 'Kirib bo\'lmadi.'; btn.disabled = false; return; }
+    setAcc(r); syncStudent(r); closeModal(); toast(`Xush kelibsiz, ${r.name}!`, 'ok');
+    if (location.hash === '#/marathon') marathonHome($('#view')); else go('#/marathon');
+  } catch (e) { err.textContent = e.message; btn.disabled = false; }
+};
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && $('#mlBtn') && e.target.closest('#modal')) actions.marLoginGo(); });
+actions.marLogout = async () => {
+  const a = getAcc(); if (a?.token) store.marLogout(a.token).catch(() => {});
+  setAcc(null); toast('Marafondan chiqdingiz');
+  if (location.hash === '#/marathon') marathonHome($('#view')); else go('#/marathon');
+};
+
+/** Saytga kirganda bir marta: marafon reklamasi (login qilmaganlar uchun). */
+export async function promoPopup() {
+  if (getAcc()?.token) return;
+  try { if (sessionStorage.getItem('ma_promo')) return; } catch { /* ignore */ }
+  if (/^#\/(admin|run|test|result|writing\/|game|marathon)/.test(location.hash)) return;
+  let on = true; try { on = (await store.marPublic())?.promo !== false; } catch { /* default on */ }
+  if (!on) return;
+  try { sessionStorage.setItem('ma_promo', '1'); } catch { /* ignore */ }
+  setTimeout(() => {
+    if ($('#modal.open')) return;
+    modal(`<div class="row between"><span></span><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div>${promoHTML()}
+      <div class="ctas" style="justify-content:center">${TG()}<button class="btn lg" data-act="promoMore">Batafsil</button></div>`, true);
+  }, 900);
+}
+actions.promoMore = () => { closeModal(); go('#/marathon'); };

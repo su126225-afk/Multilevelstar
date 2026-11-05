@@ -114,17 +114,43 @@ const local = {
     LS.set('activity', a);
   },
   async listActivity() { return LS.get('activity', []); },
-  // ── Marafon (demo: brauzerda) ──
-  _mar() { return LS.get('mar', null) || ML.newState(); },
-  async marStatus(n, g) { const st = this._mar(); const r = ML.status(st, n, g, ML.todayStr(), uid); LS.set('mar', st); return r; },
-  async marComplete(n, g, d, t, sc, tot) { const st = this._mar(); const r = ML.complete(st, n, g, d, t, sc, tot, ML.todayStr()); LS.set('mar', st); return r; },
-  async marAdminLoad() { return this._mar(); },
-  async marSaveGroups(codes) { const st = this._mar(); st.groups = codes; LS.set('mar', st); },
+  // ── Marafon (demo: brauzerda; parollar faqat demo uchun ochiq saqlanadi) ──
+  _mar() { const st = LS.get('mar', null) || ML.newState(); st.accounts ||= []; st.sessions ||= {}; return st; },
+  _acc(st, tok) {
+    const a = st.accounts.find(x => x.id === st.sessions[tok]);
+    if (!a) return { error: 'auth' };
+    if (!a.active) return { error: 'inactive' };
+    if (a.expires_on < ML.todayStr()) return { error: 'expired', expires: a.expires_on };
+    return { a };
+  },
+  async marLogin(l, p) {
+    const st = this._mar(), a = st.accounts.find(x => x.login.toLowerCase() === String(l).trim().toLowerCase());
+    if (!a || a.password !== String(p).trim()) return { error: 'bad' };
+    if (!a.active) return { error: 'inactive' };
+    if (a.expires_on < ML.todayStr()) return { error: 'expired', expires: a.expires_on };
+    const token = uid(); st.sessions[token] = a.id; LS.set('mar', st);
+    return { token, login: a.login, name: a.student_name, group: a.group_code, expires: a.expires_on };
+  },
+  async marLogout(tok) { const st = this._mar(); delete st.sessions[tok]; LS.set('mar', st); },
+  async marStatus(tok) { const st = this._mar(), r = this._acc(st, tok); if (r.error) return r; const s = ML.accStudent(st, r.a, ML.todayStr(), uid); const out = ML.statusCore(st, s, ML.todayStr()); LS.set('mar', st); return { ...out, expires: r.a.expires_on }; },
+  async marComplete(tok, d, t, sc, tot) { const st = this._mar(), r = this._acc(st, tok); if (r.error) return { ok: false, reason: r.error }; const s = ML.accStudent(st, r.a, ML.todayStr(), uid); const out = ML.completeCore(st, s, d, t, sc, tot, ML.todayStr()); LS.set('mar', st); return out; },
+  async marPublic() { return { promo: this._mar().settings.promo_on !== false }; },
+  async marAdminLoad() { const st = this._mar(); return { ...st, accounts: st.accounts.map(({ password, ...a }) => a) }; },
+  async marAccCreate(n, g, days) {
+    const st = this._mar(), base = (String(n).trim().split(/\s+/)[0] || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 10) || 'student';
+    let i = 1, login; do { login = (base.length < 3 ? 'student' : base) + String(i++).padStart(2, '0'); } while (st.accounts.some(a => a.login === login));
+    const password = String(Math.floor(Math.random() * 1e6)).padStart(6, '0');
+    const exp = new Date(Date.parse(ML.todayStr() + 'T00:00:00Z') + Math.max(1, days || 35) * 864e5).toISOString().slice(0, 10);
+    const a = { id: uid(), login, password, student_name: String(n).trim().replace(/\s+/g, ' '), group_code: String(g || '').toUpperCase(), expires_on: exp, active: true, created_at: new Date().toISOString() };
+    st.accounts.push(a); LS.set('mar', st); return { id: a.id, login, password };
+  },
+  async marAccReset(id) { const st = this._mar(), a = st.accounts.find(x => x.id === id); if (!a) throw new Error('not found'); a.password = String(Math.floor(Math.random() * 1e6)).padStart(6, '0'); for (const k of Object.keys(st.sessions)) if (st.sessions[k] === id) delete st.sessions[k]; LS.set('mar', st); return { login: a.login, password: a.password }; },
+  async marAccPatch(id, patch) { const st = this._mar(), a = st.accounts.find(x => x.id === id); if (a) Object.assign(a, patch); LS.set('mar', st); },
+  async marAccDelete(id) { const st = this._mar(); st.accounts = st.accounts.filter(a => a.id !== id); const s = st.students.find(x => x.account_id === id); if (s) { st.students = st.students.filter(x => x !== s); st.progress = st.progress.filter(p => p.student_id !== s.id); } LS.set('mar', st); },
   async marSaveDays(days) { const st = this._mar(); st.days = { ...st.days, ...days }; LS.set('mar', st); },
-  async marSaveSettings(s) { const st = this._mar(); st.settings = s; LS.set('mar', st); },
+  async marSaveSettings(s) { const st = this._mar(); st.settings = { ...st.settings, ...s }; LS.set('mar', st); },
   async marUnlock(id) { const st = this._mar(); ML.unlock(st, id, ML.todayStr()); LS.set('mar', st); },
   async marPatchStudent(id, patch) { const st = this._mar(); const s = st.students.find(x => x.id === id); if (s) Object.assign(s, patch); LS.set('mar', st); },
-  async marDeleteStudent(id) { const st = this._mar(); st.students = st.students.filter(x => x.id !== id); st.progress = st.progress.filter(p => p.student_id !== id); LS.set('mar', st); },
   async uploadFile() { throw new Error('Fayl yuklash faqat Supabase ulanganda ishlaydi. Hozircha fayl manzilini (URL) kiriting.'); },
   canUpload: false,
 };
@@ -224,24 +250,26 @@ async function makeCloud() {
     async deleteMock(id) { await ok(sb.from('mock_submissions').delete().eq('id', id)); },
     async addActivity(name, group, secs) { await sb.rpc('add_activity', { n: name, g: group, secs }); },
     async listActivity() { return ok(sb.from('activity').select('*').limit(20000)); },
-    async marStatus(n, g) { return ok(sb.rpc('mar_status', { n, g })); },
-    async marComplete(n, g, d, t, sc, tot) { return ok(sb.rpc('mar_complete', { n, g, d, t, sc, tot })); },
+    async marLogin(l, p) { return ok(sb.rpc('mar_login', { l, p })); },
+    async marLogout(tok) { await sb.rpc('mar_logout', { tok }); },
+    async marStatus(tok) { return ok(sb.rpc('mar_status_t', { tok })); },
+    async marComplete(tok, d, t, sc, tot) { return ok(sb.rpc('mar_complete_t', { tok, d, t, sc, tot })); },
+    async marPublic() { return ok(sb.rpc('mar_public')); },
     async marAdminLoad() {
-      const [settings, groups, days, students, progress] = await Promise.all([
-        ok(sb.from('mar_settings').select('*').eq('id', 1).maybeSingle()), ok(sb.from('mar_groups').select('code')), ok(sb.from('mar_days').select('*')),
-        ok(sb.from('mar_students').select('*').order('created_at')), ok(sb.from('mar_progress').select('*').limit(20000))]);
-      return { settings: settings || { miss_limit: 2, window_days: 10 }, groups: (groups || []).map(x => x.code), days: Object.fromEntries((days || []).map(x => [x.day, x.tasks])), students: students || [], progress: progress || [] };
+      const [settings, days, students, progress, accounts] = await Promise.all([
+        ok(sb.from('mar_settings').select('*').eq('id', 1).maybeSingle()), ok(sb.from('mar_days').select('*')),
+        ok(sb.from('mar_students').select('*').order('created_at')), ok(sb.from('mar_progress').select('*').limit(20000)),
+        ok(sb.from('mar_accounts').select('id,login,student_name,group_code,expires_on,active,created_at,last_login').order('created_at', { ascending: false }))]);
+      return { settings: settings || { miss_limit: 2, window_days: 10, promo_on: true }, days: Object.fromEntries((days || []).map(x => [x.day, x.tasks])), students: students || [], progress: progress || [], accounts: accounts || [] };
     },
-    async marSaveGroups(codes) {
-      const cur = (await ok(sb.from('mar_groups').select('code'))).map(x => x.code);
-      const del = cur.filter(c => !codes.includes(c)); if (del.length) await ok(sb.from('mar_groups').delete().in('code', del));
-      if (codes.length) await ok(sb.from('mar_groups').upsert(codes.map(code => ({ code }))));
-    },
+    async marAccCreate(n, g, days) { return ok(sb.rpc('mar_admin_create', { n, g, days })); },
+    async marAccReset(id) { return ok(sb.rpc('mar_admin_reset', { aid: id })); },
+    async marAccPatch(id, patch) { await ok(sb.from('mar_accounts').update(patch).eq('id', id)); },
+    async marAccDelete(id) { await ok(sb.from('mar_accounts').delete().eq('id', id)); },
     async marSaveDays(days) { await ok(sb.from('mar_days').upsert(Object.entries(days).map(([day, tasks]) => ({ day: Number(day), tasks })))); },
-    async marSaveSettings(s) { await ok(sb.from('mar_settings').upsert({ id: 1, miss_limit: s.miss_limit, window_days: s.window_days })); },
+    async marSaveSettings(s) { await ok(sb.from('mar_settings').update(s).eq('id', 1)); },
     async marUnlock(id) { await ok(sb.rpc('mar_admin_unlock', { sid: id })); },
     async marPatchStudent(id, patch) { await ok(sb.from('mar_students').update(patch).eq('id', id)); },
-    async marDeleteStudent(id) { await ok(sb.from('mar_students').delete().eq('id', id)); },
     async uploadFile(file) {
       const ext = (file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '');
       const path = `${Date.now()}-${Math.random().toString(16).slice(2, 8)}.${ext}`;

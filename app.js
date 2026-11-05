@@ -3,8 +3,8 @@ import { CONFIG } from './config.js';
 import { initStore, store } from './store.js';
 import { esc } from './logic.js';
 import { $, actions, inputs, icon, S, requireStudent, initials, toast, recheckMembership } from './ui.js';
-import * as V from './views-student.js?v=11';
-import * as A from './views-admin.js?v=7';
+import * as V from './views-student.js?v=12';
+import * as A from './views-admin.js?v=8';
 import * as W from './views-writing.js';
 import * as VC from './views-vocab.js';
 import * as SP from './views-speaking.js';
@@ -109,4 +109,5 @@ window.addEventListener('hashchange', render);
   }
   document.title = `${CONFIG.brand} · IELTS & Multilevel practice`;
   render();
+  MA.promoPopup();
 })();

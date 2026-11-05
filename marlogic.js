@@ -6,7 +6,7 @@ export const todayStr = (now = Date.now()) => new Date(now + TASHKENT_OFFSET).to
 const addDays = (d, n) => new Date(Date.parse(d + 'T00:00:00Z') + n * 86400e3).toISOString().slice(0, 10);
 export const dm = d => d.slice(8, 10) + '.' + d.slice(5, 7);
 
-export const newState = () => ({ settings: { miss_limit: 2, window_days: 10 }, groups: [], days: {}, students: [], progress: [] });
+export const newState = () => ({ settings: { miss_limit: 2, window_days: 10, promo_on: true }, groups: [], days: {}, students: [], progress: [], accounts: [], sessions: {} });
 
 /** Qoldirilgan kunlar: oxirgi window_days kun, kecha gacha; boshlangan/qulf ochilgan kun hisoblanmaydi. */
 export function missedDays(st, s, today) {
@@ -29,15 +29,14 @@ export function evalLock(st, s, today) {
   }
 }
 
-const norm = x => String(x || '').trim().replace(/\s+/g, ' ');
-const findStudent = (st, n, g) => st.students.find(s => s.group_code.toUpperCase() === String(g).trim().toUpperCase() && s.student_name.toLowerCase() === norm(n).toLowerCase());
+/** Login (akkaunt) uchun marafon qatori: birinchi kirishda yaratiladi. */
+export function accStudent(st, acc, today, uid) {
+  let s = st.students.find(x => x.account_id === acc.id);
+  if (!s) { s = { id: uid(), account_id: acc.id, student_name: acc.student_name + ' #' + acc.login, group_code: acc.group_code, start_day: today, open_upto: 1, reset_at: today, locked: false, lock_reason: '', excused: [] }; st.students.push(s); }
+  return s;
+}
 
-export function status(st, n, g, today, uid) {
-  const gc = String(g).trim().toUpperCase(), nm = norm(n);
-  if (nm.length < 2) return { error: 'group' };
-  if (!st.groups.includes(gc)) return { enabled: false };
-  let s = findStudent(st, nm, gc);
-  if (!s) { s = { id: uid(), student_name: nm, group_code: gc, start_day: today, open_upto: 1, reset_at: today, locked: false, lock_reason: '', excused: [] }; st.students.push(s); }
+export function statusCore(st, s, today) {
   evalLock(st, s, today);
   return { enabled: true, id: s.id, name: s.student_name, open_upto: s.open_upto, locked: s.locked, lock_reason: s.lock_reason, start_day: s.start_day, today,
     miss_limit: st.settings.miss_limit, window_days: st.settings.window_days, missed: missedDays(st, s, today),
@@ -45,9 +44,7 @@ export function status(st, n, g, today, uid) {
     days: st.days };
 }
 
-export function complete(st, n, g, day, task, score, total, today) {
-  const s = findStudent(st, n, g);
-  if (!s) return { ok: false, reason: 'not_enrolled' };
+export function completeCore(st, s, day, task, score, total, today) {
   evalLock(st, s, today);
   if (s.locked) return { ok: false, reason: 'locked' };
   if (day < 1 || day > s.open_upto) return { ok: false, reason: 'day_locked' };
