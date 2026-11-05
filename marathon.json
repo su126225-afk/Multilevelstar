@@ -136,138 +136,73 @@
   },
   {
    "day": 3,
-   "title": "Yangi reading va Task 2 (essay)",
-   "focus": "Mavzu: Dinozavrlar, muzeylar va qushlar",
+   "title": "Sayohatlar, kafe va sun'iy intellekt",
+   "focus": "Mavzu: sayohatlar, mahalliy biznes, shahar va qishloq, sun'iy intellekt",
    "tasks": [
     {
-     "id": "vocab",
-     "type": "vocab",
-     "title": "Mavzu lug'ati: Dinozavrlar, muzeylar va qushlar",
+     "id": "listening3",
+     "type": "listening",
+     "title": "Listening · Part 3 (Trips, 15–18)",
      "minutes": 8,
-     "words": [
-      {
-       "w": "fossil",
-       "uz": "qazilma",
-       "ex": "The scientists examined a rare fossil."
-      },
-      {
-       "w": "muscles",
-       "uz": "mushaklar",
-       "ex": "They now have a good idea of what the muscles around the voice box looked like."
-      },
-      {
-       "w": "species",
-       "uz": "turlar",
-       "ex": "Migratory behaviour varies enormously across the roughly ten thousand bird species found worldwide."
-      },
-      {
-       "w": "journey",
-       "uz": "sayohat",
-       "ex": ""
-      },
-      {
-       "w": "flight",
-       "uz": "parvoz",
-       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
-      },
-      {
-       "w": "migration",
-       "uz": "migratsiya, ko'chish",
-       "ex": "The decision to begin migration is rarely sudden or arbitrary."
-      },
-      {
-       "w": "migratory",
-       "uz": "ko'chib yuruvchi",
-       "ex": "Few natural phenomena rival the sheer distances covered by migratory birds each year."
-      },
-      {
-       "w": "research",
-       "uz": "tadqiqot",
-       "ex": "The research was led by Professor Junki Yoshida, a dinosaur researcher at the Fukushima Museum in Japan."
-      },
-      {
-       "w": "probably",
-       "uz": "ehtimol",
-       "ex": "The scientists believe the shape of the creature's voice box means it probably made bird-like sounds."
-      },
-      {
-       "w": "prepare",
-       "uz": "tayyorlamoq",
-       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
-      },
-      {
-       "w": "length",
-       "uz": "uzunlik",
-       "ex": ""
-      },
-      {
-       "w": "museum",
-       "uz": "muzey",
-       "ex": "The research was led by Professor Junki Yoshida, a dinosaur researcher at the Fukushima Museum in Japan."
-      }
-     ]
-    },
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (Multilevel Reading 19)",
-     "minutes": 36,
-     "ref": "729f04ec-96c2-586d-9ada-ac462d71952b"
-    },
-    {
-     "id": "words",
-     "type": "words",
-     "title": "Matndan yangi so'zlar — o'yin",
-     "minutes": 5,
-     "words": [
-      {
-       "w": "associated",
-       "uz": "bog'liq",
-       "ex": ""
-      },
-      {
-       "w": "demands",
-       "uz": "talab qiladi",
-       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
-      },
-      {
-       "w": "course",
-       "uz": "yo'nalish",
-       "ex": "Of course, there are many movies with dinosaurs making all kinds of roars, screeches and screams."
-      },
-      {
-       "w": "changes",
-       "uz": "o'zgarishlar",
-       "ex": "Before departure, many birds undergo dramatic physical changes to prepare for the demands of sustained flight."
-      },
-      {
-       "w": "summer",
-       "uz": "yoz",
-       "ex": ""
-      },
-      {
-       "w": "sounds",
-       "uz": "tovushlar",
-       "ex": "A new discovery has given scientists a better idea of the kinds of sounds dinosaurs made."
-      },
-      {
-       "w": "dinosaur",
-       "uz": "dinozavr",
-       "ex": "Dinosaurs disappeared 65 million years ago, so we don't really know what they sounded like."
-      },
-      {
-       "w": "scientists",
-       "uz": "olimlar",
-       "ex": "A new discovery has given scientists a better idea of the kinds of sounds dinosaurs made."
-      }
-     ]
+     "ref": "96498cdd-97cb-5a5f-888b-dca5175c5888"
     },
     {
      "id": "writing",
      "type": "writing",
-     "title": "Writing · Task 2 (AI tekshiradi)",
+     "title": "Writing · Task 1.1 (do'stga xabar, AI tekshiradi)",
+     "minutes": 15,
+     "ref": "bb99e2b0-b68c-5323-9114-efa268e5e7fc"
+    },
+    {
+     "id": "writing2",
+     "type": "writing",
+     "title": "Writing · Task 1.2 (kafe egasiga xat, AI tekshiradi)",
      "minutes": 25,
-     "ref": "1ca97e09-e1d1-57ca-ae8f-855454bc3906"
+     "ref": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90"
+    },
+    {
+     "id": "writing3",
+     "type": "writing",
+     "title": "Writing · Task 2 (maqola, AI tekshiradi)",
+     "minutes": 40,
+     "ref": "9f57dd0c-439f-5bcf-99d8-61129c42d06c"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 1.1 + 1.2 (city and countryside)",
+     "minutes": 6,
+     "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+     "questions": [
+      "Part 1.1 — Where do you live?",
+      "Part 1.1 — Can you describe your family?",
+      "Part 1.1 — What are your hobbies?",
+      "Part 1.2 — What do you see in these pictures?",
+      "Part 1.2 — What is the difference between living in the city and in the countryside?",
+      "Part 1.2 — Where do you prefer to live, in the city or in a village?"
+     ],
+     "images": [
+      "marathon-d3-speaking-a.jpg",
+      "marathon-d3-speaking-b.jpg"
+     ]
+    },
+    {
+     "id": "speaking2",
+     "type": "speaking",
+     "title": "Speaking · Part 2 + Part 3 (trip · AI)",
+     "minutes": 8,
+     "note": "Part 2: 1 daqiqa tayyorgarlik, 2 daqiqa gapiring (uchala savolga bitta hikoyada). Part 3: «Artificial intelligence will replace human jobs» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+     "questions": [
+      "Part 2 — Tell me about a memorable trip you have taken.",
+      "Part 2 — How did this trip change your perspective on travel or life in general?",
+      "Part 2 — What are the most important things to consider when planning a trip?",
+      "Part 3 · FOR — Increases efficiency and productivity.",
+      "Part 3 · FOR — Frees humans from repetitive tasks.",
+      "Part 3 · FOR — Encourages innovation in new industries.",
+      "Part 3 · AGAINST — Risks job displacement and unemployment.",
+      "Part 3 · AGAINST — Challenges in retraining and upskilling the workforce.",
+      "Part 3 · AGAINST — Potential for widening income inequality."
+     ]
     }
    ]
   },
@@ -698,6 +633,30 @@
    "min_words": 180,
    "max_words": 200,
    "prompt": "You are participating in an online discussion. The question is:\n\nSome people believe that local governments should spend more money on public sports facilities, such as swimming pools and sports centres. Others think this money should be spent on other services, such as healthcare and education. What is your opinion?\n\nPost your response, giving reasons and examples. Write 180–200 words."
+  },
+  {
+   "id": "bb99e2b0-b68c-5323-9114-efa268e5e7fc",
+   "kind": "multilevel",
+   "title": "Marathon D3 · Task 1.1 — Café (message to a friend)",
+   "min_words": 50,
+   "max_words": 70,
+   "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.1\nWrite a message to a friend who also goes to this café. Talk about the situation and share your ideas to help the café. Write 50–70 words."
+  },
+  {
+   "id": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90",
+   "kind": "multilevel",
+   "title": "Marathon D3 · Task 1.2 — Café (letter to the owner)",
+   "min_words": 120,
+   "max_words": 150,
+   "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.2\nWrite a formal letter to the café owner. Give your suggestions and explain how they could help the business. Write 120–150 words."
+  },
+  {
+   "id": "9f57dd0c-439f-5bcf-99d8-61129c42d06c",
+   "kind": "multilevel",
+   "title": "Marathon D3 · Task 2 — Local businesses vs chain stores (article)",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "A local newspaper is inviting residents to write articles. The topic is:\n\n\"Should people support local businesses rather than large chain stores?\"\n\nWrite your article, giving reasons and examples. Write 180–200 words."
   }
  ]
 }
