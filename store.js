@@ -223,7 +223,7 @@ async function makeCloud() {
       if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
       return data.feedback;
     },
-    async saveSpeaking(r) { return (await ok(sb.from('speaking_submissions').insert(r).select('id').single())).id; },
+    async saveSpeaking(r) { const id = uid(); await ok(sb.from('speaking_submissions').insert({ id, ...r })); return id; },
     async mySpeakings(name, group) { return ok(sb.rpc('my_speakings', { n: name, g: group })); },
     async listSpeakings() { return ok(sb.from('speaking_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
     async deleteSpeaking(id) { await ok(sb.from('speaking_submissions').delete().eq('id', id)); },
@@ -242,7 +242,7 @@ async function makeCloud() {
       if (msg || !data?.feedback) throw new Error(msg || 'AI check failed');
       return data.feedback;
     },
-    async saveWriting(r) { return (await ok(sb.from('writing_submissions').insert(r).select('id').single())).id; },
+    async saveWriting(r) { const id = uid(); await ok(sb.from('writing_submissions').insert({ id, ...r })); return id; },   // o'quvchi o'qiy olmaydi, shuning uchun .select() yo'q
     async myWritings(name, group) { return ok(sb.rpc('my_writings', { n: name, g: group })); },
     async listWritings() { return ok(sb.from('writing_submissions').select('*').order('created_at', { ascending: false }).limit(1000)); },
     async deleteWriting(id) { await ok(sb.from('writing_submissions').delete().eq('id', id)); },

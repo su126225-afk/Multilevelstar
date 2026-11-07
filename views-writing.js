@@ -149,12 +149,13 @@ actions.wCheck = async () => {
     try {
       await store.saveWriting({ task_id: t.id, task_title: t.title, kind: t.kind, student_name: st.name, group_code: st.group, body: text, words, band: String(fb.overall ?? ''), feedback: fb });
       toast('Saved to your history', 'ok');
-      const mc = getCtx();
-      if (mc && mc.ref === t.id) {
-        if (words < Math.ceil(t.min_words * 0.7)) toast(`Marafon uchun kamida ${Math.ceil(t.min_words * 0.7)} so'z yozing (siz ${words} ta yozdingiz).`, 'bad');
-        else { const r = await marTaskDone(mc.day, mc.task, Number(fb.overall) || null, null); toast(r.ok ? (r.day_done ? `🎉 ${mc.day}-kun tugadi!` : 'Marafon vazifasi bajarildi ✓') : reasonText(r), r.ok ? 'ok' : 'bad'); }
-      }
     } catch (e) { toast('Feedback shown but not saved: ' + e.message, 'bad'); }
+    // Marafon: AI tekshirgan bo'lsa vazifa bajarilgan hisoblanadi (tarixga saqlanmasa ham)
+    const mc = getCtx();
+    if (mc && mc.ref === t.id) {
+      if (words < Math.ceil(t.min_words * 0.7)) toast(`Marafon uchun kamida ${Math.ceil(t.min_words * 0.7)} so'z yozing (siz ${words} ta yozdingiz).`, 'bad');
+      else { const r = await marTaskDone(mc.day, mc.task, parseFloat(fb.overall) || null, null); setTimeout(() => toast(r.ok ? (r.day_done ? `🎉 ${mc.day}-kun tugadi!` : 'Marafon vazifasi bajarildi ✓') : reasonText(r), r.ok ? 'ok' : 'bad'), 1200); }
+    }
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
