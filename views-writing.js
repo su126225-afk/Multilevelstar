@@ -154,11 +154,19 @@ actions.wCheck = async () => {
     const mc = getCtx();
     if (mc && mc.ref === t.id) {
       if (words < Math.ceil(t.min_words * 0.7)) toast(`Marafon uchun kamida ${Math.ceil(t.min_words * 0.7)} so'z yozing (siz ${words} ta yozdingiz).`, 'bad');
-      else { const r = await marTaskDone(mc.day, mc.task, parseFloat(fb.overall) || null, null); setTimeout(() => toast(r.ok ? (r.day_done ? `🎉 ${mc.day}-kun tugadi!` : 'Marafon vazifasi bajarildi ✓') : reasonText(r), r.ok ? 'ok' : 'bad'), 1200); }
+      else {
+        const r = await marTaskDone(mc.day, mc.task, parseFloat(fb.overall) || null, null);
+        const html = r.ok ? `<div class="marbanner ok">✓ Marafon vazifasi bajarildi${r.day_done ? ` — ${mc.day}-kun tugadi! 🎉` : ''}<br><button class="btn sm primary" data-act="wMarBack" data-day="${mc.day}">← ${mc.day}-kunga qaytish</button></div>`
+          : `<div class="marbanner bad">${esc(reasonText(r))}<br><button class="btn sm" data-act="wMarBack" data-day="${mc.day}">← ${mc.day}-kunga qaytish</button></div>`;
+        $('#modal .sheet')?.insertAdjacentHTML('afterbegin', html);
+        $('#wMarBar')?.remove();
+        $('#wbtn')?.insertAdjacentHTML('afterend', `<div id="wMarBar" style="margin-top:12px">${html}</div>`);
+      }
     }
   } catch (e) { toast(e.message, 'bad'); }
   finally { WR.busy = false; if (btn) { btn.disabled = false; btn.innerHTML = `${icon('spark', 16)} Check with AI`; } }
 };
+actions.wMarBack = el => { closeModal(); go('#/marathon/' + el.dataset.day); };
 const printFoot = () => `<div class="printfoot"><b>${esc(CONFIG.teacher)}</b><br>Telegram: ${esc(CONFIG.telegramChannel)}${CONFIG.printPhone ? ' · ☎ ' + esc(CONFIG.printPhone) : ''}${CONFIG.printSite ? '<br>' + esc(CONFIG.printSite) : ''}</div>`;
 const showFeedback = (fb, text) => modal(`<div class="row between noprint-x"><h2>AI feedback</h2><div class="row"><button class="btn sm" data-act="printFb">Save as PDF</button><button class="icon-btn" data-act="closeModal">${icon('x', 18)}</button></div></div><div class="mt">${feedbackHTML(fb, text)}</div>${printFoot()}`, true);
 actions.printFb = () => {
