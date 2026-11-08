@@ -215,22 +215,22 @@
   },
   {
    "day": 4,
-   "title": "Listening, speaking va xabar yozish",
-   "focus": "Mavzu: Fotografiya va uyqu",
+   "title": "Do'kon, mehmonxona, ferma va tarix",
+   "focus": "Mavzu: xizmat ko'rsatish, tadbir zallari, ferma kasblari, tarixni o'rganish",
    "tasks": [
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · A weekend trip",
-     "minutes": 7,
-     "ref": "e3deb9ea-7c6b-5c8f-8cad-7f6d53dd203a"
-    },
     {
      "id": "reading",
      "type": "reading",
-     "title": "Reading · Part 4–5 (Multilevel Reading 19)",
-     "minutes": 24,
-     "ref": "ae685f0e-9eba-5288-b8a1-fea99bdfc401"
+     "title": "Reading · Part 1–3 (1–20)",
+     "minutes": 30,
+     "ref": "829b3777-4440-515d-9edd-260e876ec341"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 1–2 (1–14)",
+     "minutes": 12,
+     "ref": "f006d55d-5310-5da1-a418-5ba04f1a21b1"
     },
     {
      "id": "speaking",
