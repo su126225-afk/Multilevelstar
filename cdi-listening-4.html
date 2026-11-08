@@ -9383,5 +9383,7 @@ body.dark-mode .cultures-table th{background:#242d3b}body.dark-mode .cultures-ta
 })();
 </script>
 <script src="mock-sync.js"></script>
+<style id="night-css">#nightBtn{position:fixed;right:290px;top:8px;z-index:2147483000;width:40px;height:40px;border-radius:50%;border:1px solid #9aa9b8;background:#fff;color:#1f3b57;font-size:21px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}@media(max-width:760px){#nightBtn{right:auto;top:auto;left:10px;bottom:62px}}body.dark-mode #nightBtn{background:#2b2f36;color:#ffd866;border-color:#555}</style>
+<script>(function(){var K='ielts_volume_day6_theme';function cur(){return document.body.classList.contains('dark-mode')?'dark':'light'}function set(n){try{if(window.ExamApp&&ExamApp.setTheme)ExamApp.setTheme(n);else{document.body.classList.toggle('dark-mode',n==='dark');localStorage.setItem(K,n)}}catch(e){document.body.classList.toggle('dark-mode',n==='dark')}b.textContent=n==='dark'?'☀':'🌙';b.title=n==='dark'?'Kunduzgi rejim':'Tungi rejim'}var b=document.createElement('button');b.id='nightBtn';b.type='button';b.onclick=function(){set(cur()==='dark'?'light':'dark')};function boot(){document.body.appendChild(b);b.textContent=cur()==='dark'?'☀':'🌙';b.title='Tungi rejim'}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();})();</script><!--/night-->
 </body>
 </html>
