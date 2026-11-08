@@ -15,13 +15,13 @@ export function buildAttempt(set, rnd = Math.random) {
   const mcN = set.mc_count || 25, openN = set.open_count || 15;
   const seen = new Set(), words = [];
   for (const w of set.words || []) { const k = vnorm(w.word); if (k && !seen.has(k)) { seen.add(k); words.push(w); } }
-  const syn = w => words.filter(x => vnorm(x.meaning) === vnorm(w.meaning)).map(x => x.word);
+  const syn = w => [...words.filter(x => vnorm(x.meaning) === vnorm(w.meaning)).map(x => x.word), ...(w.also || [])];
   const order = shuffle(words.map((_, i) => i), rnd);
   const mcIdx = order.slice(0, mcN);
   const openIdx = [], usedOpen = new Set();
   for (const i of order.slice(mcN)) {
     const k = vnorm(words[i].meaning);
-    if (openIdx.length < openN && !usedOpen.has(k)) { usedOpen.add(k); openIdx.push(i); }
+    if (openIdx.length < openN && !usedOpen.has(k) && k !== vnorm(words[i].word)) { usedOpen.add(k); openIdx.push(i); }
   }
   const mc = mcIdx.map(i => {
     const w = words[i], used = new Set([vnorm(w.meaning)]), dis = [];
@@ -33,9 +33,11 @@ export function buildAttempt(set, rnd = Math.random) {
   return { mc: shuffle(mc, rnd), open: shuffle(open, rnd) };
 }
 
+// British/American spelling both accepted (prioritize = prioritise, color = colour)
+const spell = s => vnorm(s).replace(/[.!?,;]+$/, '').replace(/iz(e|ed|es|ing|ation)\b/g, 'is$1').replace(/\b(neighbo|flavo|colo|favo|hono|behavio)r/g, '$1ur');
 export const isOpenCorrect = (o, given) => {
-  const g = vnorm(given);
-  return !!g && (o.accept?.length ? o.accept : [o.answer]).some(a => vnorm(a) === g);
+  const g = spell(given);
+  return !!g && (o.accept?.length ? o.accept : [o.answer]).some(a => spell(a) === g);
 };
 
 export function gradeAttempt(att, answers) {

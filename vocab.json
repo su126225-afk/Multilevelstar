@@ -817,6 +817,468 @@
      "topic": "50"
     }
    ]
+  },
+  {
+   "title": "Vocabulary Exam — Topics 51–60",
+   "topics": "51–60",
+   "mc_count": 25,
+   "open_count": 15,
+   "seconds": 480,
+   "code_hash": "97c10efe01d5c9c88704a12d361d8429b3a6aa2412290a0773109d5d2d603d5e",
+   "words": [
+    {
+     "word": "routine",
+     "meaning": "tartib",
+     "topic": "51"
+    },
+    {
+     "word": "consistent",
+     "meaning": "izchil",
+     "topic": "51"
+    },
+    {
+     "word": "prepare",
+     "meaning": "tayyorlanmoq",
+     "topic": "51"
+    },
+    {
+     "word": "productive",
+     "meaning": "samarali",
+     "topic": "51",
+     "also": [
+      "efficient",
+      "effective"
+     ]
+    },
+    {
+     "word": "habit",
+     "meaning": "odat",
+     "topic": "51"
+    },
+    {
+     "word": "schedule",
+     "meaning": "jadval",
+     "topic": "51",
+     "also": [
+      "timetable"
+     ]
+    },
+    {
+     "word": "alarm",
+     "meaning": "uyg'otkich",
+     "topic": "51",
+     "also": [
+      "alarm clock"
+     ]
+    },
+    {
+     "word": "prioritise",
+     "meaning": "ustuvor qo'ymoq",
+     "topic": "51"
+    },
+    {
+     "word": "tourist",
+     "meaning": "sayyoh",
+     "topic": "52"
+    },
+    {
+     "word": "direction",
+     "meaning": "yo'nalish",
+     "topic": "52"
+    },
+    {
+     "word": "confused",
+     "meaning": "sarosimaga tushgan",
+     "topic": "52"
+    },
+    {
+     "word": "guide",
+     "meaning": "yo'l ko'rsatmoq",
+     "topic": "52"
+    },
+    {
+     "word": "landmark",
+     "meaning": "mo'ljal",
+     "topic": "52"
+    },
+    {
+     "word": "recommend",
+     "meaning": "tavsiya qilmoq",
+     "topic": "52"
+    },
+    {
+     "word": "impression",
+     "meaning": "taassurot",
+     "topic": "52"
+    },
+    {
+     "word": "hospitable",
+     "meaning": "mehmondo'st",
+     "topic": "52",
+     "also": [
+      "welcoming"
+     ]
+    },
+    {
+     "word": "book club",
+     "meaning": "kitob klubi",
+     "topic": "53"
+    },
+    {
+     "word": "discuss",
+     "meaning": "muhokama qilmoq",
+     "topic": "53"
+    },
+    {
+     "word": "opinion",
+     "meaning": "fikr",
+     "topic": "53"
+    },
+    {
+     "word": "disagree",
+     "meaning": "rozi emas bo'lmoq",
+     "topic": "53"
+    },
+    {
+     "word": "argument",
+     "meaning": "argument",
+     "topic": "53"
+    },
+    {
+     "word": "chapter",
+     "meaning": "bob",
+     "topic": "53"
+    },
+    {
+     "word": "recommend",
+     "meaning": "tavsiya qilmoq",
+     "topic": "53"
+    },
+    {
+     "word": "surprised",
+     "meaning": "hayron",
+     "topic": "53"
+    },
+    {
+     "word": "handmade",
+     "meaning": "qo'lda yasalgan",
+     "topic": "54"
+    },
+    {
+     "word": "effort",
+     "meaning": "harakat",
+     "topic": "54"
+    },
+    {
+     "word": "thoughtful",
+     "meaning": "o'ylab qilingan",
+     "topic": "54"
+    },
+    {
+     "word": "personal",
+     "meaning": "shaxsiy",
+     "topic": "54"
+    },
+    {
+     "word": "meaningful",
+     "meaning": "ma'noli",
+     "topic": "54"
+    },
+    {
+     "word": "occasion",
+     "meaning": "munosabat",
+     "topic": "54"
+    },
+    {
+     "word": "appreciate",
+     "meaning": "qadrlamoq",
+     "topic": "54",
+     "also": [
+      "value"
+     ]
+    },
+    {
+     "word": "create",
+     "meaning": "yaratmoq",
+     "topic": "54"
+    },
+    {
+     "word": "solo",
+     "meaning": "yolg'iz",
+     "topic": "55",
+     "also": [
+      "alone"
+     ]
+    },
+    {
+     "word": "nervous",
+     "meaning": "asabiy",
+     "topic": "55"
+    },
+    {
+     "word": "connection",
+     "meaning": "ulanish",
+     "topic": "55"
+    },
+    {
+     "word": "platform",
+     "meaning": "peron",
+     "topic": "55"
+    },
+    {
+     "word": "ticket",
+     "meaning": "chipta",
+     "topic": "55"
+    },
+    {
+     "word": "arrive",
+     "meaning": "yetib kelmoq",
+     "topic": "55"
+    },
+    {
+     "word": "independent",
+     "meaning": "mustaqil",
+     "topic": "55"
+    },
+    {
+     "word": "journey",
+     "meaning": "sayohat",
+     "topic": "55",
+     "also": [
+      "trip",
+      "travel"
+     ]
+    },
+    {
+     "word": "struggle",
+     "meaning": "qiynalmoq",
+     "topic": "56"
+    },
+    {
+     "word": "method",
+     "meaning": "usul",
+     "topic": "56",
+     "also": [
+      "way"
+     ]
+    },
+    {
+     "word": "patient",
+     "meaning": "sabr-toqatli",
+     "topic": "56"
+    },
+    {
+     "word": "progress",
+     "meaning": "taraqqiyot",
+     "topic": "56"
+    },
+    {
+     "word": "different",
+     "meaning": "boshqacha",
+     "topic": "56"
+    },
+    {
+     "word": "compare",
+     "meaning": "solishtirmoq",
+     "topic": "56"
+    },
+    {
+     "word": "eventually",
+     "meaning": "oxir-oqibat",
+     "topic": "56"
+    },
+    {
+     "word": "understand",
+     "meaning": "tushunmoq",
+     "topic": "56"
+    },
+    {
+     "word": "donate",
+     "meaning": "xayriya qilmoq",
+     "topic": "57"
+    },
+    {
+     "word": "charity",
+     "meaning": "xayriya tashkiloti",
+     "topic": "57"
+    },
+    {
+     "word": "collect",
+     "meaning": "yig'moq",
+     "topic": "57",
+     "also": [
+      "gather"
+     ]
+    },
+    {
+     "word": "warm",
+     "meaning": "iliq",
+     "topic": "57"
+    },
+    {
+     "word": "cold",
+     "meaning": "sovuq",
+     "topic": "57"
+    },
+    {
+     "word": "winter",
+     "meaning": "qish",
+     "topic": "57"
+    },
+    {
+     "word": "receive",
+     "meaning": "olmoq",
+     "topic": "57"
+    },
+    {
+     "word": "grateful",
+     "meaning": "minnatdor",
+     "topic": "57"
+    },
+    {
+     "word": "match",
+     "meaning": "o'yin",
+     "topic": "58",
+     "also": [
+      "game"
+     ]
+    },
+    {
+     "word": "score",
+     "meaning": "hisob",
+     "topic": "58"
+    },
+    {
+     "word": "equalise",
+     "meaning": "tenglashtirmoq",
+     "topic": "58"
+    },
+    {
+     "word": "captain",
+     "meaning": "kapitan",
+     "topic": "58"
+    },
+    {
+     "word": "celebrate",
+     "meaning": "nishonlamoq",
+     "topic": "58"
+    },
+    {
+     "word": "defeat",
+     "meaning": "mag'lubiyat",
+     "topic": "58"
+    },
+    {
+     "word": "respect",
+     "meaning": "hurmat",
+     "topic": "58"
+    },
+    {
+     "word": "spirit",
+     "meaning": "ruh",
+     "topic": "58"
+    },
+    {
+     "word": "deadline",
+     "meaning": "muddat",
+     "topic": "59"
+    },
+    {
+     "word": "extension",
+     "meaning": "muhlat uzaytirish",
+     "topic": "59"
+    },
+    {
+     "word": "honest",
+     "meaning": "halol",
+     "topic": "59"
+    },
+    {
+     "word": "consequence",
+     "meaning": "oqibat",
+     "topic": "59"
+    },
+    {
+     "word": "responsibility",
+     "meaning": "mas'uliyat",
+     "topic": "59"
+    },
+    {
+     "word": "accept",
+     "meaning": "qabul qilmoq",
+     "topic": "59"
+    },
+    {
+     "word": "explain",
+     "meaning": "tushuntirmoq",
+     "topic": "59"
+    },
+    {
+     "word": "reliable",
+     "meaning": "ishonchli",
+     "topic": "59",
+     "also": [
+      "dependable",
+      "trustworthy"
+     ]
+    },
+    {
+     "word": "hike",
+     "meaning": "piyoda yurish",
+     "topic": "60",
+     "also": [
+      "walk",
+      "walking",
+      "hiking"
+     ]
+    },
+    {
+     "word": "view",
+     "meaning": "manzara",
+     "topic": "60",
+     "also": [
+      "scenery",
+      "landscape"
+     ]
+    },
+    {
+     "word": "climb",
+     "meaning": "chiqmoq",
+     "topic": "60"
+    },
+    {
+     "word": "effort",
+     "meaning": "harakat",
+     "topic": "60"
+    },
+    {
+     "word": "exhausted",
+     "meaning": "juda charchagan",
+     "topic": "60",
+     "also": [
+      "very tired"
+     ]
+    },
+    {
+     "word": "worth it",
+     "meaning": "arziydi",
+     "topic": "60",
+     "also": [
+      "worth",
+      "worthwhile"
+     ]
+    },
+    {
+     "word": "reward",
+     "meaning": "mukofot",
+     "topic": "60"
+    },
+    {
+     "word": "height",
+     "meaning": "balandlik",
+     "topic": "60"
+    }
+   ]
   }
  ]
 }
