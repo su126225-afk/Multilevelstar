@@ -215,8 +215,8 @@
   },
   {
    "day": 4,
-   "title": "Do'kon, mehmonxona, ferma va tarix",
-   "focus": "Mavzu: xizmat ko'rsatish, tadbir zallari, ferma kasblari, tarixni o'rganish",
+   "title": "Do'kon, mehmonxona va ferma",
+   "focus": "Mavzu: xizmat ko'rsatish, xarid qilish, ish joyidagi o'zgarishlar",
    "tasks": [
     {
      "id": "reading",
@@ -235,158 +235,84 @@
     {
      "id": "speaking",
      "type": "speaking",
-     "title": "Speaking · Part 2 (rasm / mavzu bo'yicha)",
-     "minutes": 10,
+     "title": "Speaking · Part 1.1 + 1.2 (beach or mountains)",
+     "minutes": 6,
+     "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
      "questions": [
-      "Describe a person who has helped you a lot. Who is he or she?",
-      "How did this person help you?",
-      "Why is this person important to you?",
-      "Would you like to help other people in the same way? Why?"
+      "Part 1.1 — What do you usually do on weekends?",
+      "Part 1.1 — Do you prefer to watch movies at home or at the cinema?",
+      "Part 1.1 — How important is learning foreign languages for you?",
+      "Part 1.1 — Do you think technology makes our lives easier? Why?",
+      "Part 1.2 — What can you see in these pictures?",
+      "Part 1.2 — Which place would you prefer to spend your holiday, a beach or a mountain? Why?",
+      "Part 1.2 — What are the advantages of spending holidays in each place?"
+     ],
+     "images": [
+      "marathon-d4-speaking-a.jpg",
+      "marathon-d4-speaking-b.jpg"
      ]
     },
     {
      "id": "writing",
      "type": "writing",
-     "title": "Writing · Task 1.1 (AI tekshiradi)",
+     "title": "Writing · Task 1.1 (hamkasbga xat, AI tekshiradi)",
+     "minutes": 15,
+     "ref": "24262328-9f91-5487-a933-37d2dc1f75da"
+    },
+    {
+     "id": "writing2",
+     "type": "writing",
+     "title": "Writing · Task 1.2 (menejerga xat, AI tekshiradi)",
      "minutes": 25,
-     "ref": "42c307b3-3df9-5e20-8a86-21890bf272e2"
+     "ref": "db294f29-81ab-5dbd-993f-a9f058f4ef19"
     }
    ]
   },
   {
    "day": 5,
-   "title": "Reading va rasmiy xat",
-   "focus": "Mavzu: Kutubxona, ko'ngillilar va shahar yashil hududlari",
+   "title": "Nostalgiya, tarix va transport",
+   "focus": "Mavzu: xotiralar, tarixni o'rganish, shahar transporti",
    "tasks": [
     {
-     "id": "vocab",
-     "type": "vocab",
-     "title": "Mavzu lug'ati: Kutubxona, ko'ngillilar va shahar yashil hududlari",
-     "minutes": 8,
-     "words": [
-      {
-       "w": "library",
-       "uz": "kutubxona",
-       "ex": "Ben loved going to the library, especially on Friday."
-      },
-      {
-       "w": "residents",
-       "uz": "aholi",
-       "ex": ""
-      },
-      {
-       "w": "neighbourhoods",
-       "uz": "mahallalar",
-       "ex": ""
-      },
-      {
-       "w": "benefits",
-       "uz": "foydalar",
-       "ex": "Among the most consistently documented of these benefits is the positive effect of nearby nature on mental wellbeing."
-      },
-      {
-       "w": "access",
-       "uz": "kirish imkoniyati",
-       "ex": ""
-      },
-      {
-       "w": "health",
-       "uz": "salomatlik",
-       "ex": ""
-      },
-      {
-       "w": "stress",
-       "uz": "stress",
-       "ex": ""
-      },
-      {
-       "w": "gardens",
-       "uz": "bog'lar",
-       "ex": ""
-      },
-      {
-       "w": "vegetation",
-       "uz": "o'simlik qoplami",
-       "ex": ""
-      },
-      {
-       "w": "surrounding",
-       "uz": "atrofdagi",
-       "ex": ""
-      },
-      {
-       "w": "buildings",
-       "uz": "binolar",
-       "ex": ""
-      },
-      {
-       "w": "report",
-       "uz": "hisobot",
-       "ex": "He finished the book and wrote a short report."
-      }
-     ]
-    },
-    {
-     "id": "reading",
+     "id": "reading45",
      "type": "reading",
-     "title": "Reading · Part 1–3 (Multilevel Reading 20)",
-     "minutes": 36,
-     "ref": "7bbdf393-5f75-55fc-b61d-b755fa9587b5"
+     "title": "Reading · Part 4–5 (21–35)",
+     "minutes": 30,
+     "ref": "363f44b1-802c-51bf-92e6-4411cd0f5aef"
     },
     {
-     "id": "words",
-     "type": "words",
-     "title": "Matndan yangi so'zlar — o'yin",
+     "id": "listening4",
+     "type": "listening",
+     "title": "Listening · Part 4 (xarita, 19–23)",
      "minutes": 5,
-     "words": [
-      {
-       "w": "measurable",
-       "uz": "o'lchanadigan",
-       "ex": ""
-      },
-      {
-       "w": "demonstrating",
-       "uz": "namoyish etish",
-       "ex": ""
-      },
-      {
-       "w": "nearby",
-       "uz": "yaqin atrofda",
-       "ex": "Among the most consistently documented of these benefits is the positive effect of nearby nature on mental wellbeing."
-      },
-      {
-       "w": "periods",
-       "uz": "davrlar",
-       "ex": ""
-      },
-      {
-       "w": "temperatures",
-       "uz": "haroratlar",
-       "ex": ""
-      },
-      {
-       "w": "multiple",
-       "uz": "ko'plab",
-       "ex": ""
-      },
-      {
-       "w": "provide",
-       "uz": "ta'minlamoq",
-       "ex": ""
-      },
-      {
-       "w": "likely",
-       "uz": "ehtimol",
-       "ex": ""
-      }
+     "ref": "6b48ff37-4240-5145-b2a7-83f9d071baa5"
+    },
+    {
+     "id": "speaking",
+     "type": "speaking",
+     "title": "Speaking · Part 2 + Part 3 (a new skill · free university)",
+     "minutes": 8,
+     "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «University education should be free for everyone» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+     "questions": [
+      "Part 2 — Describe a skill that you would like to learn.",
+      "Part 2 — Why do you want to learn this skill?",
+      "Part 2 — How will this skill help you in the future?",
+      "Part 2 — Where can you learn it?",
+      "Part 2 — How long do you think it will take you to learn it?",
+      "Part 3 · FOR — It gives equal opportunities to all students.",
+      "Part 3 · FOR — It reduces the financial burden on families.",
+      "Part 3 · FOR — It helps to create a more educated and skilled society.",
+      "Part 3 · AGAINST — It is expensive for the government to provide.",
+      "Part 3 · AGAINST — People may not value education if it is free.",
+      "Part 3 · AGAINST — Funds are limited and could be used for other important services."
      ]
     },
     {
      "id": "writing",
      "type": "writing",
-     "title": "Writing · Task 1.2 (AI tekshiradi)",
-     "minutes": 25,
-     "ref": "f1d43657-b14f-508d-b80c-2098eb0fe837"
+     "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
+     "minutes": 40,
+     "ref": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b"
     }
    ]
   },
@@ -664,6 +590,30 @@
    "min_words": 180,
    "max_words": 200,
    "prompt": "A local newspaper is inviting residents to write articles. The topic is:\n\n\"Should people support local businesses rather than large chain stores?\"\n\nWrite your article, giving reasons and examples. Write 180–200 words."
+  },
+  {
+   "id": "24262328-9f91-5487-a933-37d2dc1f75da",
+   "kind": "multilevel",
+   "title": "Marathon D4 · Task 1.1 — Free lunch cancelled (letter to a colleague)",
+   "min_words": 50,
+   "max_words": 70,
+   "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.1\nWrite a letter to your colleague. Explain how you feel about the upcoming changes and what you think the company should do. Write 50–70 words."
+  },
+  {
+   "id": "db294f29-81ab-5dbd-993f-a9f058f4ef19",
+   "kind": "multilevel",
+   "title": "Marathon D4 · Task 1.2 — Free lunch cancelled (letter to the manager)",
+   "min_words": 120,
+   "max_words": 150,
+   "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.2\nWrite a letter to the company manager. Express your concerns about the closure of the cafeteria and the cancellation of free lunches. Suggest possible alternatives or improvements. Write 120–150 words."
+  },
+  {
+   "id": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b",
+   "kind": "multilevel",
+   "title": "Marathon D5 · Task 2 — History or modern subjects? (essay)",
+   "min_words": 180,
+   "max_words": 200,
+   "prompt": "You are taking part in an online discussion on a school website. The topic is:\n\n\"Some people think schools should spend more time teaching history, while others believe modern subjects such as technology and business are more useful for young people.\"\n\nWrite your post. Discuss both views and give your own opinion. Write 180–200 words."
   }
  ]
 }
