@@ -492,6 +492,69 @@
      "ref": "3804be34-453d-5a87-be6a-41cc5a7a7059"
     }
    ]
+  },
+  {
+   "day": 8,
+   "title": "Plastik, maktablar va uy-joy",
+   "focus": "Mavzu: plastik ifloslanishi, maktab tanlash, ijtimoiy uy-joy, lama trekkingi, Rojdestvo",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (1–20)",
+     "minutes": 30,
+     "ref": "2a56d88c-0100-51d1-8196-56fb6727afcb"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 1–4 (1–23)",
+     "minutes": 21,
+     "ref": "121bf395-31e5-5265-9582-2835128f3357"
+    }
+   ]
+  },
+  {
+   "day": 9,
+   "title": "Fikr-mulohaza, dinozavrlar va ekspeditsiya",
+   "focus": "Mavzu: samarali fikr-mulohaza, T-Rex ovchisi, muzey va Janubiy Afrika safari",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (21–35)",
+     "minutes": 30,
+     "ref": "324a3c51-c6bf-59f6-9c09-a50f7e6c1606"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 5–6 (24–35)",
+     "minutes": 15,
+     "ref": "d66583c3-50a8-594f-9e1b-b7cce9e27e85"
+    }
+   ]
+  },
+  {
+   "day": 10,
+   "title": "Shakar, chang'i kurortlari va Malta",
+   "focus": "Mavzu: shakar xavfi, chang'i kurortlari, Malta, markaziy muzey va kollej xaritasi",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (1–20)",
+     "minutes": 30,
+     "ref": "0d17a373-21af-5d3a-8774-d5f4d794d18f"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 1–4 (1–23)",
+     "minutes": 22,
+     "ref": "e6a5beae-0d5c-5b95-a2c7-2763567e469f"
+    }
+   ]
   }
  ],
  "writing": [
