@@ -555,6 +555,48 @@
      "ref": "e6a5beae-0d5c-5b95-a2c7-2763567e469f"
     }
    ]
+  },
+  {
+   "day": 11,
+   "title": "Yangi Yer, tillar kursi va yashil uy",
+   "focus": "Mavzu: yangi sayyoralar, til kurslari, WWF yashil binosi, madaniyat markazi",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (1–20)",
+     "minutes": 30,
+     "ref": "69c2a779-fd2e-5e58-96b0-d78400a2f0d6"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 1–4 (1–23)",
+     "minutes": 20,
+     "ref": "db258030-426d-556c-b017-7b68553f5401"
+    }
+   ]
+  },
+  {
+   "day": 12,
+   "title": "Pochta markalari, ko'chmanchilar va san'at galereyasi",
+   "focus": "Mavzu: Penny Black, ko'chmanchi xalqlar, ekstraktlar va galereya",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (21–35)",
+     "minutes": 30,
+     "ref": "9f1ac0ca-d4dd-5e55-ada7-f8b0d74d17b3"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 5–6 (24–35)",
+     "minutes": 16,
+     "ref": "b3bc588b-0a5a-56af-9759-239ef166e71f"
+    }
+   ]
   }
  ],
  "writing": [
