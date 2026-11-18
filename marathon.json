@@ -597,6 +597,76 @@
      "ref": "b3bc588b-0a5a-56af-9759-239ef166e71f"
     }
    ]
+  },
+  {
+   "day": 13,
+   "title": "Ovqatlanish, mehmonxonalar va qishloqlar",
+   "focus": "Mavzu: kechki ovqat va semizlik, mehmonxona tanlash, Britaniya qishloqlari; Listening: kurslar, tushlar, xarita",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 1–3 (1–20)",
+     "minutes": 30,
+     "ref": "f0606556-157a-5973-a177-91b0db395aa3"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 1–4 (1–23)",
+     "minutes": 23,
+     "ref": "8ffc45c5-c315-5298-8b8e-c4e22f42a284"
+    }
+   ]
+  },
+  {
+   "day": 14,
+   "title": "Antibiotiklar, Orol dengizi va fillar",
+   "focus": "Mavzu: penitsillin, Orol dengizi tanazzuli, qushlar/axlatxona, Amboseli fillari",
+   "tasks": [
+    {
+     "id": "reading",
+     "type": "reading",
+     "title": "Reading · Part 4–5 (21–35)",
+     "minutes": 30,
+     "ref": "13ffc3cb-43d6-5c82-b17b-16cae5d8876f"
+    },
+    {
+     "id": "listening",
+     "type": "listening",
+     "title": "Listening · Part 5–6 (24–35)",
+     "minutes": 17,
+     "ref": "b1a072f7-cf1c-58ad-b112-ad35a45e21b4"
+    }
+   ]
+  },
+  {
+   "day": 15,
+   "title": "Writing: ish uchun xat",
+   "focus": "Mavzu: rasmiy xat (Task 1)",
+   "tasks": [
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 1 (rasmiy xat, AI tekshiradi)",
+     "minutes": 25,
+     "ref": "2266afd4-e01b-5685-a70d-c8721af31fb6"
+    }
+   ]
+  },
+  {
+   "day": 16,
+   "title": "Writing: qo'shnilar haqida esse",
+   "focus": "Mavzu: esse (Task 2)",
+   "tasks": [
+    {
+     "id": "writing",
+     "type": "writing",
+     "title": "Writing · Task 2 (esse, AI tekshiradi)",
+     "minutes": 40,
+     "ref": "bb534712-2666-5e9b-a569-f70a67fdbe1e"
+    }
+   ]
   }
  ],
  "writing": [
@@ -719,6 +789,22 @@
    "min_words": 180,
    "max_words": 200,
    "prompt": "You are taking part in an online discussion on a school website. The topic is:\n\n\"Some people think schools should spend more time teaching history, while others believe modern subjects such as technology and business are more useful for young people.\"\n\nWrite your post. Discuss both views and give your own opinion. Write 180–200 words."
+  },
+  {
+   "id": "2266afd4-e01b-5685-a70d-c8721af31fb6",
+   "kind": "multilevel",
+   "title": "Marathon D15 · Task 1 — Property management position (letter)",
+   "min_words": 150,
+   "max_words": 0,
+   "prompt": "You saw an advertisement in the paper for a property management position at an apartment complex. Write a letter to express your interest.\n\nInclude:\n• why you are writing\n• your suitability for the role\n• how you would approach the position\n\nWrite at least 150 words."
+  },
+  {
+   "id": "bb534712-2666-5e9b-a569-f70a67fdbe1e",
+   "kind": "multilevel",
+   "title": "Marathon D16 · Task 2 — Not knowing our neighbours (essay)",
+   "min_words": 250,
+   "max_words": 0,
+   "prompt": "Today, many people do not know their neighbours.\n\nWhy is this?\nWhat can be done about this?\n\nGive reasons for your answer and include any relevant examples.\n\nWrite at least 250 words."
   }
  ]
 }
