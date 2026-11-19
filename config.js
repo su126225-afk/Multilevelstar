@@ -10,8 +10,8 @@ export const CONFIG = {
   telegramChannel: '@EnglishwithUsmonov',
   telegramUrl: 'https://t.me/EnglishwithUsmonov',
   // O'qituvchining shaxsiy Telegram akkaunti (online kurslar uchun murojaat)
-  telegramPersonal: '@SARDOR_USM0NOV',
-  telegramPersonalUrl: 'https://t.me/SARDOR_USM0NOV',
+  telegramPersonal: '@SARDORUSMONOV',
+  telegramPersonalUrl: 'https://t.me/SARDORUSMONOV',
   // Telegram bilan kirish va kanalga a'zolikni majburiy qilish (faqat Supabase ulanganda ishlaydi).
   // Funksiya joylanmaguncha requireChannel: false qoldiring.
   telegramBot: 'multilevelstarbot',
