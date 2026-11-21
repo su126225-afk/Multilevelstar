@@ -1,810 +1,1096 @@
 {
- "title": "35 kunlik Multilevel marafon",
- "days": [
-  {
-   "day": 1,
-   "title": "Boshlanish: reading, listening, xat yozish va speaking",
-   "focus": "Mavzu: lochinlar, sport markazi, sog'lom ovqatlanish",
-   "tasks": [
+  "title": "35 kunlik Multilevel marafon",
+  "days": [
     {
-     "id": "reading5",
-     "type": "reading",
-     "title": "Reading · Part 5 (Falcons, 30–35)",
-     "minutes": 14,
-     "ref": "17ada295-8155-5550-954d-4849f0bc0fca"
+      "day": 1,
+      "title": "Boshlanish: reading, listening, xat yozish va speaking",
+      "focus": "Mavzu: lochinlar, sport markazi, sog'lom ovqatlanish",
+      "tasks": [
+        {
+          "id": "reading5",
+          "type": "reading",
+          "title": "Reading · Part 5 (Falcons, 30–35)",
+          "minutes": 14,
+          "ref": "17ada295-8155-5550-954d-4849f0bc0fca"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 5 (3 ta suhbat, 24–29)",
+          "minutes": 10,
+          "ref": "2930d1a5-f88f-5f5b-935d-5bcd160ab5c6"
+        },
+        {
+          "id": "listening6",
+          "type": "listening",
+          "title": "Listening · Part 6 (qisqa ma'ruza, 30–35)",
+          "minutes": 4,
+          "ref": "9dc9253d-befa-5b3c-ba2e-c7f488e6bcfb"
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1.1 (do'stga xat, AI tekshiradi)",
+          "minutes": 15,
+          "ref": "ec266b7d-0c2b-5298-ba26-fb79228c4fab"
+        },
+        {
+          "id": "writing2",
+          "type": "writing",
+          "title": "Writing · Task 1.2 (menejerga xat, AI tekshiradi)",
+          "minutes": 25,
+          "ref": "ed87f382-2af5-5aa9-ad7d-1139363eaa5b"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1",
+          "minutes": 5,
+          "note": "Har bir savolga 30 soniya, tayyorgarliksiz.",
+          "questions": [
+            "Do you live in a house or in a flat?",
+            "What do you usually do in the evening?",
+            "Do you like cooking?"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "1-savolga 45 soniya, qolganlariga 30 soniyadan, tayyorgarliksiz.",
+          "questions": [
+            "What do you see in these pictures?",
+            "What is the biggest difficulty people face in keeping to a healthy diet?",
+            "How can we encourage more people to eat healthy food?"
+          ],
+          "images": [
+            "marathon-d1-speaking-a.jpg",
+            "marathon-d1-speaking-b.jpg"
+          ]
+        }
+      ]
     },
     {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 5 (3 ta suhbat, 24–29)",
-     "minutes": 10,
-     "ref": "2930d1a5-f88f-5f5b-935d-5bcd160ab5c6"
+      "day": 2,
+      "title": "Shahar transporti, xarita va shimpanzelar",
+      "focus": "Mavzu: transport, maktab xaritasi, shimpanzelar, sog'lom ovqatlanish",
+      "tasks": [
+        {
+          "id": "reading5",
+          "type": "reading",
+          "title": "Reading · Part 5 (Urban Transportation, 30–35)",
+          "minutes": 14,
+          "ref": "a73d9cbf-94f7-531e-9f98-8b5985df4e37"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Xarita (Rivermead School, 15–20)",
+          "minutes": 4,
+          "ref": "0f6e89bf-f5ca-58ea-ab59-900f5cc3369b"
+        },
+        {
+          "id": "listening6",
+          "type": "listening",
+          "title": "Listening · Part 6 (Chimpanzees, 30–35)",
+          "minutes": 10,
+          "ref": "f68f7f6c-8a84-59a7-86cc-6fbc24eaed42"
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
+          "minutes": 40,
+          "ref": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 2 (Sharing a secret)",
+          "minutes": 4,
+          "note": "1 daqiqa tayyorgarlik, 2 daqiqa gapiring. Barcha savollarga bitta hikoyada javob bering.",
+          "questions": [
+            "Describe a time when someone told you a secret.",
+            "Who told you the secret, and what was it about?",
+            "Did you keep the secret? Why or why not?",
+            "How did you feel about knowing it?"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 3 (Calorie information in restaurants)",
+          "minutes": 4,
+          "note": "Mavzu: «Restaurants should show calorie information on their menus.» 1 daqiqa tayyorgarlik, 2 daqiqa gapiring: ikki tomonni muhokama qilib, o'z fikringizni ayting.",
+          "questions": [
+            "FOR: It helps people make healthier choices.",
+            "FOR: It raises awareness of obesity and diet-related diseases.",
+            "FOR: It encourages restaurants to offer healthier dishes.",
+            "AGAINST: It can take away the enjoyment of eating out.",
+            "AGAINST: It is expensive for small restaurants to calculate calories.",
+            "AGAINST: Calories alone do not show whether food is healthy."
+          ]
+        }
+      ]
     },
     {
-     "id": "listening6",
-     "type": "listening",
-     "title": "Listening · Part 6 (qisqa ma'ruza, 30–35)",
-     "minutes": 4,
-     "ref": "9dc9253d-befa-5b3c-ba2e-c7f488e6bcfb"
+      "day": 3,
+      "title": "Sayohatlar, kafe va sun'iy intellekt",
+      "focus": "Mavzu: sayohatlar, mahalliy biznes, shahar va qishloq, sun'iy intellekt",
+      "tasks": [
+        {
+          "id": "reading3",
+          "type": "reading",
+          "title": "Reading · Part 3 (Slow Travel, 15–20)",
+          "minutes": 12,
+          "ref": "48a04882-751d-5934-b9e5-4d02e47a15cd"
+        },
+        {
+          "id": "listening3",
+          "type": "listening",
+          "title": "Listening · Part 3 (Trips, 15–18)",
+          "minutes": 8,
+          "ref": "96498cdd-97cb-5a5f-888b-dca5175c5888"
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1.1 (do'stga xabar, AI tekshiradi)",
+          "minutes": 15,
+          "ref": "bb99e2b0-b68c-5323-9114-efa268e5e7fc"
+        },
+        {
+          "id": "writing2",
+          "type": "writing",
+          "title": "Writing · Task 1.2 (kafe egasiga xat, AI tekshiradi)",
+          "minutes": 25,
+          "ref": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90"
+        },
+        {
+          "id": "writing3",
+          "type": "writing",
+          "title": "Writing · Task 2 (maqola, AI tekshiradi)",
+          "minutes": 40,
+          "ref": "9f57dd0c-439f-5bcf-99d8-61129c42d06c"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (city and countryside)",
+          "minutes": 6,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — Where do you live?",
+            "Part 1.1 — Can you describe your family?",
+            "Part 1.1 — What are your hobbies?",
+            "Part 1.2 — What do you see in these pictures?",
+            "Part 1.2 — What is the difference between living in the city and in the countryside?",
+            "Part 1.2 — Where do you prefer to live, in the city or in a village?"
+          ],
+          "images": [
+            "marathon-d3-speaking-a.jpg",
+            "marathon-d3-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3 (trip · AI)",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 2 daqiqa gapiring (uchala savolga bitta hikoyada). Part 3: «Artificial intelligence will replace human jobs» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Tell me about a memorable trip you have taken.",
+            "Part 2 — How did this trip change your perspective on travel or life in general?",
+            "Part 2 — What are the most important things to consider when planning a trip?",
+            "Part 3 · FOR — Increases efficiency and productivity.",
+            "Part 3 · FOR — Frees humans from repetitive tasks.",
+            "Part 3 · FOR — Encourages innovation in new industries.",
+            "Part 3 · AGAINST — Risks job displacement and unemployment.",
+            "Part 3 · AGAINST — Challenges in retraining and upskilling the workforce.",
+            "Part 3 · AGAINST — Potential for widening income inequality."
+          ]
+        }
+      ]
     },
     {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 1.1 (do'stga xat, AI tekshiradi)",
-     "minutes": 15,
-     "ref": "ec266b7d-0c2b-5298-ba26-fb79228c4fab"
+      "day": 4,
+      "title": "Do'kon, mehmonxona va ferma",
+      "focus": "Mavzu: xizmat ko'rsatish, xarid qilish, ish joyidagi o'zgarishlar",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "829b3777-4440-515d-9edd-260e876ec341"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–2 (1–14)",
+          "minutes": 12,
+          "ref": "f006d55d-5310-5da1-a418-5ba04f1a21b1"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (beach or mountains)",
+          "minutes": 6,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What do you usually do on weekends?",
+            "Part 1.1 — Do you prefer to watch movies at home or at the cinema?",
+            "Part 1.1 — How important is learning foreign languages for you?",
+            "Part 1.1 — Do you think technology makes our lives easier? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which place would you prefer to spend your holiday, a beach or a mountain? Why?",
+            "Part 1.2 — What are the advantages of spending holidays in each place?"
+          ],
+          "images": [
+            "marathon-d4-speaking-a.jpg",
+            "marathon-d4-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1.1 (hamkasbga xat, AI tekshiradi)",
+          "minutes": 15,
+          "ref": "24262328-9f91-5487-a933-37d2dc1f75da"
+        },
+        {
+          "id": "writing2",
+          "type": "writing",
+          "title": "Writing · Task 1.2 (menejerga xat, AI tekshiradi)",
+          "minutes": 25,
+          "ref": "db294f29-81ab-5dbd-993f-a9f058f4ef19"
+        }
+      ]
     },
     {
-     "id": "writing2",
-     "type": "writing",
-     "title": "Writing · Task 1.2 (menejerga xat, AI tekshiradi)",
-     "minutes": 25,
-     "ref": "ed87f382-2af5-5aa9-ad7d-1139363eaa5b"
+      "day": 5,
+      "title": "Nostalgiya, tarix va transport",
+      "focus": "Mavzu: xotiralar, tarixni o'rganish, shahar transporti",
+      "tasks": [
+        {
+          "id": "reading45",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (21–35)",
+          "minutes": 30,
+          "ref": "363f44b1-802c-51bf-92e6-4411cd0f5aef"
+        },
+        {
+          "id": "listening4",
+          "type": "listening",
+          "title": "Listening · Part 4 (xarita, 19–23)",
+          "minutes": 5,
+          "ref": "6b48ff37-4240-5145-b2a7-83f9d071baa5"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3 (a new skill · free university)",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «University education should be free for everyone» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a skill that you would like to learn.",
+            "Part 2 — Why do you want to learn this skill?",
+            "Part 2 — How will this skill help you in the future?",
+            "Part 2 — Where can you learn it?",
+            "Part 2 — How long do you think it will take you to learn it?",
+            "Part 3 · FOR — It gives equal opportunities to all students.",
+            "Part 3 · FOR — It reduces the financial burden on families.",
+            "Part 3 · FOR — It helps to create a more educated and skilled society.",
+            "Part 3 · AGAINST — It is expensive for the government to provide.",
+            "Part 3 · AGAINST — People may not value education if it is free.",
+            "Part 3 · AGAINST — Funds are limited and could be used for other important services."
+          ]
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
+          "minutes": 40,
+          "ref": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b"
+        }
+      ]
     },
     {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 1.1",
-     "minutes": 5,
-     "note": "Har bir savolga 30 soniya, tayyorgarliksiz.",
-     "questions": [
-      "Do you live in a house or in a flat?",
-      "What do you usually do in the evening?",
-      "Do you like cooking?"
-     ]
+      "day": 6,
+      "title": "Listening, speaking va essay",
+      "focus": "Mavzu: Olimpiya va sun'iy intellekt",
+      "tasks": [
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Lost property",
+          "minutes": 7,
+          "ref": "892032bd-9ad8-5bf8-98b1-a7166d64efc7"
+        },
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (Multilevel Reading 20)",
+          "minutes": 24,
+          "ref": "eb262b6f-7f1d-521d-9cd8-f1671b848c99"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 3 (fikr bildirish)",
+          "minutes": 10,
+          "questions": [
+            "Some people think online lessons are better than classroom lessons. What is your opinion?",
+            "Give two advantages of studying online.",
+            "Give two disadvantages of studying online.",
+            "What would you choose for yourself, and why?"
+          ]
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 2 (AI tekshiradi)",
+          "minutes": 25,
+          "ref": "b2ae47aa-2113-54a8-89e8-1a4f00934c85"
+        }
+      ]
     },
     {
-     "id": "speaking2",
-     "type": "speaking",
-     "title": "Speaking · Part 1.2 (rasmlar)",
-     "minutes": 7,
-     "note": "1-savolga 45 soniya, qolganlariga 30 soniyadan, tayyorgarliksiz.",
-     "questions": [
-      "What do you see in these pictures?",
-      "What is the biggest difficulty people face in keeping to a healthy diet?",
-      "How can we encourage more people to eat healthy food?"
-     ],
-     "images": [
-      "marathon-d1-speaking-a.jpg",
-      "marathon-d1-speaking-b.jpg"
-     ]
+      "day": 7,
+      "title": "Hafta yakuni: reading va writing",
+      "focus": "Mavzu: Yozuv tarixi, kasalxona va kuz",
+      "tasks": [
+        {
+          "id": "vocab",
+          "type": "vocab",
+          "title": "Mavzu lug'ati: Yozuv tarixi, kasalxona va kuz",
+          "minutes": 8,
+          "words": [
+            {
+              "w": "ancient",
+              "uz": "qadimiy",
+              "ex": ""
+            },
+            {
+              "w": "script",
+              "uz": "yozuv tizimi",
+              "ex": ""
+            },
+            {
+              "w": "system",
+              "uz": "tizim",
+              "ex": ""
+            },
+            {
+              "w": "symbols",
+              "uz": "belgilar",
+              "ex": ""
+            },
+            {
+              "w": "scribes",
+              "uz": "kotiblar",
+              "ex": ""
+            },
+            {
+              "w": "earliest",
+              "uz": "eng qadimgi",
+              "ex": ""
+            },
+            {
+              "w": "emerged",
+              "uz": "paydo bo'ldi",
+              "ex": ""
+            },
+            {
+              "w": "chemical",
+              "uz": "kimyoviy",
+              "ex": "It is because of a chemical called chlorophyll."
+            },
+            {
+              "w": "sunlight",
+              "uz": "quyosh nuri",
+              "ex": "This chemical helps plants to make food from sunlight."
+            },
+            {
+              "w": "winter",
+              "uz": "qish",
+              "ex": "Days become shorter and there is not enough sunlight in winter."
+            },
+            {
+              "w": "leaves",
+              "uz": "barglar/tark etadi",
+              "ex": "It is a time when leaves turn to beautiful red, orange and yellow colors."
+            },
+            {
+              "w": "animals",
+              "uz": "hayvonlar",
+              "ex": "Also, animals such as bears and bats sleep in winter."
+            }
+          ]
+        },
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (Multilevel Reading 21)",
+          "minutes": 36,
+          "ref": "2056e25e-c4fc-5656-bbff-454033a33b02"
+        },
+        {
+          "id": "words",
+          "type": "words",
+          "title": "Matndan yangi so'zlar — o'yin",
+          "minutes": 5,
+          "words": [
+            {
+              "w": "administrative",
+              "uz": "ma'muriy",
+              "ex": ""
+            },
+            {
+              "w": "significant",
+              "uz": "muhim",
+              "ex": ""
+            },
+            {
+              "w": "further",
+              "uz": "yanada",
+              "ex": ""
+            },
+            {
+              "w": "directly",
+              "uz": "bevosita",
+              "ex": ""
+            },
+            {
+              "w": "rather",
+              "uz": "aksincha",
+              "ex": ""
+            },
+            {
+              "w": "needed",
+              "uz": "kerak bo'lgan",
+              "ex": ""
+            },
+            {
+              "w": "centuries",
+              "uz": "asrlar",
+              "ex": ""
+            },
+            {
+              "w": "across",
+              "uz": "bo'ylab; narigi tomonga",
+              "ex": ""
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1.1 (AI tekshiradi)",
+          "minutes": 25,
+          "ref": "3804be34-453d-5a87-be6a-41cc5a7a7059"
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Plastik, maktablar va uy-joy",
+      "focus": "Mavzu: plastik ifloslanishi, maktab tanlash, ijtimoiy uy-joy, lama trekkingi, Rojdestvo",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "2a56d88c-0100-51d1-8196-56fb6727afcb"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–4 (1–23)",
+          "minutes": 21,
+          "ref": "121bf395-31e5-5265-9582-2835128f3357"
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "Fikr-mulohaza, dinozavrlar va ekspeditsiya",
+      "focus": "Mavzu: samarali fikr-mulohaza, T-Rex ovchisi, muzey va Janubiy Afrika safari",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (21–35)",
+          "minutes": 30,
+          "ref": "324a3c51-c6bf-59f6-9c09-a50f7e6c1606"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 5–6 (24–35)",
+          "minutes": 15,
+          "ref": "d66583c3-50a8-594f-9e1b-b7cce9e27e85"
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "Shakar, chang'i kurortlari va Malta",
+      "focus": "Mavzu: shakar xavfi, chang'i kurortlari, Malta, markaziy muzey va kollej xaritasi",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "0d17a373-21af-5d3a-8774-d5f4d794d18f"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–4 (1–23)",
+          "minutes": 22,
+          "ref": "e6a5beae-0d5c-5b95-a2c7-2763567e469f"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What do you usually do in your free time?",
+            "Part 1.1 — Do you prefer indoor or outdoor activities? Why?",
+            "Part 1.1 — How often do you exercise?",
+            "Part 1.1 — Do you think it is important to keep fit? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which place would you prefer to visit: a beach or a mountain? Why?",
+            "Part 1.2 — What are the advantages and disadvantages of each?"
+          ],
+          "images": [
+            "marathon-d10-speaking-a.jpg",
+            "marathon-d10-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «Some people prefer to travel abroad, while others prefer to explore their own country. To what extent do you agree or disagree?» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a place you would like to visit.",
+            "Part 2 — Where is it?",
+            "Part 2 — What is it like?",
+            "Part 2 — Why do you want to visit it?",
+            "Part 2 — How will it benefit you?",
+            "Part 3 · FOR — It helps people learn about other cultures.",
+            "Part 3 · FOR — It broadens their horizons.",
+            "Part 3 · FOR — It can improve their language skills.",
+            "Part 3 · AGAINST — It can be expensive.",
+            "Part 3 · AGAINST — It may cause homesickness.",
+            "Part 3 · AGAINST — You can still have new experiences in your own country."
+          ]
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "Yangi Yer, tillar kursi va yashil uy",
+      "focus": "Mavzu: yangi sayyoralar, til kurslari, WWF yashil binosi, madaniyat markazi",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "69c2a779-fd2e-5e58-96b0-d78400a2f0d6"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–4 (1–23)",
+          "minutes": 20,
+          "ref": "db258030-426d-556c-b017-7b68553f5401"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What kind of music do you like?",
+            "Part 1.1 — Do you prefer listening to music or watching films? Why?",
+            "Part 1.1 — How often do you listen to music?",
+            "Part 1.1 — Do you think music can change your mood? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which place would you prefer to live in: a big city or a small town? Why?",
+            "Part 1.2 — What are the advantages and disadvantages of each?"
+          ],
+          "images": [
+            "marathon-d11-speaking-a.jpg",
+            "marathon-d11-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «Some people believe that living in a city offers a better quality of life than living in the countryside. To what extent do you agree or disagree?» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a home you would like to live in.",
+            "Part 2 — Where would it be?",
+            "Part 2 — What would it look like?",
+            "Part 2 — Why would you like to live there?",
+            "Part 2 — How would it suit your lifestyle?",
+            "Part 3 · FOR — A city offers better job opportunities.",
+            "Part 3 · FOR — There are more facilities and services.",
+            "Part 3 · FOR — It provides a wider range of entertainment.",
+            "Part 3 · AGAINST — The countryside is often healthier and quieter.",
+            "Part 3 · AGAINST — Living costs may be lower in rural areas.",
+            "Part 3 · AGAINST — It can be a better environment for families."
+          ]
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "Pochta markalari, ko'chmanchilar va san'at galereyasi",
+      "focus": "Mavzu: Penny Black, ko'chmanchi xalqlar, ekstraktlar va galereya",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (21–35)",
+          "minutes": 30,
+          "ref": "9f1ac0ca-d4dd-5e55-ada7-f8b0d74d17b3"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 5–6 (24–35)",
+          "minutes": 16,
+          "ref": "b3bc588b-0a5a-56af-9759-239ef166e71f"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What is your dream job?",
+            "Part 1.1 — Do you prefer working alone or in a team? Why?",
+            "Part 1.1 — How important is a good job?",
+            "Part 1.1 — Do you think work-life balance is important? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which would you prefer: a modern office or a remote job? Why?",
+            "Part 1.2 — What are the advantages and disadvantages of each?"
+          ],
+          "images": [
+            "marathon-d12-speaking-a.jpg",
+            "marathon-d12-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «Some people think a high salary is the most important factor when choosing a job. To what extent do you agree or disagree?» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a job you would like to do in the future.",
+            "Part 2 — What is the job?",
+            "Part 2 — What would you need to do?",
+            "Part 2 — Why does it interest you?",
+            "Part 2 — How would it help you?",
+            "Part 3 · FOR — A high salary provides financial security.",
+            "Part 3 · FOR — It allows people to afford a better lifestyle.",
+            "Part 3 · FOR — It can increase motivation.",
+            "Part 3 · AGAINST — Job satisfaction is equally important.",
+            "Part 3 · AGAINST — Good working conditions matter.",
+            "Part 3 · AGAINST — A meaningful job can be more rewarding."
+          ]
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Ovqatlanish, mehmonxonalar va qishloqlar",
+      "focus": "Mavzu: kechki ovqat va semizlik, mehmonxona tanlash, Britaniya qishloqlari; Listening: kurslar, tushlar, xarita",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "f0606556-157a-5973-a177-91b0db395aa3"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–4 (1–23)",
+          "minutes": 23,
+          "ref": "8ffc45c5-c315-5298-8b8e-c4e22f42a284"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What do you usually do at weekends?",
+            "Part 1.1 — Do you enjoy shopping? Why?",
+            "Part 1.1 — How often do you shop online?",
+            "Part 1.1 — Do you think shopping can be enjoyable? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which would you prefer: a shopping mall or an open-air market? Why?",
+            "Part 1.2 — What are the advantages and disadvantages of each?"
+          ],
+          "images": [
+            "marathon-d13-speaking-a.jpg",
+            "marathon-d13-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «Some people think hobbies are a waste of time. To what extent do you agree or disagree?» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a hobby you enjoy.",
+            "Part 2 — What is the hobby?",
+            "Part 2 — How did you become interested in it?",
+            "Part 2 — Why do you like it?",
+            "Part 2 — How often do you do it?",
+            "Part 3 · FOR — Hobbies make free time enjoyable.",
+            "Part 3 · FOR — They can reduce stress.",
+            "Part 3 · FOR — They help people develop new skills.",
+            "Part 3 · AGAINST — They may distract people from important duties.",
+            "Part 3 · AGAINST — Some hobbies can be expensive.",
+            "Part 3 · AGAINST — They can take up too much time."
+          ]
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Antibiotiklar, Orol dengizi va fillar",
+      "focus": "Mavzu: penitsillin, Orol dengizi tanazzuli, qushlar/axlatxona, Amboseli fillari",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (21–35)",
+          "minutes": 30,
+          "ref": "13ffc3cb-43d6-5c82-b17b-16cae5d8876f"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 5–6 (24–35)",
+          "minutes": 17,
+          "ref": "b1a072f7-cf1c-58ad-b112-ad35a45e21b4"
+        },
+        {
+          "id": "speaking",
+          "type": "speaking",
+          "title": "Speaking · Part 1.1 + 1.2 (rasmlar)",
+          "minutes": 7,
+          "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
+          "questions": [
+            "Part 1.1 — What do you usually do in the morning?",
+            "Part 1.1 — Do you prefer coffee or tea? Why?",
+            "Part 1.1 — How important is breakfast?",
+            "Part 1.1 — Do you enjoy cooking? Why?",
+            "Part 1.2 — What can you see in these pictures?",
+            "Part 1.2 — Which would you prefer: a busy restaurant or a quiet café? Why?",
+            "Part 1.2 — What are the advantages and disadvantages of each?"
+          ],
+          "images": [
+            "marathon-d14-speaking-a.jpg",
+            "marathon-d14-speaking-b.jpg"
+          ]
+        },
+        {
+          "id": "speaking2",
+          "type": "speaking",
+          "title": "Speaking · Part 2 + Part 3",
+          "minutes": 8,
+          "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «Some people think fast food is harmful, while others believe it is convenient. To what extent do you agree or disagree?» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
+          "questions": [
+            "Part 2 — Describe a meal you really enjoy.",
+            "Part 2 — What is the meal?",
+            "Part 2 — Where do you usually have it?",
+            "Part 2 — Why do you like it?",
+            "Part 2 — How often do you have it?",
+            "Part 3 · FOR — It is quick and convenient.",
+            "Part 3 · FOR — It is often affordable.",
+            "Part 3 · FOR — It is widely available.",
+            "Part 3 · AGAINST — It can be unhealthy if eaten regularly.",
+            "Part 3 · AGAINST — It may contribute to obesity.",
+            "Part 3 · AGAINST — Its production can harm the environment."
+          ]
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Writing: ish uchun xat",
+      "focus": "Mavzu: rasmiy xat (Task 1)",
+      "tasks": [
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1 (rasmiy xat, AI tekshiradi)",
+          "minutes": 25,
+          "ref": "2266afd4-e01b-5685-a70d-c8721af31fb6"
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "Writing: qo'shnilar haqida esse",
+      "focus": "Mavzu: esse (Task 2)",
+      "tasks": [
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 2 (esse, AI tekshiradi)",
+          "minutes": 40,
+          "ref": "bb534712-2666-5e9b-a569-f70a67fdbe1e"
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Kit va o'zga sayyoraliklar, Kew bog'i, dengiz toshbaqalari",
+      "focus": "Mavzu: kitlar bilan 'suhbat', Kew bog'i ekskursiyalari, toshbaqalar; Listening: Cork shahri, atrof-muhit, mulk xaritasi",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 1–3 (1–20)",
+          "minutes": 30,
+          "ref": "852ffe11-a625-51a6-be55-46164ac0ede6"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 1–4 (1–23)",
+          "minutes": 23,
+          "ref": "d958e664-209a-5165-879e-29ce979729dc"
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Qog'oz tarixi va o'yin nazariyasi",
+      "focus": "Mavzu: qog'ozning kelib chiqishi, game theory; Listening: ta'tillar, kechikish, tarixiy roman, simob va qushlar",
+      "tasks": [
+        {
+          "id": "reading",
+          "type": "reading",
+          "title": "Reading · Part 4–5 (21–35)",
+          "minutes": 30,
+          "ref": "652b3470-358f-54e0-9ce8-da090205bcb4"
+        },
+        {
+          "id": "listening",
+          "type": "listening",
+          "title": "Listening · Part 5–6 (24–35)",
+          "minutes": 17,
+          "ref": "1b33c938-eb34-5e64-9406-16aa6f2e6d33"
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Writing: do'stning ota-onasiga xat",
+      "focus": "Mavzu: norasmiy/yarim rasmiy xat (Task 1)",
+      "tasks": [
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 1 (xat, AI tekshiradi)",
+          "minutes": 25,
+          "ref": "116453a4-41e5-5744-8434-d2a26e1d7c21"
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "Writing: maktabda ovqat pishirish haqida esse",
+      "focus": "Mavzu: esse (Task 2)",
+      "tasks": [
+        {
+          "id": "writing",
+          "type": "writing",
+          "title": "Writing · Task 2 (esse, AI tekshiradi)",
+          "minutes": 40,
+          "ref": "f40ea67a-80c9-541e-9a31-82cc707c4cba"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "day": 2,
-   "title": "Shahar transporti, xarita va shimpanzelar",
-   "focus": "Mavzu: transport, maktab xaritasi, shimpanzelar, sog'lom ovqatlanish",
-   "tasks": [
+  ],
+  "writing": [
     {
-     "id": "reading5",
-     "type": "reading",
-     "title": "Reading · Part 5 (Urban Transportation, 30–35)",
-     "minutes": 14,
-     "ref": "a73d9cbf-94f7-531e-9f98-8b5985df4e37"
+      "id": "ec266b7d-0c2b-5298-ba26-fb79228c4fab",
+      "kind": "multilevel",
+      "title": "Marathon D1 · Task 1.1 — Swimming pool closure (letter to a friend)",
+      "min_words": 50,
+      "max_words": 70,
+      "prompt": "You are a member of a local sports and leisure center. You received an email from the center manager.\n\nDear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\nPart 1.1\nWrite a letter to your friend, who is also a member, telling them about the closure, giving your opinion, and suggesting what the center should do. Write 50–70 words."
     },
     {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Xarita (Rivermead School, 15–20)",
-     "minutes": 4,
-     "ref": "0f6e89bf-f5ca-58ea-ab59-900f5cc3369b"
+      "id": "ed87f382-2af5-5aa9-ad7d-1139363eaa5b",
+      "kind": "multilevel",
+      "title": "Marathon D1 · Task 1.2 — Swimming pool closure (letter to the manager)",
+      "min_words": 120,
+      "max_words": 150,
+      "prompt": "You are a member of a local sports and leisure center. You received an email from the center manager.\n\nDear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\nPart 1.2\nWrite a letter to the center manager expressing your views on the planned changes and suggesting how the center could support members while the swimming pool is closed. Write 120–150 words."
     },
     {
-     "id": "listening6",
-     "type": "listening",
-     "title": "Listening · Part 6 (Chimpanzees, 30–35)",
-     "minutes": 10,
-     "ref": "f68f7f6c-8a84-59a7-86cc-6fbc24eaed42"
+      "id": "83090d46-e049-5afa-b202-e48dfd26e5ac",
+      "kind": "multilevel",
+      "title": "Marathon D2 · Task 1.2 — Email to a language school",
+      "prompt": "You saw this advertisement:\n\nEVENING ENGLISH COURSES at Bright Future Language School\nSmall classes · Experienced teachers · Courses start in September\nWrite to us for more information!\n\nTask 1.2\nWrite an email to the school director. Say why you want to study English, and ask about the timetable, the price and the size of the classes. Write 120–150 words.",
+      "min_words": 120,
+      "max_words": 150
     },
     {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
-     "minutes": 40,
-     "ref": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48"
+      "id": "1ca97e09-e1d1-57ca-ae8f-855454bc3906",
+      "kind": "multilevel",
+      "title": "Marathon D3 · Task 2 — Online discussion — school uniforms",
+      "prompt": "You are participating in an online discussion. The question is:\n\nSome people think that all students should wear a school uniform. Others believe that students should be able to wear what they like. What do you think?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
+      "min_words": 180,
+      "max_words": 200
     },
     {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 2 (Sharing a secret)",
-     "minutes": 4,
-     "note": "1 daqiqa tayyorgarlik, 2 daqiqa gapiring. Barcha savollarga bitta hikoyada javob bering.",
-     "questions": [
-      "Describe a time when someone told you a secret.",
-      "Who told you the secret, and what was it about?",
-      "Did you keep the secret? Why or why not?",
-      "How did you feel about knowing it?"
-     ]
+      "id": "42c307b3-3df9-5e20-8a86-21890bf272e2",
+      "kind": "multilevel",
+      "title": "Marathon D4 · Task 1.1 — Message to a neighbour",
+      "prompt": "You received this message from your neighbour:\n\nHello! Sorry to bother you. I'm going away for a week and I need someone to water my plants and feed my cat. Would you be able to help? Please let me know if you can, and tell me if you have any questions.\n\nThank you,\nMrs Davis\n\nTask 1.1\nWrite a message to Mrs Davis. Say whether you can help and ask two questions. Write 50 words.",
+      "min_words": 50,
+      "max_words": 60
     },
     {
-     "id": "speaking2",
-     "type": "speaking",
-     "title": "Speaking · Part 3 (Calorie information in restaurants)",
-     "minutes": 4,
-     "note": "Mavzu: «Restaurants should show calorie information on their menus.» 1 daqiqa tayyorgarlik, 2 daqiqa gapiring: ikki tomonni muhokama qilib, o'z fikringizni ayting.",
-     "questions": [
-      "FOR: It helps people make healthier choices.",
-      "FOR: It raises awareness of obesity and diet-related diseases.",
-      "FOR: It encourages restaurants to offer healthier dishes.",
-      "AGAINST: It can take away the enjoyment of eating out.",
-      "AGAINST: It is expensive for small restaurants to calculate calories.",
-      "AGAINST: Calories alone do not show whether food is healthy."
-     ]
+      "id": "f1d43657-b14f-508d-b80c-2098eb0fe837",
+      "kind": "multilevel",
+      "title": "Marathon D5 · Task 1.2 — Letter to the council",
+      "prompt": "You received this notice from your local council:\n\nThe council is planning to close the city centre to cars every Saturday. We would like to hear the views of local residents. How would this change affect you? What do you suggest?\n\nTask 1.2\nWrite a letter to the council. Explain how the change would affect you and suggest what the council could do to help residents. Write 120–150 words.",
+      "min_words": 120,
+      "max_words": 150
+    },
+    {
+      "id": "b2ae47aa-2113-54a8-89e8-1a4f00934c85",
+      "kind": "multilevel",
+      "title": "Marathon D6 · Task 2 — Online discussion — city or countryside",
+      "prompt": "You are participating in an online discussion. The question is:\n\nSome people prefer to live in a big city, while others think the countryside is a better place to live. Which do you think is better?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
+      "min_words": 180,
+      "max_words": 200
+    },
+    {
+      "id": "3804be34-453d-5a87-be6a-41cc5a7a7059",
+      "kind": "multilevel",
+      "title": "Marathon D7 · Task 1.1 — Message to a colleague",
+      "prompt": "You received this message from your colleague:\n\nHi! Our team meeting is on Friday at 10 a.m., but the manager wants to move it to Thursday afternoon. Is that OK for you? If not, what time would be better? Please reply today.\n\nThanks,\nAlex\n\nTask 1.1\nWrite a message to Alex. Say whether Thursday afternoon is possible and suggest another time if necessary. Write 50 words.",
+      "min_words": 50,
+      "max_words": 60
+    },
+    {
+      "id": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48",
+      "kind": "multilevel",
+      "title": "Marathon D2 · Task 2 — Public sports facilities (online discussion)",
+      "min_words": 180,
+      "max_words": 200,
+      "prompt": "You are participating in an online discussion. The question is:\n\nSome people believe that local governments should spend more money on public sports facilities, such as swimming pools and sports centres. Others think this money should be spent on other services, such as healthcare and education. What is your opinion?\n\nPost your response, giving reasons and examples. Write 180–200 words."
+    },
+    {
+      "id": "bb99e2b0-b68c-5323-9114-efa268e5e7fc",
+      "kind": "multilevel",
+      "title": "Marathon D3 · Task 1.1 — Café (message to a friend)",
+      "min_words": 50,
+      "max_words": 70,
+      "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.1\nWrite a message to a friend who also goes to this café. Talk about the situation and share your ideas to help the café. Write 50–70 words."
+    },
+    {
+      "id": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90",
+      "kind": "multilevel",
+      "title": "Marathon D3 · Task 1.2 — Café (letter to the owner)",
+      "min_words": 120,
+      "max_words": 150,
+      "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.2\nWrite a formal letter to the café owner. Give your suggestions and explain how they could help the business. Write 120–150 words."
+    },
+    {
+      "id": "9f57dd0c-439f-5bcf-99d8-61129c42d06c",
+      "kind": "multilevel",
+      "title": "Marathon D3 · Task 2 — Local businesses vs chain stores (article)",
+      "min_words": 180,
+      "max_words": 200,
+      "prompt": "A local newspaper is inviting residents to write articles. The topic is:\n\n\"Should people support local businesses rather than large chain stores?\"\n\nWrite your article, giving reasons and examples. Write 180–200 words."
+    },
+    {
+      "id": "24262328-9f91-5487-a933-37d2dc1f75da",
+      "kind": "multilevel",
+      "title": "Marathon D4 · Task 1.1 — Free lunch cancelled (letter to a colleague)",
+      "min_words": 50,
+      "max_words": 70,
+      "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.1\nWrite a letter to your colleague. Explain how you feel about the upcoming changes and what you think the company should do. Write 50–70 words."
+    },
+    {
+      "id": "db294f29-81ab-5dbd-993f-a9f058f4ef19",
+      "kind": "multilevel",
+      "title": "Marathon D4 · Task 1.2 — Free lunch cancelled (letter to the manager)",
+      "min_words": 120,
+      "max_words": 150,
+      "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.2\nWrite a letter to the company manager. Express your concerns about the closure of the cafeteria and the cancellation of free lunches. Suggest possible alternatives or improvements. Write 120–150 words."
+    },
+    {
+      "id": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b",
+      "kind": "multilevel",
+      "title": "Marathon D5 · Task 2 — History or modern subjects? (essay)",
+      "min_words": 180,
+      "max_words": 200,
+      "prompt": "You are taking part in an online discussion on a school website. The topic is:\n\n\"Some people think schools should spend more time teaching history, while others believe modern subjects such as technology and business are more useful for young people.\"\n\nWrite your post. Discuss both views and give your own opinion. Write 180–200 words."
+    },
+    {
+      "id": "2266afd4-e01b-5685-a70d-c8721af31fb6",
+      "kind": "multilevel",
+      "title": "Marathon D15 · Task 1 — Property management position (letter)",
+      "min_words": 150,
+      "max_words": 0,
+      "prompt": "You saw an advertisement in the paper for a property management position at an apartment complex. Write a letter to express your interest.\n\nInclude:\n• why you are writing\n• your suitability for the role\n• how you would approach the position\n\nWrite at least 150 words."
+    },
+    {
+      "id": "bb534712-2666-5e9b-a569-f70a67fdbe1e",
+      "kind": "multilevel",
+      "title": "Marathon D16 · Task 2 — Not knowing our neighbours (essay)",
+      "min_words": 250,
+      "max_words": 0,
+      "prompt": "Today, many people do not know their neighbours.\n\nWhy is this?\nWhat can be done about this?\n\nGive reasons for your answer and include any relevant examples.\n\nWrite at least 250 words."
+    },
+    {
+      "id": "116453a4-41e5-5744-8434-d2a26e1d7c21",
+      "kind": "multilevel",
+      "title": "Marathon D19 · Task 1 — Child's trip to a friend (letter)",
+      "min_words": 150,
+      "max_words": 0,
+      "prompt": "Your child is planning to visit a friend in another city for a few days, but you have some concerns about the trip. Write a letter to the friend's parents.\n\nIn your letter:\n• introduce yourself and your child\n• explain your concerns about the trip\n• ask them some questions to ensure your child's safety and well-being\n\nWrite at least 150 words."
+    },
+    {
+      "id": "f40ea67a-80c9-541e-9a31-82cc707c4cba",
+      "kind": "multilevel",
+      "title": "Marathon D20 · Task 2 — Cooking in schools (essay)",
+      "min_words": 250,
+      "max_words": 0,
+      "prompt": "Some people believe that everyone should be taught how to cook and prepare healthy meals in school. Others think that it is unnecessary.\n\nDiscuss both views and give your opinion.\n\nGive reasons for your answer and include any relevant examples.\n\nWrite at least 250 words."
     }
-   ]
-  },
-  {
-   "day": 3,
-   "title": "Sayohatlar, kafe va sun'iy intellekt",
-   "focus": "Mavzu: sayohatlar, mahalliy biznes, shahar va qishloq, sun'iy intellekt",
-   "tasks": [
-    {
-     "id": "reading3",
-     "type": "reading",
-     "title": "Reading · Part 3 (Slow Travel, 15–20)",
-     "minutes": 12,
-     "ref": "48a04882-751d-5934-b9e5-4d02e47a15cd"
-    },
-    {
-     "id": "listening3",
-     "type": "listening",
-     "title": "Listening · Part 3 (Trips, 15–18)",
-     "minutes": 8,
-     "ref": "96498cdd-97cb-5a5f-888b-dca5175c5888"
-    },
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 1.1 (do'stga xabar, AI tekshiradi)",
-     "minutes": 15,
-     "ref": "bb99e2b0-b68c-5323-9114-efa268e5e7fc"
-    },
-    {
-     "id": "writing2",
-     "type": "writing",
-     "title": "Writing · Task 1.2 (kafe egasiga xat, AI tekshiradi)",
-     "minutes": 25,
-     "ref": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90"
-    },
-    {
-     "id": "writing3",
-     "type": "writing",
-     "title": "Writing · Task 2 (maqola, AI tekshiradi)",
-     "minutes": 40,
-     "ref": "9f57dd0c-439f-5bcf-99d8-61129c42d06c"
-    },
-    {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 1.1 + 1.2 (city and countryside)",
-     "minutes": 6,
-     "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
-     "questions": [
-      "Part 1.1 — Where do you live?",
-      "Part 1.1 — Can you describe your family?",
-      "Part 1.1 — What are your hobbies?",
-      "Part 1.2 — What do you see in these pictures?",
-      "Part 1.2 — What is the difference between living in the city and in the countryside?",
-      "Part 1.2 — Where do you prefer to live, in the city or in a village?"
-     ],
-     "images": [
-      "marathon-d3-speaking-a.jpg",
-      "marathon-d3-speaking-b.jpg"
-     ]
-    },
-    {
-     "id": "speaking2",
-     "type": "speaking",
-     "title": "Speaking · Part 2 + Part 3 (trip · AI)",
-     "minutes": 8,
-     "note": "Part 2: 1 daqiqa tayyorgarlik, 2 daqiqa gapiring (uchala savolga bitta hikoyada). Part 3: «Artificial intelligence will replace human jobs» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
-     "questions": [
-      "Part 2 — Tell me about a memorable trip you have taken.",
-      "Part 2 — How did this trip change your perspective on travel or life in general?",
-      "Part 2 — What are the most important things to consider when planning a trip?",
-      "Part 3 · FOR — Increases efficiency and productivity.",
-      "Part 3 · FOR — Frees humans from repetitive tasks.",
-      "Part 3 · FOR — Encourages innovation in new industries.",
-      "Part 3 · AGAINST — Risks job displacement and unemployment.",
-      "Part 3 · AGAINST — Challenges in retraining and upskilling the workforce.",
-      "Part 3 · AGAINST — Potential for widening income inequality."
-     ]
-    }
-   ]
-  },
-  {
-   "day": 4,
-   "title": "Do'kon, mehmonxona va ferma",
-   "focus": "Mavzu: xizmat ko'rsatish, xarid qilish, ish joyidagi o'zgarishlar",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (1–20)",
-     "minutes": 30,
-     "ref": "829b3777-4440-515d-9edd-260e876ec341"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 1–2 (1–14)",
-     "minutes": 12,
-     "ref": "f006d55d-5310-5da1-a418-5ba04f1a21b1"
-    },
-    {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 1.1 + 1.2 (beach or mountains)",
-     "minutes": 6,
-     "note": "Part 1.1: har bir savolga 30 soniya. Part 1.2: rasmlarni solishtiring — 1-savolga 45 soniya, qolganlariga 30 soniyadan. Tayyorgarliksiz.",
-     "questions": [
-      "Part 1.1 — What do you usually do on weekends?",
-      "Part 1.1 — Do you prefer to watch movies at home or at the cinema?",
-      "Part 1.1 — How important is learning foreign languages for you?",
-      "Part 1.1 — Do you think technology makes our lives easier? Why?",
-      "Part 1.2 — What can you see in these pictures?",
-      "Part 1.2 — Which place would you prefer to spend your holiday, a beach or a mountain? Why?",
-      "Part 1.2 — What are the advantages of spending holidays in each place?"
-     ],
-     "images": [
-      "marathon-d4-speaking-a.jpg",
-      "marathon-d4-speaking-b.jpg"
-     ]
-    },
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 1.1 (hamkasbga xat, AI tekshiradi)",
-     "minutes": 15,
-     "ref": "24262328-9f91-5487-a933-37d2dc1f75da"
-    },
-    {
-     "id": "writing2",
-     "type": "writing",
-     "title": "Writing · Task 1.2 (menejerga xat, AI tekshiradi)",
-     "minutes": 25,
-     "ref": "db294f29-81ab-5dbd-993f-a9f058f4ef19"
-    }
-   ]
-  },
-  {
-   "day": 5,
-   "title": "Nostalgiya, tarix va transport",
-   "focus": "Mavzu: xotiralar, tarixni o'rganish, shahar transporti",
-   "tasks": [
-    {
-     "id": "reading45",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (21–35)",
-     "minutes": 30,
-     "ref": "363f44b1-802c-51bf-92e6-4411cd0f5aef"
-    },
-    {
-     "id": "listening4",
-     "type": "listening",
-     "title": "Listening · Part 4 (xarita, 19–23)",
-     "minutes": 5,
-     "ref": "6b48ff37-4240-5145-b2a7-83f9d071baa5"
-    },
-    {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 2 + Part 3 (a new skill · free university)",
-     "minutes": 8,
-     "note": "Part 2: 1 daqiqa tayyorgarlik, 1–2 daqiqa gapiring (barcha savollarga bitta hikoyada). Part 3: «University education should be free for everyone» — 1 daqiqa tayyorgarlik, 2 daqiqa: ikki tomonni muhokama qiling va fikringizni ayting.",
-     "questions": [
-      "Part 2 — Describe a skill that you would like to learn.",
-      "Part 2 — Why do you want to learn this skill?",
-      "Part 2 — How will this skill help you in the future?",
-      "Part 2 — Where can you learn it?",
-      "Part 2 — How long do you think it will take you to learn it?",
-      "Part 3 · FOR — It gives equal opportunities to all students.",
-      "Part 3 · FOR — It reduces the financial burden on families.",
-      "Part 3 · FOR — It helps to create a more educated and skilled society.",
-      "Part 3 · AGAINST — It is expensive for the government to provide.",
-      "Part 3 · AGAINST — People may not value education if it is free.",
-      "Part 3 · AGAINST — Funds are limited and could be used for other important services."
-     ]
-    },
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 2 (online discussion, AI tekshiradi)",
-     "minutes": 40,
-     "ref": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b"
-    }
-   ]
-  },
-  {
-   "day": 6,
-   "title": "Listening, speaking va essay",
-   "focus": "Mavzu: Olimpiya va sun'iy intellekt",
-   "tasks": [
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Lost property",
-     "minutes": 7,
-     "ref": "892032bd-9ad8-5bf8-98b1-a7166d64efc7"
-    },
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (Multilevel Reading 20)",
-     "minutes": 24,
-     "ref": "eb262b6f-7f1d-521d-9cd8-f1671b848c99"
-    },
-    {
-     "id": "speaking",
-     "type": "speaking",
-     "title": "Speaking · Part 3 (fikr bildirish)",
-     "minutes": 10,
-     "questions": [
-      "Some people think online lessons are better than classroom lessons. What is your opinion?",
-      "Give two advantages of studying online.",
-      "Give two disadvantages of studying online.",
-      "What would you choose for yourself, and why?"
-     ]
-    },
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 2 (AI tekshiradi)",
-     "minutes": 25,
-     "ref": "b2ae47aa-2113-54a8-89e8-1a4f00934c85"
-    }
-   ]
-  },
-  {
-   "day": 7,
-   "title": "Hafta yakuni: reading va writing",
-   "focus": "Mavzu: Yozuv tarixi, kasalxona va kuz",
-   "tasks": [
-    {
-     "id": "vocab",
-     "type": "vocab",
-     "title": "Mavzu lug'ati: Yozuv tarixi, kasalxona va kuz",
-     "minutes": 8,
-     "words": [
-      {
-       "w": "ancient",
-       "uz": "qadimiy",
-       "ex": ""
-      },
-      {
-       "w": "script",
-       "uz": "yozuv tizimi",
-       "ex": ""
-      },
-      {
-       "w": "system",
-       "uz": "tizim",
-       "ex": ""
-      },
-      {
-       "w": "symbols",
-       "uz": "belgilar",
-       "ex": ""
-      },
-      {
-       "w": "scribes",
-       "uz": "kotiblar",
-       "ex": ""
-      },
-      {
-       "w": "earliest",
-       "uz": "eng qadimgi",
-       "ex": ""
-      },
-      {
-       "w": "emerged",
-       "uz": "paydo bo'ldi",
-       "ex": ""
-      },
-      {
-       "w": "chemical",
-       "uz": "kimyoviy",
-       "ex": "It is because of a chemical called chlorophyll."
-      },
-      {
-       "w": "sunlight",
-       "uz": "quyosh nuri",
-       "ex": "This chemical helps plants to make food from sunlight."
-      },
-      {
-       "w": "winter",
-       "uz": "qish",
-       "ex": "Days become shorter and there is not enough sunlight in winter."
-      },
-      {
-       "w": "leaves",
-       "uz": "barglar/tark etadi",
-       "ex": "It is a time when leaves turn to beautiful red, orange and yellow colors."
-      },
-      {
-       "w": "animals",
-       "uz": "hayvonlar",
-       "ex": "Also, animals such as bears and bats sleep in winter."
-      }
-     ]
-    },
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (Multilevel Reading 21)",
-     "minutes": 36,
-     "ref": "2056e25e-c4fc-5656-bbff-454033a33b02"
-    },
-    {
-     "id": "words",
-     "type": "words",
-     "title": "Matndan yangi so'zlar — o'yin",
-     "minutes": 5,
-     "words": [
-      {
-       "w": "administrative",
-       "uz": "ma'muriy",
-       "ex": ""
-      },
-      {
-       "w": "significant",
-       "uz": "muhim",
-       "ex": ""
-      },
-      {
-       "w": "further",
-       "uz": "yanada",
-       "ex": ""
-      },
-      {
-       "w": "directly",
-       "uz": "bevosita",
-       "ex": ""
-      },
-      {
-       "w": "rather",
-       "uz": "aksincha",
-       "ex": ""
-      },
-      {
-       "w": "needed",
-       "uz": "kerak bo'lgan",
-       "ex": ""
-      },
-      {
-       "w": "centuries",
-       "uz": "asrlar",
-       "ex": ""
-      },
-      {
-       "w": "across",
-       "uz": "bo'ylab; narigi tomonga",
-       "ex": ""
-      }
-     ]
-    },
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 1.1 (AI tekshiradi)",
-     "minutes": 25,
-     "ref": "3804be34-453d-5a87-be6a-41cc5a7a7059"
-    }
-   ]
-  },
-  {
-   "day": 8,
-   "title": "Plastik, maktablar va uy-joy",
-   "focus": "Mavzu: plastik ifloslanishi, maktab tanlash, ijtimoiy uy-joy, lama trekkingi, Rojdestvo",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (1–20)",
-     "minutes": 30,
-     "ref": "2a56d88c-0100-51d1-8196-56fb6727afcb"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 1–4 (1–23)",
-     "minutes": 21,
-     "ref": "121bf395-31e5-5265-9582-2835128f3357"
-    }
-   ]
-  },
-  {
-   "day": 9,
-   "title": "Fikr-mulohaza, dinozavrlar va ekspeditsiya",
-   "focus": "Mavzu: samarali fikr-mulohaza, T-Rex ovchisi, muzey va Janubiy Afrika safari",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (21–35)",
-     "minutes": 30,
-     "ref": "324a3c51-c6bf-59f6-9c09-a50f7e6c1606"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 5–6 (24–35)",
-     "minutes": 15,
-     "ref": "d66583c3-50a8-594f-9e1b-b7cce9e27e85"
-    }
-   ]
-  },
-  {
-   "day": 10,
-   "title": "Shakar, chang'i kurortlari va Malta",
-   "focus": "Mavzu: shakar xavfi, chang'i kurortlari, Malta, markaziy muzey va kollej xaritasi",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (1–20)",
-     "minutes": 30,
-     "ref": "0d17a373-21af-5d3a-8774-d5f4d794d18f"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 1–4 (1–23)",
-     "minutes": 22,
-     "ref": "e6a5beae-0d5c-5b95-a2c7-2763567e469f"
-    }
-   ]
-  },
-  {
-   "day": 11,
-   "title": "Yangi Yer, tillar kursi va yashil uy",
-   "focus": "Mavzu: yangi sayyoralar, til kurslari, WWF yashil binosi, madaniyat markazi",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (1–20)",
-     "minutes": 30,
-     "ref": "69c2a779-fd2e-5e58-96b0-d78400a2f0d6"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 1–4 (1–23)",
-     "minutes": 20,
-     "ref": "db258030-426d-556c-b017-7b68553f5401"
-    }
-   ]
-  },
-  {
-   "day": 12,
-   "title": "Pochta markalari, ko'chmanchilar va san'at galereyasi",
-   "focus": "Mavzu: Penny Black, ko'chmanchi xalqlar, ekstraktlar va galereya",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (21–35)",
-     "minutes": 30,
-     "ref": "9f1ac0ca-d4dd-5e55-ada7-f8b0d74d17b3"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 5–6 (24–35)",
-     "minutes": 16,
-     "ref": "b3bc588b-0a5a-56af-9759-239ef166e71f"
-    }
-   ]
-  },
-  {
-   "day": 13,
-   "title": "Ovqatlanish, mehmonxonalar va qishloqlar",
-   "focus": "Mavzu: kechki ovqat va semizlik, mehmonxona tanlash, Britaniya qishloqlari; Listening: kurslar, tushlar, xarita",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 1–3 (1–20)",
-     "minutes": 30,
-     "ref": "f0606556-157a-5973-a177-91b0db395aa3"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 1–4 (1–23)",
-     "minutes": 23,
-     "ref": "8ffc45c5-c315-5298-8b8e-c4e22f42a284"
-    }
-   ]
-  },
-  {
-   "day": 14,
-   "title": "Antibiotiklar, Orol dengizi va fillar",
-   "focus": "Mavzu: penitsillin, Orol dengizi tanazzuli, qushlar/axlatxona, Amboseli fillari",
-   "tasks": [
-    {
-     "id": "reading",
-     "type": "reading",
-     "title": "Reading · Part 4–5 (21–35)",
-     "minutes": 30,
-     "ref": "13ffc3cb-43d6-5c82-b17b-16cae5d8876f"
-    },
-    {
-     "id": "listening",
-     "type": "listening",
-     "title": "Listening · Part 5–6 (24–35)",
-     "minutes": 17,
-     "ref": "b1a072f7-cf1c-58ad-b112-ad35a45e21b4"
-    }
-   ]
-  },
-  {
-   "day": 15,
-   "title": "Writing: ish uchun xat",
-   "focus": "Mavzu: rasmiy xat (Task 1)",
-   "tasks": [
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 1 (rasmiy xat, AI tekshiradi)",
-     "minutes": 25,
-     "ref": "2266afd4-e01b-5685-a70d-c8721af31fb6"
-    }
-   ]
-  },
-  {
-   "day": 16,
-   "title": "Writing: qo'shnilar haqida esse",
-   "focus": "Mavzu: esse (Task 2)",
-   "tasks": [
-    {
-     "id": "writing",
-     "type": "writing",
-     "title": "Writing · Task 2 (esse, AI tekshiradi)",
-     "minutes": 40,
-     "ref": "bb534712-2666-5e9b-a569-f70a67fdbe1e"
-    }
-   ]
-  }
- ],
- "writing": [
-  {
-   "id": "ec266b7d-0c2b-5298-ba26-fb79228c4fab",
-   "kind": "multilevel",
-   "title": "Marathon D1 · Task 1.1 — Swimming pool closure (letter to a friend)",
-   "min_words": 50,
-   "max_words": 70,
-   "prompt": "You are a member of a local sports and leisure center. You received an email from the center manager.\n\nDear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\nPart 1.1\nWrite a letter to your friend, who is also a member, telling them about the closure, giving your opinion, and suggesting what the center should do. Write 50–70 words."
-  },
-  {
-   "id": "ed87f382-2af5-5aa9-ad7d-1139363eaa5b",
-   "kind": "multilevel",
-   "title": "Marathon D1 · Task 1.2 — Swimming pool closure (letter to the manager)",
-   "min_words": 120,
-   "max_words": 150,
-   "prompt": "You are a member of a local sports and leisure center. You received an email from the center manager.\n\nDear Member,\n\nFrom next month, our swimming pool will be closed for approximately three months while essential repair work is carried out. As part of the project, we will also create a larger and more modern fitness area. The work will be expensive, but members will not be asked to pay any additional fees.\n\nWe understand that the closure may affect some members and would be grateful to receive your views and suggestions.\n\nKind regards,\nThe Center Manager\n\nPart 1.2\nWrite a letter to the center manager expressing your views on the planned changes and suggesting how the center could support members while the swimming pool is closed. Write 120–150 words."
-  },
-  {
-   "id": "83090d46-e049-5afa-b202-e48dfd26e5ac",
-   "kind": "multilevel",
-   "title": "Marathon D2 · Task 1.2 — Email to a language school",
-   "prompt": "You saw this advertisement:\n\nEVENING ENGLISH COURSES at Bright Future Language School\nSmall classes · Experienced teachers · Courses start in September\nWrite to us for more information!\n\nTask 1.2\nWrite an email to the school director. Say why you want to study English, and ask about the timetable, the price and the size of the classes. Write 120–150 words.",
-   "min_words": 120,
-   "max_words": 150
-  },
-  {
-   "id": "1ca97e09-e1d1-57ca-ae8f-855454bc3906",
-   "kind": "multilevel",
-   "title": "Marathon D3 · Task 2 — Online discussion — school uniforms",
-   "prompt": "You are participating in an online discussion. The question is:\n\nSome people think that all students should wear a school uniform. Others believe that students should be able to wear what they like. What do you think?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
-   "min_words": 180,
-   "max_words": 200
-  },
-  {
-   "id": "42c307b3-3df9-5e20-8a86-21890bf272e2",
-   "kind": "multilevel",
-   "title": "Marathon D4 · Task 1.1 — Message to a neighbour",
-   "prompt": "You received this message from your neighbour:\n\nHello! Sorry to bother you. I'm going away for a week and I need someone to water my plants and feed my cat. Would you be able to help? Please let me know if you can, and tell me if you have any questions.\n\nThank you,\nMrs Davis\n\nTask 1.1\nWrite a message to Mrs Davis. Say whether you can help and ask two questions. Write 50 words.",
-   "min_words": 50,
-   "max_words": 60
-  },
-  {
-   "id": "f1d43657-b14f-508d-b80c-2098eb0fe837",
-   "kind": "multilevel",
-   "title": "Marathon D5 · Task 1.2 — Letter to the council",
-   "prompt": "You received this notice from your local council:\n\nThe council is planning to close the city centre to cars every Saturday. We would like to hear the views of local residents. How would this change affect you? What do you suggest?\n\nTask 1.2\nWrite a letter to the council. Explain how the change would affect you and suggest what the council could do to help residents. Write 120–150 words.",
-   "min_words": 120,
-   "max_words": 150
-  },
-  {
-   "id": "b2ae47aa-2113-54a8-89e8-1a4f00934c85",
-   "kind": "multilevel",
-   "title": "Marathon D6 · Task 2 — Online discussion — city or countryside",
-   "prompt": "You are participating in an online discussion. The question is:\n\nSome people prefer to live in a big city, while others think the countryside is a better place to live. Which do you think is better?\n\nPost your response, giving reasons and examples. Write 180–200 words.",
-   "min_words": 180,
-   "max_words": 200
-  },
-  {
-   "id": "3804be34-453d-5a87-be6a-41cc5a7a7059",
-   "kind": "multilevel",
-   "title": "Marathon D7 · Task 1.1 — Message to a colleague",
-   "prompt": "You received this message from your colleague:\n\nHi! Our team meeting is on Friday at 10 a.m., but the manager wants to move it to Thursday afternoon. Is that OK for you? If not, what time would be better? Please reply today.\n\nThanks,\nAlex\n\nTask 1.1\nWrite a message to Alex. Say whether Thursday afternoon is possible and suggest another time if necessary. Write 50 words.",
-   "min_words": 50,
-   "max_words": 60
-  },
-  {
-   "id": "b5e5c3c2-105e-59ee-8993-2baf5ffd8c48",
-   "kind": "multilevel",
-   "title": "Marathon D2 · Task 2 — Public sports facilities (online discussion)",
-   "min_words": 180,
-   "max_words": 200,
-   "prompt": "You are participating in an online discussion. The question is:\n\nSome people believe that local governments should spend more money on public sports facilities, such as swimming pools and sports centres. Others think this money should be spent on other services, such as healthcare and education. What is your opinion?\n\nPost your response, giving reasons and examples. Write 180–200 words."
-  },
-  {
-   "id": "bb99e2b0-b68c-5323-9114-efa268e5e7fc",
-   "kind": "multilevel",
-   "title": "Marathon D3 · Task 1.1 — Café (message to a friend)",
-   "min_words": 50,
-   "max_words": 70,
-   "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.1\nWrite a message to a friend who also goes to this café. Talk about the situation and share your ideas to help the café. Write 50–70 words."
-  },
-  {
-   "id": "e90dd68f-d22a-5e53-a087-0b5c9ef66e90",
-   "kind": "multilevel",
-   "title": "Marathon D3 · Task 1.2 — Café (letter to the owner)",
-   "min_words": 120,
-   "max_words": 150,
-   "prompt": "You are a regular customer at a small local café. The café is finding it hard to compete with big coffee chains. You received this email from the owner:\n\nDear Customers,\n\nAs many of you know, it has been difficult for our little café to compete with the large coffee chains in town. We want to improve and attract more customers, so we would like your ideas: new things on the menu, events, or services that would make you come more often.\n\nThank you,\nThe Café Owner\n\nTask 1.2\nWrite a formal letter to the café owner. Give your suggestions and explain how they could help the business. Write 120–150 words."
-  },
-  {
-   "id": "9f57dd0c-439f-5bcf-99d8-61129c42d06c",
-   "kind": "multilevel",
-   "title": "Marathon D3 · Task 2 — Local businesses vs chain stores (article)",
-   "min_words": 180,
-   "max_words": 200,
-   "prompt": "A local newspaper is inviting residents to write articles. The topic is:\n\n\"Should people support local businesses rather than large chain stores?\"\n\nWrite your article, giving reasons and examples. Write 180–200 words."
-  },
-  {
-   "id": "24262328-9f91-5487-a933-37d2dc1f75da",
-   "kind": "multilevel",
-   "title": "Marathon D4 · Task 1.1 — Free lunch cancelled (letter to a colleague)",
-   "min_words": 50,
-   "max_words": 70,
-   "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.1\nWrite a letter to your colleague. Explain how you feel about the upcoming changes and what you think the company should do. Write 50–70 words."
-  },
-  {
-   "id": "db294f29-81ab-5dbd-993f-a9f058f4ef19",
-   "kind": "multilevel",
-   "title": "Marathon D4 · Task 1.2 — Free lunch cancelled (letter to the manager)",
-   "min_words": 120,
-   "max_words": 150,
-   "prompt": "Your company currently provides free lunch for its employees. Management has announced that the staff cafeteria will close from the 1st of next month and the free lunch service will be discontinued. Self-service food-ordering machines will be installed on every floor instead, letting employees order and pay for their own meals. Management has invited employees to share their opinions and suggestions about these changes.\n\nTask 1.2\nWrite a letter to the company manager. Express your concerns about the closure of the cafeteria and the cancellation of free lunches. Suggest possible alternatives or improvements. Write 120–150 words."
-  },
-  {
-   "id": "3e3ff13d-2ad3-524d-b615-b696f8ed4a1b",
-   "kind": "multilevel",
-   "title": "Marathon D5 · Task 2 — History or modern subjects? (essay)",
-   "min_words": 180,
-   "max_words": 200,
-   "prompt": "You are taking part in an online discussion on a school website. The topic is:\n\n\"Some people think schools should spend more time teaching history, while others believe modern subjects such as technology and business are more useful for young people.\"\n\nWrite your post. Discuss both views and give your own opinion. Write 180–200 words."
-  },
-  {
-   "id": "2266afd4-e01b-5685-a70d-c8721af31fb6",
-   "kind": "multilevel",
-   "title": "Marathon D15 · Task 1 — Property management position (letter)",
-   "min_words": 150,
-   "max_words": 0,
-   "prompt": "You saw an advertisement in the paper for a property management position at an apartment complex. Write a letter to express your interest.\n\nInclude:\n• why you are writing\n• your suitability for the role\n• how you would approach the position\n\nWrite at least 150 words."
-  },
-  {
-   "id": "bb534712-2666-5e9b-a569-f70a67fdbe1e",
-   "kind": "multilevel",
-   "title": "Marathon D16 · Task 2 — Not knowing our neighbours (essay)",
-   "min_words": 250,
-   "max_words": 0,
-   "prompt": "Today, many people do not know their neighbours.\n\nWhy is this?\nWhat can be done about this?\n\nGive reasons for your answer and include any relevant examples.\n\nWrite at least 250 words."
-  }
- ]
+  ]
 }
