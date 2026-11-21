@@ -40414,7 +40414,7 @@
                         "text": "The invention of the printing press"
                       }
                     ],
-                    "answer": "C"
+                    "answer": "D"
                   },
                   {
                     "type": "mcq",
@@ -40437,7 +40437,7 @@
                         "text": "The discovery of sustainable alternatives"
                       }
                     ],
-                    "answer": "D"
+                    "answer": "B"
                   }
                 ]
               },
@@ -40447,12 +40447,12 @@
                   {
                     "type": "tfng",
                     "text": "Cai Lun invented the first form of paper.",
-                    "answer": "True"
+                    "answer": "False"
                   },
                   {
                     "type": "tfng",
                     "text": "The printing press was invented by a Chinese inventor.",
-                    "answer": "Not Given"
+                    "answer": "False"
                   },
                   {
                     "type": "tfng",
@@ -40467,7 +40467,7 @@
                   {
                     "type": "tfng",
                     "text": "Paper is still primarily made from cloth rags today.",
-                    "answer": "Not Given"
+                    "answer": "False"
                   }
                 ]
               }
