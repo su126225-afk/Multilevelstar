@@ -40867,6 +40867,1137 @@
         ],
         "qstart": 24
       }
+    },
+    {
+      "id": "3b1d8688-c864-5c3c-99ef-c7af32d005ea",
+      "section": "reading",
+      "format": "multilevel",
+      "title": "Marathon · Reading Part 1–3 (Day 19)",
+      "duration_min": 30,
+      "play_once": false,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "reading",
+          "n": "d19p123"
+        },
+        "parts": [
+          {
+            "title": "The library",
+            "instruction": "Read the text. Fill in each gap with **ONE WORD**. You must use a word which is somewhere in the rest of the text.",
+            "text": "The library is my favorite place, especially on Friday. It's quiet in the [[library]]. I love the smell of old books and the way the sunlight streams through the big windows. Last [[Friday]] I went to the library to find a book about astronauts. I've always dreamt of being an astronaut, soaring through space. I read a book about how [[astronaut/astronauts]] eat, live in space. I finished the [[book]]. Even I wrote a short report. I gave the [[report]] to my teacher. My [[teacher]] was impressed. Maybe one day, I'll even write a book about my own journey to the stars, and it will sit on the shelves of this very library.",
+            "blocks": []
+          },
+          {
+            "title": "Choosing a city or a book",
+            "instruction": "",
+            "options_title": "Texts A–J",
+            "options": [
+              {
+                "label": "A",
+                "text": "Kadia. This busy city has developed beside the main river which divides the central commercial district into two parts. Although you will find the main offices of many international companies, you can still ride on a water taxi and visit the side streets which sell colourful locally- made clothes and crafts."
+              },
+              {
+                "label": "B",
+                "text": "The Travel Club. First-hand accounts of 30 of the world's most beautiful and dramatic railway journeys are found together with specially drawn maps and wonderful photographs that show the people and places on the route."
+              },
+              {
+                "label": "C",
+                "text": "Noien. This is a cultural centre with 33 museums and galleries, many attached to colleges and universities. It is not a historical city but it contains some interesting buildings, including the Post Office, which has a silver roof. It has noisy markets selling everything from antiques to plants."
+              },
+              {
+                "label": "D",
+                "text": "Polatika. The streets of this city are full both day and night. It is built on a river and the best way to see it is on a tourist boat which passes the beautiful old buildings. The city is starting to grow and has just opened its first department stores."
+              },
+              {
+                "label": "E",
+                "text": "Haristor. This famous city has been on the same site for over a thousand years. Old and new exist together and there isn't the fast pace of most cities. The streets are wide and well-kept with plenty of trees. Search carefully and you will find some outdoor markets and food stalls in this peaceful environment."
+              },
+              {
+                "label": "F",
+                "text": "Lotten. This is a regional centre for trade and tourism and is completely ‘up- to- date'. People who live in this city come from many different parts of the world and so there is an excellent choice of restaurants. There is a wonderful transport system, and modern department stores."
+              },
+              {
+                "label": "G",
+                "text": "Foforon. There are plenty of tours to take from the city and visitors can go to mountains, farms and villages. This small city has changed little over time and its streets and markets are still crowded and noisy."
+              },
+              {
+                "label": "H",
+                "text": "Quinter. There is a lot of modern painting and sculpture in this relatively new city where many nationalities have come together. The galleries are well hidden though, and not easy to get to by public transport. This is mainly used for getting people in and out of the business centre, where there are many office blocks."
+              },
+              {
+                "label": "I",
+                "text": "The Book of French Life. This beautiful volume contains _ forty wonderful photographs that show the very nature of French life - the perfect gift for anyone who finds this country as wonderful as Shirley Pike does."
+              },
+              {
+                "label": "J",
+                "text": "Walks and Tours in France. Explore spectacular and pretty France with 61 expertly researched motor tours and 114 walks, complete with route directions, super mapping, and descriptions and pictures of places of interest for the traveler."
+              }
+            ],
+            "blocks": [
+              {
+                "instruction": "Read the texts A–J and the situations 7–14. Decide which text matches each situation. Each text can be used **once only**. There are **TWO** extra texts which you do not need to use.",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "You have just finished your business degree. You would like to relax in a clean, quiet city which has a long history.",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You have just finished your economics degree. You would like to visit a city that has a big business centre and also offers traditional goods for the tourists to buy.",
+                    "answer": "A"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You and your seventy-year-old aunt share an interest in painting and buying valuable, old objects. You would like to go to a city where they can shop easily and look at art.",
+                    "answer": "C"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You are studying international business. You would like to go to a city where the inhabitants come from many different countries, which will give you the opportunity to try a variety of food.",
+                    "answer": "F"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You and Mavis want to escape from modern life and go somewhere more traditional. You would like to go on some long trips outside the city as well.",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You are planning to travel round the world by train. You would like a book with pictures and maps to take with you on your long journeys.",
+                    "answer": "B"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You used to love visiting France, but now you are too old to travel. You want a book with lots of photographs which will help you to remember everything you enjoyed.",
+                    "answer": "I"
+                  },
+                  {
+                    "type": "match",
+                    "text": "You are planning to go on holiday round Europe. You intend to drive their car and go for walks, so you need a book with maps and pictures to guide you on your way",
+                    "answer": "J"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Norway",
+            "text": "## Paragraph I\n\nNorway is first of all a land for those who love nature. The breathtaking fjords in the southwest of the country and Europe's largest glacier are Norway's most attractive places, but there are many other reasons to visit this country in the north of Europe. There are wonderful opportunities to enjoy skiing, fishing and rock-climbing. Others can take pleasure in the charm of the Norwegian countryside, with its countless valleys, high mountain lakes and unbelievable views.\n\n## Paragraph II\n\nMany tourists coming to Norway in the summer prefer to stay in a cottage used by northern Norwegian fishermen during the winter cod fishing season. Equipped with all the necessary facilities, these cottages are leased to holidaymakers, providing an attractive form of accommodation. They will often be actually over the water. Catching your own fish and cooking it on the fire will add a few pleasant moments to your holiday.\n\n## Paragraph III\n\nNorway has a long history of fishing, although much of the high-quality shellfish and other species caught off the coast are exported. However, fish remains a common dish, along with meat, potatoes and other root vegetables, although tastes have changed in recent years to involve a wider international choice, including pizzas and burgers. The most popular traditional hot snack is a form of sausage, sold at numerous outlets.\n\n## Paragraph IV\n\nTraditionally entertainment in the country is largely home-based, but this has been changing in recent years. Most Norwegians tend to go out only on Fridays and Saturdays, the rest of the week being fairly quiet. This is in no small part due to the high prices of food and drink, and the fact that the working day starts early. And at weekends, it is normal for Norwegians to enjoy drinks at home before leaving it as late as 11 p.m.\n\n## Paragraph V\n\nNorwegians are generally sincere and polite, though communication doesn't often come easy it is usually up to you to break the ice and establish contact. They can be very direct and rarely say 'please', which may seem rude, but it's due to the fact that the Norwegian language rarely uses the word. On the other hand, they say 'thank you' for almost everything. They also tend to address people by their first name even on many formal occasions.\n\n## Paragraph VI\n\nNorway is an expensive country. As labor is costly here, anything that can be seen as a ‘service’ will generally be more expensive than you expect. Transport costs can also be a killer, because the country is large and distances are long. But there is one good point: Norway has a high quality of tap water. So buying bottled drinking water is usually unnecessary and this will save your budget.",
+            "blocks": [
+              {
+                "instruction": "Read the text and choose the correct heading for each paragraph from the list of headings. There are more headings than paragraphs, so you will not use all of them. You cannot use any heading more than once.",
+                "options": [
+                  {
+                    "label": "A",
+                    "text": "Expenses"
+                  },
+                  {
+                    "label": "B",
+                    "text": "Ways of behavior"
+                  },
+                  {
+                    "label": "C",
+                    "text": "Nightlife"
+                  },
+                  {
+                    "label": "D",
+                    "text": "Favorite food"
+                  },
+                  {
+                    "label": "E",
+                    "text": "Place to stay in"
+                  },
+                  {
+                    "label": "F",
+                    "text": "Eating out"
+                  },
+                  {
+                    "label": "G",
+                    "text": "National languages"
+                  },
+                  {
+                    "label": "H",
+                    "text": "Great outdoors"
+                  }
+                ],
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Paragraph I",
+                    "answer": "H"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph II",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph III",
+                    "answer": "D"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph IV",
+                    "answer": "C"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph V",
+                    "answer": "B"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph VI",
+                    "answer": "A"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "glossary": {
+          "library": "kutubxona",
+          "favorite": "sevimli",
+          "sunlight": "quyosh nuri",
+          "streams": "oqib kiradi",
+          "dreamt": "orzu qildi",
+          "soaring": "uchib ketmoq",
+          "astronaut": "astronavt",
+          "astronauts": "astronavtlar",
+          "report": "hisobot",
+          "impressed": "hayratda qolgan",
+          "journey": "sayohat",
+          "shelves": "javonlar",
+          "business": "biznes",
+          "degree": "daraja; diplom",
+          "traditional": "an'anaviy",
+          "goods": "tovarlar",
+          "inhabitants": "aholi",
+          "variety": "xilma-xillik",
+          "escape": "qochmoq",
+          "volume": "jild; kitob",
+          "motor tours": "avtomobil sayohatlari",
+          "route": "yo'nalish",
+          "commercial": "savdo",
+          "district": "tuman",
+          "crafts": "hunarmandchilik",
+          "cultural": "madaniy",
+          "museums": "muzeylar",
+          "galleries": "galereyalar",
+          "antiques": "antiqa buyumlar",
+          "department stores": "univermag",
+          "transport": "transport",
+          "sculpture": "haykaltaroshlik",
+          "nationalities": "millatlar",
+          "accessible": "qulay",
+          "fjords": "fyordlar",
+          "glacier": "muzlik",
+          "fishing": "baliq ovlash",
+          "countryside": "qishloq joylari",
+          "valleys": "vodiylar",
+          "cottage": "kulba",
+          "leased": "ijaraga berilgan",
+          "accommodation": "turar joy",
+          "shellfish": "qisqichbaqasimonlar",
+          "exported": "eksport qilinadi",
+          "sausage": "kolbasa",
+          "entertainment": "ko'ngil ochar",
+          "sincere": "samimiy",
+          "polite": "xushmuomala",
+          "break the ice": "muloqotni boshlamoq",
+          "expensive": "qimmat",
+          "labor": "mehnat",
+          "tap water": "vodoprovod suvi",
+          "budget": "byudjet",
+          "alarm": "budilnik",
+          "labrador": "labrador (it zoti)",
+          "heating": "isitish",
+          "stairs": "zinapoya",
+          "basket": "savat",
+          "silence": "sukunat",
+          "traffic": "transport harakati",
+          "handle": "dasta",
+          "unlocked": "qulfsiz",
+          "gate": "darvoza",
+          "answer phone": "avtojavob bergich",
+          "latch": "zulfin",
+          "relieved": "yengil tortgan",
+          "hood": "kapyushon",
+          "falcon": "lochin",
+          "falcons": "lochinlar",
+          "raptors": "yirtqich qushlar",
+          "prey": "o'lja",
+          "eyesight": "ko'rish",
+          "beaks": "tumshuqlar",
+          "nobility": "olijanoblik",
+          "falconry": "lochinbozlik",
+          "pharaohs": "fir'avnlar",
+          "peregrine": "ko'chmanchi lochin",
+          "saker": "laggar lochin",
+          "gyrfalcon": "oq lochin",
+          "lanner": "lanner lochin",
+          "temperament": "xarakter",
+          "unpredictable": "oldindan aytib bo'lmaydigan",
+          "captivity": "asirlik",
+          "quail": "bedana",
+          "pigeon": "kaptar",
+          "manning": "lochinni odamga o'rgatish",
+          "perched": "qo'nib turgan",
+          "glove": "qo'lqop",
+          "threat": "tahdid",
+          "passports": "pasportlar",
+          "treasures": "xazinalar"
+        },
+        "marks": []
+      }
+    },
+    {
+      "id": "11d217fe-1501-5db7-9997-f514677fb6d4",
+      "section": "listening",
+      "format": "multilevel",
+      "title": "Marathon · Listening Part 1–4 (Day 19)",
+      "duration_min": 23,
+      "play_once": true,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "listening",
+          "n": "d19"
+        },
+        "audio_url": "marathon-d19-listening.mp3",
+        "analysis": {
+          "video": "",
+          "words": []
+        },
+        "parts": [
+          {
+            "title": "Choose the correct reply",
+            "instruction": "You will hear some sentences. You will hear each sentence **twice**. Choose the best reply for each sentence (**A, B or C**).",
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 1",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Tuesday."
+                      },
+                      {
+                        "label": "B",
+                        "text": "1998."
+                      },
+                      {
+                        "label": "C",
+                        "text": "Half past eight."
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 2",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "I hope so."
+                      },
+                      {
+                        "label": "B",
+                        "text": "Never mind."
+                      },
+                      {
+                        "label": "C",
+                        "text": "That's a good idea."
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 3",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "I'm sorry."
+                      },
+                      {
+                        "label": "B",
+                        "text": "Thank you."
+                      },
+                      {
+                        "label": "C",
+                        "text": "What a pity!"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 4",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Fine, thanks."
+                      },
+                      {
+                        "label": "B",
+                        "text": "Four months old."
+                      },
+                      {
+                        "label": "C",
+                        "text": "With his father."
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 5",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "At two o'clock."
+                      },
+                      {
+                        "label": "B",
+                        "text": "I can help you."
+                      },
+                      {
+                        "label": "C",
+                        "text": "Yes, please."
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 6",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "What size are you?"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Are they black?"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Do you like it?"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 7",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "You don't"
+                      },
+                      {
+                        "label": "B",
+                        "text": "It is not"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Of course"
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 8",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "No, it is not"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Yes, I like"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Certainly, I do"
+                      }
+                    ],
+                    "answer": "C"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 0.0,
+              "end": 111.0,
+              "checkEnd": 113.2
+            }
+          },
+          {
+            "title": "Historic tours",
+            "instruction": "You will hear someone giving a talk. For each question, fill in the missing information in the numbered space. Write **ONE WORD and / or A NUMBER** for each answer.",
+            "text": "# Historic tours\n\n**South Elmham House**\n\nIt was built around the 1300s, but it was greatly improved in the [[16th century/sixteenth century/16th/16]].\n\nIt must have been the home of a [[family/wealthy family]], as its wall paintings suggest.\n\n**Haughley Hall**\n\nOne of its best features is the secret [[hiding places/hiding place]] in the walls.\n\nTours take place at 11.30 and 2 pm and are £15 with a [[lunch/traditional lunch]], or £12 with tea.\n\n**Bedfield House**\n\nGardens are joined by [[bridges/bridge]].\n\nTours start at 10.30 and 2.30 and one has to pay £ [[13.50/13,50/13 50]].",
+            "blocks": [],
+            "timing": {
+              "start": 113.2,
+              "end": 436.4,
+              "checkEnd": 442.0
+            }
+          },
+          {
+            "title": "Things people miss",
+            "instruction": "You will hear people talking about things they miss. Choose from the list (**A–F**) the thing each person misses. There are **TWO EXTRA** options which you do not need to use.",
+            "options_title": "Things people miss",
+            "options": [
+              {
+                "label": "A",
+                "text": "a particular food"
+              },
+              {
+                "label": "B",
+                "text": "a life of luxury"
+              },
+              {
+                "label": "C",
+                "text": "a sense of space"
+              },
+              {
+                "label": "D",
+                "text": "having energy"
+              },
+              {
+                "label": "E",
+                "text": "human contact"
+              },
+              {
+                "label": "F",
+                "text": "a pet animal"
+              }
+            ],
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Speaker 1",
+                    "answer": "C"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 2",
+                    "answer": "A"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 3",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 4",
+                    "answer": "D"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 442.0,
+              "end": 777.5,
+              "checkEnd": 780.4
+            }
+          },
+          {
+            "title": "Label the map",
+            "instruction": "You will hear someone giving a talk. Label the places (19–23) on the map (**A–I**). There are **FOUR** extra options which you do not need to use.",
+            "image": "marathon-d19-map.jpg",
+            "options": [
+              {
+                "label": "A",
+                "text": ""
+              },
+              {
+                "label": "B",
+                "text": ""
+              },
+              {
+                "label": "C",
+                "text": ""
+              },
+              {
+                "label": "D",
+                "text": ""
+              },
+              {
+                "label": "E",
+                "text": ""
+              },
+              {
+                "label": "F",
+                "text": ""
+              },
+              {
+                "label": "G",
+                "text": ""
+              },
+              {
+                "label": "H",
+                "text": ""
+              },
+              {
+                "label": "I",
+                "text": ""
+              }
+            ],
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Registration area",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Shore fishing area",
+                    "answer": "A"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Judging area",
+                    "answer": "H"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Dining area",
+                    "answer": "D"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Prize-giving area",
+                    "answer": "B"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 780.4,
+              "end": 1032.0,
+              "checkEnd": 1034.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "85cc62d1-e1c6-52a1-9ab9-31fae9ab8e3c",
+      "section": "reading",
+      "format": "multilevel",
+      "title": "Marathon · Reading Part 4–5 (Day 20)",
+      "duration_min": 30,
+      "play_once": false,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "reading",
+          "n": "d20p45"
+        },
+        "qstart": 21,
+        "parts": [
+          {
+            "title": "Emily",
+            "text": "Emily woke up before her alarm went off and knew instantly something wasn’t quite right in the house. Bailey, her chocolate-coloured pet Labrador, should have been there at the bedroom door demanding food but there was no sound of him. She decided to get up and go and see where he was. It felt cold in the hall but she knew she had left the heating on last night. As she walked down the stairs she heard a noise in the kitchen; the strange feeling that something was wrong was getting stronger. What was going on? She got to the bottom of the stairs and opened the door to the living room, which led to the kitchen. Why was the door closed? She always left it open. Bailey was nowhere to be seen and his toys, which were usually all over the living room floor, were in a neat pile in the corner next to his basket. Had they been there when she had gone to bed last night? She couldn’t remember.\n\nShe walked into the kitchen and turned the light on, it didn’t work, nothing happened. She stood very still and listened, nothing. There wasn’t a sound. That was really strange; she lived in the middle of a busy city, there were always people around. She woke up to the sound of traffic, car horns, police cars, her neighbors shouting in the house next door. How could there be silence at 8 o’clock on a Friday morning? She went back into the living room and turned the TV on, but again nothing happened. She went back into the kitchen and looked out of the window; it was a bright clear day.\n\nThe back door was shut but when she tried the handle she realised it was unlocked. She walked out into the tiny back garden and opened the back gate; still nothing, not a sound and no sign of Bailey. She called him but he didn’t come. She went back into the house and did what she realized she should have done as soon as she got up and called her mother. But there was no answer. She called her boyfriend but his mobile was switched off and she got the answer phone message. She tried a couple of other numbers but with equal success. She sat down on the sofa and thought about what she could do. She couldn’t decide if she should stay at home or go out and find someone. Just as she decided the best thing would be to stay at home and wait, there was a loud banging on the front door. She jumped up and ran to the door. “Who is it?” she shouted through the door. “It’s me,” came the reply. But she had no idea who “me” was. She didn’t want to open the door until she was sure she knew who it was, not with all the other strange things that were happening this morning, and she didn’t want to shout through the thick front door, so she walked back into the living room and tried to look through the front window to see who was standing at the front door. It was a man but she couldn’t make out who he was; he didn’t look familiar.\n\nHe was tall and was wearing a big coat with a hood over his head. Just as she was thinking of running out the back door she saw that the man had Bailey with him, and Bailey seemed quite happy, which meant that the man had to be someone he knew and liked; he would have been barking otherwise. She still wasn’t taking any chances though; she put the safety latch on the door and opened it just enough to see who was there. She was instantly relieved; it was her brother, who lived just a few streets away. She opened the door all the way and let him in. As he walked through the door he was almost knocked over by Bailey jumping up and looking more pleased than ever to see her. “So what’s going on?” she asked her brother. He looked at her as if she was stupid.\n\n“Haven't you heard?”",
+            "blocks": [
+              {
+                "instruction": "Questions 21–24. Choose the correct answer **A, B, C or D**.",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "What was Emily's first clue that something was unusual that morning?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "The living room door was wide open."
+                      },
+                      {
+                        "label": "B",
+                        "text": "Bailey wasn't at her bedroom door demanding food."
+                      },
+                      {
+                        "label": "C",
+                        "text": "She heard loud music in the kitchen."
+                      },
+                      {
+                        "label": "D",
+                        "text": "The central heating had stopped working."
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Which detail in the text shows Emily is surprised by the total silence?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "She lives in a remote countryside area."
+                      },
+                      {
+                        "label": "B",
+                        "text": "She expected more noise in a busy city on a Friday morning."
+                      },
+                      {
+                        "label": "C",
+                        "text": "There were normally no cars or people around at that time."
+                      },
+                      {
+                        "label": "D",
+                        "text": "She woke up much earlier than usual."
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "How did Emily discover there was probably no electricity?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "She tried to put the heating on and it didn't work."
+                      },
+                      {
+                        "label": "B",
+                        "text": "The lights wouldn't turn on in the kitchen."
+                      },
+                      {
+                        "label": "C",
+                        "text": "She turned on the TV and only got static."
+                      },
+                      {
+                        "label": "D",
+                        "text": "She tried using the house phone and it went dead."
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Why did Emily decide to open the front door in the end?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "She heard her brother's voice clearly when he called."
+                      },
+                      {
+                        "label": "B",
+                        "text": "She realized Bailey was calmly standing next to the man."
+                      },
+                      {
+                        "label": "C",
+                        "text": "The man at the door threatened to break it down."
+                      },
+                      {
+                        "label": "D",
+                        "text": "She remembered she had invited someone to visit."
+                      }
+                    ],
+                    "answer": "B"
+                  }
+                ]
+              },
+              {
+                "instruction": "Questions 25–29. Decide if the statements agree with the information in the text: **True, False or Not Given** (No Information).",
+                "questions": [
+                  {
+                    "type": "tfng",
+                    "text": "Emily finds Bailey's toys lying scattered around the living room floor.",
+                    "answer": "False"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "Emily attempts several phone calls but cannot get through to anyone.",
+                    "answer": "True"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "The text states that Emily's mother left her a message on the voicemail.",
+                    "answer": "Not Given"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "The stranger at the door turns out to be Emily's brother.",
+                    "answer": "True"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "Emily had locked the back door before going to bed.",
+                    "answer": "Not Given"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Falcons",
+            "text": "Falcons have existed on Earth for more than 8 million years. They belong to a group of birds called \"birds of prey\" or raptors, which means they hunt other animals for food. These birds are famous for their sharp eyesight, hooked beaks, and incredible flying abilities. From ancient times, humans have admired falcons not only for their hunting skills but also for their beauty and intelligence. In many cultures, especially in the Middle East, falcons are considered symbols of strength, courage, and nobility. The tradition of training falcons, known as falconry, dates back thousands of years. Egyptian pharaohs, Mongol warriors, and Arabian princes all kept falcons as hunting companions and loyal birds.\n\nEven today, falconry remains a respected practice and a unique way to connect with nature. There are more than 40 species of falcons in the world, but a few are especially well-known in falconry. The peregrine falcon is the fastest animal on Earth. It can dive at a speed of over 300 kilometers per hour to catch its prey. The saker falcon, common in Central Asia and the Arabian Peninsula, is prized for its boldness, size, and hunting instinct. It is especially popular in traditional falconry and is often seen in royal competitions. The gyrfalcon, found in Arctic regions, is the largest falcon and admired for its snowy white feathers and calm nature. The lanner falcon, with its elegant wings and sharp focus, is often chosen by beginner falconers for training. Each of these falcons has a special character. For example, the saker is known to be very loyal once trust is built, while the peregrine is more independent and requires an experienced handler.\n\nTherefore, choosing the right falcon depends on the goals, preferences, and experience level of the falconer. When selecting a falcon, several factors need to be considered: the bird’s age, health, temperament, and previous experience. Younger birds may be easier to train but can also be more unpredictable. Older falcons might already have hunting skills but could take longer to trust a new trainer. Once chosen, a falcon requires daily attention and care. Its diet plays a major role in its strength and performance. In the wild, falcons eat small animals such as mice, rabbits, and birds. In captivity, falconers usually feed them fresh meat such as quail, pigeon, or rabbit. High-quality food is essential, as poor diet can affect the bird’s health and flying ability. Clean water, a quiet shelter, and daily exercise are also part of a falcon’s routine. Before a falcon can be used for hunting or flying in public, it must go through manning. Manning is the process of taming a falcon and helping it become comfortable with humans, sounds, and the world around it. This is not a quick or easy task. The bird may be nervous, aggressive, or simply afraid at first. The manning process begins with the falconer sitting calmly with the bird perched on a thick glove. This can last for hours, sometimes in complete silence. The goal is to teach the bird that the human is not a threat.\n\nOver time, the falcon learns to accept hand-feeding, stay calm around noise, and respond to the falconer’s call. Some falcons adjust quickly, while others may take weeks or even months. Today, falconry is still practiced in many parts of the world, including Europe, Central Asia, and the Middle East. In countries like the UAE and Saudi Arabia, falconry is considered a national tradition and falcons are even given passports to travel with their owners.",
+            "blocks": [
+              {
+                "instruction": "Questions 30–33. Fill in the missing information. Write **ONE WORD** for each answer.",
+                "questions": [
+                  {
+                    "type": "fill",
+                    "text": "One ancient practice involving falcons is called ___, and it has been passed down through generations in many cultures.",
+                    "answer": "falconry"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "The ___ falcon is particularly valued for its physical build and natural hunting behavior.",
+                    "answer": "saker"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "When kept in captivity, falcons occasionally consume ___.",
+                    "answer": "meat"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "The process of taming a new falcon and teaching it to trust humans is known as ___.",
+                    "answer": "manning"
+                  }
+                ]
+              },
+              {
+                "instruction": "Questions 34–35. Choose the correct answer **A, B, C or D**.",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "According to the text, which falcon is especially suited for beginners due to its temperament?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Saker falcon"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Lanner falcon"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Peregrine falcon"
+                      },
+                      {
+                        "label": "D",
+                        "text": "Gyrfalcon"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Why do countries like the UAE grant passports to falcons?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Because they are recognized as essential pest controllers"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Because they must follow strict international breeding laws"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Because they are regarded as valuable national treasures"
+                      },
+                      {
+                        "label": "D",
+                        "text": "Because they need extra protection from airport authorities"
+                      }
+                    ],
+                    "answer": "C"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "glossary": {
+          "library": "kutubxona",
+          "favorite": "sevimli",
+          "sunlight": "quyosh nuri",
+          "streams": "oqib kiradi",
+          "dreamt": "orzu qildi",
+          "soaring": "uchib ketmoq",
+          "astronaut": "astronavt",
+          "astronauts": "astronavtlar",
+          "report": "hisobot",
+          "impressed": "hayratda qolgan",
+          "journey": "sayohat",
+          "shelves": "javonlar",
+          "business": "biznes",
+          "degree": "daraja; diplom",
+          "traditional": "an'anaviy",
+          "goods": "tovarlar",
+          "inhabitants": "aholi",
+          "variety": "xilma-xillik",
+          "escape": "qochmoq",
+          "volume": "jild; kitob",
+          "motor tours": "avtomobil sayohatlari",
+          "route": "yo'nalish",
+          "commercial": "savdo",
+          "district": "tuman",
+          "crafts": "hunarmandchilik",
+          "cultural": "madaniy",
+          "museums": "muzeylar",
+          "galleries": "galereyalar",
+          "antiques": "antiqa buyumlar",
+          "department stores": "univermag",
+          "transport": "transport",
+          "sculpture": "haykaltaroshlik",
+          "nationalities": "millatlar",
+          "accessible": "qulay",
+          "fjords": "fyordlar",
+          "glacier": "muzlik",
+          "fishing": "baliq ovlash",
+          "countryside": "qishloq joylari",
+          "valleys": "vodiylar",
+          "cottage": "kulba",
+          "leased": "ijaraga berilgan",
+          "accommodation": "turar joy",
+          "shellfish": "qisqichbaqasimonlar",
+          "exported": "eksport qilinadi",
+          "sausage": "kolbasa",
+          "entertainment": "ko'ngil ochar",
+          "sincere": "samimiy",
+          "polite": "xushmuomala",
+          "break the ice": "muloqotni boshlamoq",
+          "expensive": "qimmat",
+          "labor": "mehnat",
+          "tap water": "vodoprovod suvi",
+          "budget": "byudjet",
+          "alarm": "budilnik",
+          "labrador": "labrador (it zoti)",
+          "heating": "isitish",
+          "stairs": "zinapoya",
+          "basket": "savat",
+          "silence": "sukunat",
+          "traffic": "transport harakati",
+          "handle": "dasta",
+          "unlocked": "qulfsiz",
+          "gate": "darvoza",
+          "answer phone": "avtojavob bergich",
+          "latch": "zulfin",
+          "relieved": "yengil tortgan",
+          "hood": "kapyushon",
+          "falcon": "lochin",
+          "falcons": "lochinlar",
+          "raptors": "yirtqich qushlar",
+          "prey": "o'lja",
+          "eyesight": "ko'rish",
+          "beaks": "tumshuqlar",
+          "nobility": "olijanoblik",
+          "falconry": "lochinbozlik",
+          "pharaohs": "fir'avnlar",
+          "peregrine": "ko'chmanchi lochin",
+          "saker": "laggar lochin",
+          "gyrfalcon": "oq lochin",
+          "lanner": "lanner lochin",
+          "temperament": "xarakter",
+          "unpredictable": "oldindan aytib bo'lmaydigan",
+          "captivity": "asirlik",
+          "quail": "bedana",
+          "pigeon": "kaptar",
+          "manning": "lochinni odamga o'rgatish",
+          "perched": "qo'nib turgan",
+          "glove": "qo'lqop",
+          "threat": "tahdid",
+          "passports": "pasportlar",
+          "treasures": "xazinalar"
+        },
+        "marks": []
+      }
+    },
+    {
+      "id": "6b7e7bcc-ebc8-54b1-a400-079ce800c3b3",
+      "section": "listening",
+      "format": "multilevel",
+      "title": "Marathon · Listening Part 5–6 (Day 20)",
+      "duration_min": 17,
+      "play_once": true,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "listening",
+          "n": "d20"
+        },
+        "audio_url": "marathon-d20-listening.mp3",
+        "analysis": {
+          "video": "",
+          "words": []
+        },
+        "parts": [
+          {
+            "title": "Three extracts",
+            "instruction": "You will hear three extracts. Choose the correct answer (**A, B or C**) for each question (24–29). There are **TWO** questions for each extract.",
+            "blocks": [
+              {
+                "instruction": "Extract One",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "What point does the man make about people who are no longer famous?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "The public does not allow them to move on."
+                      },
+                      {
+                        "label": "B",
+                        "text": "The probability of them being recognised is low."
+                      },
+                      {
+                        "label": "C",
+                        "text": "The temptation for them not to let go of their celebrity status is great."
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Why does the woman mention the example of the dancer?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "to highlight the dancer's need for support from others"
+                      },
+                      {
+                        "label": "B",
+                        "text": "to express her admiration for the dancer's coping strategies"
+                      },
+                      {
+                        "label": "C",
+                        "text": "to suggest that the dancer's approach is by no means unusual"
+                      }
+                    ],
+                    "answer": "B"
+                  }
+                ]
+              },
+              {
+                "instruction": "Extract Two",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "The woman decided to take up wild swimming because of",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "her desire to explore unfamiliar places."
+                      },
+                      {
+                        "label": "B",
+                        "text": "the chance it offers to tackle a difficult challenge."
+                      },
+                      {
+                        "label": "C",
+                        "text": "a feeling of boredom with existing hobbies."
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Which aspect of communal swimming do they both particularly appreciate?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "the variety of people they meet"
+                      },
+                      {
+                        "label": "B",
+                        "text": "the feeling of mutual support"
+                      },
+                      {
+                        "label": "C",
+                        "text": "the sharing of notable experiences"
+                      }
+                    ],
+                    "answer": "B"
+                  }
+                ]
+              },
+              {
+                "instruction": "Extract Three",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "What aspect of solar power do the friends disagree about?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "the need for the government to support the industry"
+                      },
+                      {
+                        "label": "B",
+                        "text": "the influence of the media on people's opinions"
+                      },
+                      {
+                        "label": "C",
+                        "text": "the importance of price in the demand for green energy"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "In the man's opinion what will happen in the future regarding energy?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Vital resources will be scarce."
+                      },
+                      {
+                        "label": "B",
+                        "text": "People will be forced to accept major lifestyle changes."
+                      },
+                      {
+                        "label": "C",
+                        "text": "The current situation will continue for longer than expected."
+                      }
+                    ],
+                    "answer": "C"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 0.0,
+              "end": 483.7,
+              "checkEnd": 486.9
+            }
+          },
+          {
+            "title": "History of Fireworks in Europe",
+            "instruction": "You will hear part of a lecture. For each question, fill in the missing information in the numbered space. Write **NO MORE THAN ONE WORD** for each answer.",
+            "text": "# History of Fireworks in Europe\n\n**13th–16th centuries**\n\nFireworks were introduced from China.\n\nTheir use was mainly to do with:\n\n– [[military]]\n\n– [[religion]] (in plays and festivals)\n\n**17th century**\n\nVarious features of [[nature]] were shown in fireworks displays.\n\nScientists were interested in using ideas from fireworks displays:\n\n– to make human [[flight]] possible\n\n– to show the formation of [[stars]]\n\n**London**\n\nScientists were distrustful at first.\n\nLater, they investigated [[practical]] uses of fireworks (e.g. for sailors).",
+            "blocks": [],
+            "timing": {
+              "start": 486.9,
+              "end": 813.3,
+              "checkEnd": 817.3
+            }
+          }
+        ],
+        "qstart": 24
+      }
     }
   ]
 }
