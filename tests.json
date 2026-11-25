@@ -41998,6 +41998,1042 @@
         ],
         "qstart": 24
       }
+    },
+    {
+      "id": "b62da91b-5822-5e8b-92d5-39be9720758c",
+      "section": "reading",
+      "format": "multilevel",
+      "title": "Marathon · Reading Part 1–3 (Day 21)",
+      "duration_min": 30,
+      "play_once": false,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "reading",
+          "n": "d21p123"
+        },
+        "parts": [
+          {
+            "title": "Dinosaurs",
+            "instruction": "Read the text. Fill in each gap with **ONE WORD**. You must use a word which is somewhere in the rest of the text.",
+            "text": "Dinosaurs disappeared 65 million years ago, so we don't really know what they sounded like. Of course, there are many movies with [[dinosaurs/dinosaur]] making all kinds of noises. However, these [[noises/sounds]] are just guesses that movie directors make about how dinosaurs sounded. A new discovery has given scientists a better idea of the kinds of sounds dinosaurs made. The [[scientists]] examined a rare fossil. It was from a spiky, armoured dinosaur called an ankylosaur. The [[fossil]] is around 78 million years old. He compared it with the voice box of dozens of birds, crocodiles, lizards and turtles. They now have a good idea of what the muscles around the voice box looked like. The [[muscles]] controlled the sound of the voice box. Yoshida's research may mean that movies like Jurassic Park got it wrong. Millions of years ago, the Tyrannosaurus Rex probably made more of a tweeting [[sound/noise]], like a bird. Hollywood may have to change its scary roars and growls in future dinosaur films to a tweet-tweet sound.",
+            "blocks": []
+          },
+          {
+            "title": "Picnic places",
+            "options_title": "Statements A–J",
+            "options": [
+              {
+                "label": "A",
+                "text": "A cozy spot near a fireplace, perfect for enjoying a warm drink and a good book."
+              },
+              {
+                "label": "B",
+                "text": "A unique dining experience with breathtaking city views, a cool breeze, and a touch of romance."
+              },
+              {
+                "label": "C",
+                "text": "You want to bask in the Sun, lying on the beach."
+              },
+              {
+                "label": "D",
+                "text": "A bustling marketplace with vibrant stalls, delicious street food, and a lively atmosphere."
+              },
+              {
+                "label": "E",
+                "text": "You want a peaceful rest by the lake during lunch."
+              },
+              {
+                "label": "F",
+                "text": "A peaceful escape surrounded by the wood and you can enjoy the scenery."
+              },
+              {
+                "label": "G",
+                "text": "You can enjoy your snacks sitting in the park."
+              },
+              {
+                "label": "H",
+                "text": "A leisurely picnic with a scenic backdrop, featuring a flowing river and the sound of water."
+              },
+              {
+                "label": "I",
+                "text": "A soothing vibe among different flowers and a place for romance lovers."
+              },
+              {
+                "label": "J",
+                "text": "A trip to the hills and in the mountain peaks inhale the fresh air."
+              }
+            ],
+            "instruction": "",
+            "blocks": [
+              {
+                "instruction": "Read the texts 7–14 and statements A–J. Decide which statement matches each text. Each statement can be used **once only**. There are **TWO** extra statements which you do not need to use.",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Nestled by a tranquil lake, this picnic area offers a picturesque setting. Imagine spreading out your blanket on the soft grass, listening to the gentle lapping of waves, and breathing in the fresh air. It's the perfect place for a relaxing afternoon with loved ones.",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Surrounded by towering trees and lush greenery, this woodland glade provides a peaceful escape. The dappled sunlight filtering through the leaves creates a magical atmosphere. You can enjoy a picnic surrounded by nature's beauty, listening to the birdsong and rustling leaves.",
+                    "answer": "F"
+                  },
+                  {
+                    "type": "match",
+                    "text": "For a casual and convenient picnic, this park bench option is ideal. You can grab a takeaway sandwich or some snacks and enjoy a simple meal with a view of the park. It's a great place to people-watch and relax in the heart of the city.",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Imagine the sound of waves crashing against the shore, the warmth of the sun on your skin, and the smell of salt air. A beachfront picnic offers a quintessential summer experience. You can enjoy a picnic with a view of the ocean, building sandcastles, and soaking up the sun.",
+                    "answer": "C"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Pack a basket full of goodies and venture to the top of a mountain for a breathtaking picnic experience. Enjoy panoramic views of the surrounding landscapes, breathe in the fresh mountain air, and relish the feeling of accomplishment after your hike.",
+                    "answer": "J"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Tucked away in a serene garden, this picnic area offers a tranquil escape. Surrounded by blooming flowers and fragrant herbs, you can enjoy a picnic in a tranquil setting. It's a perfect spot for a romantic date or a peaceful afternoon with friends.",
+                    "answer": "I"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Imagine spreading out your blanket on the soft grass beside a flowing river. You can relax and listen to the gentle sound of the water, watch boats glide by, and enjoy the beauty of nature. It's a great place for a leisurely picnic with a scenic backdrop.",
+                    "answer": "H"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Escape the hustle and bustle of the city with a rooftop picnic. Enjoy breathtaking views of the cityscape, feel the cool breeze, and enjoy a unique dining experience. It's perfect for a special occasion or a romantic evening under the stars.",
+                    "answer": "B"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Gifted children",
+            "text": "## Paragraph I\n\nGifted children’s behaviour differs from that of their age mates. Many gifted children learn to read early, with better comprehension of the nuances of language. As much as half of the gifted and talented population has learned to read before entering school. They can work independently at an earlier age and can concentrate for longer periods. They like to learn new things, are willing to examine the unusual, and are highly inquisitive.\n\n## Paragraph II\n\nBeing academically gifted is a topic laced with myths and fears, many of which are unfounded. Moreover, academically gifted children often face special problems. So do their parents. Schools treat those children differently from those whose talents lie in other areas, like music, art, and sports. Gifted children may also be learning disabled, or have another disability while being highly intelligent.\n\n## Paragraph III\n\nSocial and emotional difficulties are not directly linked to giftedness. Rather, they result from a lack of understanding by the child of the nature of their intellectual difference. Parents and teachers don’t usually discuss this difference with them because of the concern that they may get a ‘swelled head’. The risk is that gifted children may view their differences as ‘weird’ or ‘bad’ or try to ignore or deny them.\n\n## Paragraph IV\n\nMost of the athletes are allowed to develop their special skills at whatever rate best suits them. No one tries to stop them from becoming much better baseball players or swimmers than their classmates. Yet if an academically gifted child tries to do two years of work in one, that’s viewed as potentially harmful. Much of the concern focuses on the nonacademic areas of these gifted children’s development.\n\n## Paragraph V\n\nResearchers emphasize that for the vast majority of academically gifted children those concerns are groundless. In fact, these children are more likely to develop social and even academic problems if they don’t feel intellectually challenged. If gifted children don’t go to challenging programs, they may not learn how to learn. Eventually, in college or graduate school, they feel emotionally overwhelmed when they can’t just coast through their courses anymore.\n\n## Paragraph VI\n\nGifted children represent both a challenge and a resource for schools. Educators have a responsibility to provide programs to meet the educational needs of gifted students who are capable of learning at advanced levels. Ideally, schools should have specifically trained teachers for gifted students to create a challenging and supportive learning environment for these children.",
+            "blocks": [
+              {
+                "instruction": "Read the text and choose the correct heading for each paragraph from the list of headings. There are more headings than paragraphs, so you will not use all of them.",
+                "options": [
+                  {
+                    "label": "A",
+                    "text": "Gifted Children Always Become Famous"
+                  },
+                  {
+                    "label": "B",
+                    "text": "Awareness of Giftedness"
+                  },
+                  {
+                    "label": "C",
+                    "text": "Special Attitude is Required"
+                  },
+                  {
+                    "label": "D",
+                    "text": "Lack of Challenge May Cause Problems"
+                  },
+                  {
+                    "label": "E",
+                    "text": "Contrary to Popular Belief"
+                  },
+                  {
+                    "label": "F",
+                    "text": "Gifted Children Have no Support"
+                  },
+                  {
+                    "label": "G",
+                    "text": "Identifying the Gifted Child"
+                  },
+                  {
+                    "label": "H",
+                    "text": "Being Gifted Is not Always Easy"
+                  }
+                ],
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Paragraph I",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph II",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph III",
+                    "answer": "H"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph IV",
+                    "answer": "F"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph V",
+                    "answer": "D"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Paragraph VI",
+                    "answer": "C"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "glossary": {
+          "dinosaurs": "dinozavrlar",
+          "fossil": "qazilma; toshga aylangan qoldiq",
+          "ankylosaur": "ankilozavr",
+          "voice box": "hiqildoq",
+          "muscles": "mushaklar",
+          "crocodiles": "timsohlar",
+          "lizards": "kaltakesaklar",
+          "tweeting": "chirqillash",
+          "roars": "bo'kirish",
+          "growls": "irillash",
+          "picnic": "piknik",
+          "lake": "ko'l",
+          "woodland": "o'rmonzor",
+          "glade": "o'rmon maydoni",
+          "bench": "o'rindiq",
+          "takeaway": "olib ketiladigan",
+          "beachfront": "sohil bo'yi",
+          "sandcastles": "qum qasrlari",
+          "panoramic": "keng ko'rinishli",
+          "accomplishment": "muvaffaqiyat",
+          "serene": "osoyishta",
+          "fragrant": "xushbo'y",
+          "herbs": "o't-o'lanlar",
+          "romantic": "romantik",
+          "rooftop": "tom",
+          "breeze": "shabada",
+          "cityscape": "shahar manzarasi",
+          "gifted": "iqtidorli",
+          "comprehension": "tushunish",
+          "nuances": "nozik ma'nolar",
+          "inquisitive": "qiziquvchan",
+          "myths": "afsonalar",
+          "unfounded": "asossiz",
+          "disability": "nogironlik",
+          "swelled head": "takabburlik",
+          "weird": "g'alati",
+          "athletes": "sportchilar",
+          "groundless": "asossiz",
+          "overwhelmed": "bosimga uchragan",
+          "coast": "oson o'tib ketmoq",
+          "resource": "resurs",
+          "educators": "o'qituvchilar",
+          "supportive": "qo'llab-quvvatlovchi"
+        },
+        "marks": []
+      }
+    },
+    {
+      "id": "afe288f5-fa90-5983-bd49-f8f9e3850503",
+      "section": "listening",
+      "format": "multilevel",
+      "title": "Marathon · Listening Part 1–4 (Day 21)",
+      "duration_min": 23,
+      "play_once": true,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "listening",
+          "n": "d21"
+        },
+        "audio_url": "marathon-d21-listening.mp3",
+        "analysis": {
+          "video": "",
+          "words": []
+        },
+        "parts": [
+          {
+            "title": "Choose the best reply",
+            "instruction": "You will hear some sentences. You will hear each sentence **twice**. Choose the best reply to each sentence (**A, B or C**).",
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 1",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "I like pressing"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Yeah, it is far easier than I thought"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Nice to meet him"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 2",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Me too"
+                      },
+                      {
+                        "label": "B",
+                        "text": "I also had big troubles when I was a child"
+                      },
+                      {
+                        "label": "C",
+                        "text": "I want to play again"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 3",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "I hope so"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Neither, do I"
+                      },
+                      {
+                        "label": "C",
+                        "text": "So, did I"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 4",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Neither, did mine"
+                      },
+                      {
+                        "label": "B",
+                        "text": "I did too"
+                      },
+                      {
+                        "label": "C",
+                        "text": "So, do I"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 5",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Thanks a lot"
+                      },
+                      {
+                        "label": "B",
+                        "text": "I work here"
+                      },
+                      {
+                        "label": "C",
+                        "text": "I want to go"
+                      }
+                    ],
+                    "answer": "A"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 6",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "No, it is"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Yes, it was"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Yes, it is"
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 7",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "How many did you think"
+                      },
+                      {
+                        "label": "B",
+                        "text": "I thought"
+                      },
+                      {
+                        "label": "C",
+                        "text": "I didn't come"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Sentence 8",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "ok, now"
+                      },
+                      {
+                        "label": "B",
+                        "text": "the weather is getting cold"
+                      },
+                      {
+                        "label": "C",
+                        "text": "sunny weather is hot"
+                      }
+                    ],
+                    "answer": "A"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 0,
+              "end": 347.4,
+              "checkEnd": 355.4
+            }
+          },
+          {
+            "title": "Class trip",
+            "instruction": "You will hear someone giving a talk. For each question, fill in the missing information in the numbered space. Write **ONE WORD and / or A NUMBER** for each answer.",
+            "text": "# Class trip\n\nVisit a: [[castle]]\n\nCost of trip: £ [[5.60/5,60/5 60/560]]\n\nDay of trip: [[Saturday]]\n\nTime bus leaves school: [[10/10.00/10:00/ten/10 00]] a.m.\n\nBring: [[camera]]\n\nName of special exhibition: [[?]]",
+            "blocks": [],
+            "timing": {
+              "start": 355.4,
+              "end": 567.5,
+              "checkEnd": 572.5
+            }
+          },
+          {
+            "title": "Reasons for success",
+            "instruction": "You will hear people talking about the reasons why they became successful. For questions 15–18, choose from the list (**A–H**) what each person says about it. Use the letters only once. There are **FOUR EXTRA** options.",
+            "options_title": "Reasons",
+            "options": [
+              {
+                "label": "A",
+                "text": "natural ability"
+              },
+              {
+                "label": "B",
+                "text": "encouragement from others"
+              },
+              {
+                "label": "C",
+                "text": "careful planning"
+              },
+              {
+                "label": "D",
+                "text": "peer pressure"
+              },
+              {
+                "label": "E",
+                "text": "determination to improve"
+              },
+              {
+                "label": "F",
+                "text": "lack of competition"
+              },
+              {
+                "label": "G",
+                "text": "constant good luck"
+              },
+              {
+                "label": "H",
+                "text": "courage"
+              }
+            ],
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "Speaker 1",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 2",
+                    "answer": "F"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 3",
+                    "answer": "A"
+                  },
+                  {
+                    "type": "match",
+                    "text": "Speaker 4",
+                    "answer": "C"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 572.5,
+              "end": 914.8,
+              "checkEnd": 919.8
+            }
+          },
+          {
+            "title": "Label the map",
+            "instruction": "You will hear someone giving a talk. Label the places (19–23) on the map (**A–I**). There are **FOUR** extra options which you do not need to use.",
+            "image": "marathon-d21-map.jpg",
+            "options": [
+              {
+                "label": "A",
+                "text": ""
+              },
+              {
+                "label": "B",
+                "text": ""
+              },
+              {
+                "label": "C",
+                "text": ""
+              },
+              {
+                "label": "D",
+                "text": ""
+              },
+              {
+                "label": "E",
+                "text": ""
+              },
+              {
+                "label": "F",
+                "text": ""
+              },
+              {
+                "label": "G",
+                "text": ""
+              },
+              {
+                "label": "H",
+                "text": ""
+              },
+              {
+                "label": "I",
+                "text": ""
+              }
+            ],
+            "blocks": [
+              {
+                "instruction": "",
+                "questions": [
+                  {
+                    "type": "match",
+                    "text": "The Reynold House",
+                    "answer": "H"
+                  },
+                  {
+                    "type": "match",
+                    "text": "The Thumb",
+                    "answer": "A"
+                  },
+                  {
+                    "type": "match",
+                    "text": "The Museum",
+                    "answer": "E"
+                  },
+                  {
+                    "type": "match",
+                    "text": "The Contemporary Art Gallery",
+                    "answer": "G"
+                  },
+                  {
+                    "type": "match",
+                    "text": "The Warmer Gallery",
+                    "answer": "I"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 919.8,
+              "end": 1162.1,
+              "checkEnd": 1168.1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cf893eb1-f4d0-54e7-93a2-33c2f9a05940",
+      "section": "reading",
+      "format": "multilevel",
+      "title": "Marathon · Reading Part 4–5 (Day 22)",
+      "duration_min": 30,
+      "play_once": false,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "reading",
+          "n": "d22p45"
+        },
+        "qstart": 21,
+        "parts": [
+          {
+            "title": "The history of mobile phones",
+            "text": "It is in everyone’s pocket and we feel ill-at-ease when it is not. The ubiquitous mobile phone. The world of technology has come a long way since the first mobile phone was invented in 1973. Bulky and awkward to use at first to the sleek and powerful smartphones of today, the evolution of the mobile phone has been rapid and impressive. To celebrate its fiftieth birthday we will explore the history of mobile phones and how they have changed the way we communicate. We will also look at some of the most popular smartphones on the market today and how they are revolutionizing the way we interact with the world around us. The Motorola DynaTAC 8000X was the first cellular phone that general public could buy. It was released in 1983, and it was also the first mobile phone to meet the FCC’s stringent requirements for mobile phone use. The phone was designed to be used with the Motorola Cellular Network, which was the first cellular network in the United States. It had a weight of 28 ounces, and it was 9 inches tall. It had a black and white LCD display, and it had a numeric keypad for dialing numbers. The phone had a battery life of up 30 minutes of talk time, and it could store 30 phone numbers in its memory. It also had a built-in speakerphone for hands-free conversations. Finally, it had an antenna that could be extended to improve reception, and came complete with a car charger compatibility. The phone was considered a luxury item at the time, and it cost around $3,995. It was a revolutionary device that changed the way people communicated and paved the way for the modern mobile phone. The company that is credited to have made mobile phones affordable is Nokia. Contrary to popular belief, the company is not Japanese, but Finnish. The impact of Nokia on the mobile phone market has been immense. The company is responsible for introducing a number of innovative features, such as the first colour screens, the first mobile phone sporting a built-in camera, and the ability to access the internet. Nokia has also been instrumental in developing the technology behind 3G and 4G networks, allowing mobile phones to access high-speed data networks. Nokia has also had a major influence on the design direction in the industry. Its iconic Nokia 3310 was a huge hit when it was released in 2000 selling over 126 million units worldwide, and its appearance has been copied by many other manufacturers. The most commercially successful mobile phone of all time is the renowned Apple iPhone. The iPhone was first released in 2007 and was an instant success. While it wasn’t the first smartphone, it introduced the concept of a multi-functional touchscreen that dominates the body of the phone with a minimal number of physical buttons. The idea of an app store where users could download thousands of apps redefined the industry of mobile software. The iPhone was so successful that it gave way to a whole new era of similar devices, and to this day it remains the dominant force on the market, shaping the phones of the future. It is no wonder that it has gone through over ten generations, each improving on almost every single technological aspect of the device. Small wonder that, largely thanks to the iPhone Apple became the most valuable company in the world.",
+            "blocks": [
+              {
+                "instruction": "Questions 21–24. Choose the correct answer **A, B, C or D**.",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "Which of the following best describes the evolution of mobile phones since their invention?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Mobile phones have remained bulky and difficult to use."
+                      },
+                      {
+                        "label": "B",
+                        "text": "Mobile phones have become smaller but less powerful over time."
+                      },
+                      {
+                        "label": "C",
+                        "text": "Mobile phones have evolved from bulky and awkward to sleek and powerful."
+                      },
+                      {
+                        "label": "D",
+                        "text": "Mobile phones were only used for making calls until recently."
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Which of the following features was NOT part of the Motorola DynaTAC 8000X?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "Black and white LCD display"
+                      },
+                      {
+                        "label": "B",
+                        "text": "Numeric keypad for dialing"
+                      },
+                      {
+                        "label": "C",
+                        "text": "Touchscreen display"
+                      },
+                      {
+                        "label": "D",
+                        "text": "Weight of 28 ounces"
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "What was the primary purpose of the antenna on the Motorola DynaTAC 8000X?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "To enhance the phone's battery life"
+                      },
+                      {
+                        "label": "B",
+                        "text": "To improve reception"
+                      },
+                      {
+                        "label": "C",
+                        "text": "To increase the phone's durability"
+                      },
+                      {
+                        "label": "D",
+                        "text": "To enable Bluetooth connectivity"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "Which of the following innovations was introduced by Nokia in the mobile phone market?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "First 5G network"
+                      },
+                      {
+                        "label": "B",
+                        "text": "First mobile phone with a built-in camera"
+                      },
+                      {
+                        "label": "C",
+                        "text": "LCD display"
+                      },
+                      {
+                        "label": "D",
+                        "text": "First cellular network"
+                      }
+                    ],
+                    "answer": "B"
+                  }
+                ]
+              },
+              {
+                "instruction": "Questions 25–29. Decide if the statements agree with the information in the text: **True (Yes), False (No) or Not Given**.",
+                "questions": [
+                  {
+                    "type": "tfng",
+                    "text": "Over 126 million units of Nokia 3310 was hit by other manufacturers.",
+                    "answer": "False"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "The Apple iPhone holds the title of the most commercially successful mobile phone in history.",
+                    "answer": "True"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "It took a long time for iPhone to succeed after its release.",
+                    "answer": "False"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "Although not the first smartphone, iPhone revolutionized the design with a dominant touchscreen and few physical buttons.",
+                    "answer": "True"
+                  },
+                  {
+                    "type": "tfng",
+                    "text": "The iPhone was the first smartphone to be thanked by other mobile phone manufacturers.",
+                    "answer": "False"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Artificial intelligence",
+            "text": "This has been the decade of AI, with one astonishing feat after another. A chess- playing AI that can defeat not only all human chess players, but also all previous human-programmed chess machines, after learning the game in just four hours? That’s yesterday’s news, what’s next? True, these prodigious accomplishments are all in so-called narrow AI, where machines perform highly specialised tasks. But many experts believe this restriction is very temporary. By mid-century, we may have artificial general intelligence (AGI) – machines that can achieve human-level performance on the full range of tasks that we ourselves can tackle. If so, there’s little reason to think it will stop there. Machines will be free of many of the physical constraints on human intelligence. Our brains run at slow biochemical processing speeds on the power of a light bulb, and their size is restricted by the dimensions of the human birth canal. It is remarkable what they accomplish, given these handicaps. But they may be as far from the physical limits of thought as our eyes are from the incredibly powerful Webb Space Telescope. Once machines are better than us at designing even smarter machines, progress towards these limits could accelerate. What would this mean for us? Could we ensure a safe and worthwhile coexistence with such machines? On the plus side, AI is already useful and profitable for many things, and super AI might be expected to be super useful and super profitable. But the more powerful AI becomes, the more important it will be to specify its goals with great care. Folklore is full of tales of people who ask for the wrong thing, with disastrous consequences- King Midas, for example, might have wished that everything he touched turned to gold, but didn’t really intend this to apply to his breakfast. So we need to create powerful AI machines that are ‘human-friendly’- that have goals reliably aligned with our own values. One thing that makes this task difficult is that we are far from reliably human-friendly ourselves. We do many terrible things to each other and to many other creatures with whom we share the planet. If superintendent machines don’t do a lot better than us, we’ll be in deep trouble. We’ll have powerful new intelligence amplifying the dark sides of our own fallible natures. For safety’s sake, then, we want the machines to be ethically as well as cognitively superhuman. We want them to aim for the moral high ground, not for the troughs in which many of us spend some of our time. Luckily they’ll be smart enough for the job. If there are routes to the moral high ground, they’ll be better than us at finding them, and steering us in the right direction.",
+            "blocks": [
+              {
+                "instruction": "Questions 30–33. Fill in the missing information. Write **NO MORE THAN ONE WORD** for each answer.",
+                "questions": [
+                  {
+                    "type": "fill",
+                    "text": "There is a general conception among many experts that the present restriction on AI's potentials is very ___.",
+                    "answer": "temporary"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "Human brains are significantly limited by their processing speed and physical ___.",
+                    "answer": "constraints"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "The cautionary tale of King Midas highlights the potential for ___ outcomes when desires are imprecisely defined.",
+                    "answer": "disastrous"
+                  },
+                  {
+                    "type": "fill",
+                    "text": "The potential for powerful AI to amplify negative human traits highlights the crucial need for AI to be ___ with moral principles.",
+                    "answer": "aligned"
+                  }
+                ]
+              },
+              {
+                "instruction": "Questions 34–35. Choose the correct answer **A, B, C or D**.",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "Why does the writer mention the story of King Midas?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "to compare different visions of progress"
+                      },
+                      {
+                        "label": "B",
+                        "text": "to illustrate that poorly defined objectives can go wrong"
+                      },
+                      {
+                        "label": "C",
+                        "text": "to emphasise the need for cooperation"
+                      },
+                      {
+                        "label": "D",
+                        "text": "to point out the financial advantages of a course of action"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "What challenge does the writer refer to in the fourth paragraph?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "encouraging humans to behave in a more principled way"
+                      },
+                      {
+                        "label": "B",
+                        "text": "deciding which values we want AI to share with us"
+                      },
+                      {
+                        "label": "C",
+                        "text": "creating a better world for all creatures on the planet"
+                      },
+                      {
+                        "label": "D",
+                        "text": "ensuring AI is more human-friendly than we are ourselves"
+                      }
+                    ],
+                    "answer": "D"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "glossary": {
+          "ubiquitous": "hamma joyda uchraydigan",
+          "bulky": "katta va noqulay",
+          "sleek": "silliq; zamonaviy",
+          "evolution": "evolyutsiya",
+          "cellular": "uyali",
+          "stringent": "qat'iy",
+          "requirements": "talablar",
+          "antenna": "antenna",
+          "reception": "signal qabul qilish",
+          "luxury": "hashamat",
+          "revolutionary": "inqilobiy",
+          "affordable": "hamyonbop",
+          "finnish": "fin",
+          "instrumental": "muhim hissa qo'shgan",
+          "iconic": "ramziy",
+          "commercially": "tijoriy jihatdan",
+          "touchscreen": "sensorli ekran",
+          "dominant": "yetakchi",
+          "generations": "avlodlar",
+          "prodigious": "ajoyib",
+          "accomplishments": "yutuqlar",
+          "narrow": "tor",
+          "artificial general intelligence": "umumiy sun'iy intellekt",
+          "constraints": "cheklovlar",
+          "biochemical": "biokimyoviy",
+          "accelerate": "tezlashmoq",
+          "coexistence": "birga yashash",
+          "folklore": "xalq og'zaki ijodi",
+          "disastrous": "halokatli",
+          "consequences": "oqibatlar",
+          "aligned": "moslashgan",
+          "fallible": "xato qiluvchi",
+          "amplifying": "kuchaytirish",
+          "cognitively": "aqliy jihatdan",
+          "superhuman": "g'ayritabiiy",
+          "troughs": "eng past nuqta"
+        },
+        "marks": []
+      }
+    },
+    {
+      "id": "703e0c3a-3833-505b-94b3-8be1649f3211",
+      "section": "listening",
+      "format": "multilevel",
+      "title": "Marathon · Listening Part 5–6 (Day 22)",
+      "duration_min": 17,
+      "play_once": true,
+      "published": true,
+      "data": {
+        "marathon": {
+          "kind": "listening",
+          "n": "d22"
+        },
+        "audio_url": "marathon-d22-listening.mp3",
+        "qstart": 24,
+        "analysis": {
+          "video": "",
+          "words": []
+        },
+        "parts": [
+          {
+            "title": "Three extracts",
+            "instruction": "You will hear three extracts. Choose the correct answer (**A, B or C**) for each question (24–29). There are **TWO** questions for each extract.",
+            "blocks": [
+              {
+                "instruction": "Extract One",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "What was the woman's initial reaction to the news of the planned event?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "looking forward to attending it"
+                      },
+                      {
+                        "label": "B",
+                        "text": "worried about feeling discomfort because of it"
+                      },
+                      {
+                        "label": "C",
+                        "text": "happy with the potential benefits it could bring"
+                      }
+                    ],
+                    "answer": "B"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "What is the reason the man is unhappy about the upcoming event?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "He believes that it is a very wasteful operation."
+                      },
+                      {
+                        "label": "B",
+                        "text": "He is concerned that the main venue may not get finished on time."
+                      },
+                      {
+                        "label": "C",
+                        "text": "He thinks that the people in charge should be replaced."
+                      }
+                    ],
+                    "answer": "B"
+                  }
+                ]
+              },
+              {
+                "instruction": "Extract Two",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "What has caused the man most annoyance?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "unclear instructions from the tutor"
+                      },
+                      {
+                        "label": "B",
+                        "text": "the fact that the project deadline has been moved"
+                      },
+                      {
+                        "label": "C",
+                        "text": "how much help he received from the group"
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "How does the woman react to the man's problem?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "She expresses her sympathy."
+                      },
+                      {
+                        "label": "B",
+                        "text": "She believes that he is exaggerating."
+                      },
+                      {
+                        "label": "C",
+                        "text": "She thinks he will learn from the experience."
+                      }
+                    ],
+                    "answer": "A"
+                  }
+                ]
+              },
+              {
+                "instruction": "Extract Three",
+                "questions": [
+                  {
+                    "type": "mcq",
+                    "text": "Both people believe that",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "the story was believable."
+                      },
+                      {
+                        "label": "B",
+                        "text": "the actors were chosen poorly."
+                      },
+                      {
+                        "label": "C",
+                        "text": "the movie made you think."
+                      }
+                    ],
+                    "answer": "C"
+                  },
+                  {
+                    "type": "mcq",
+                    "text": "According to the woman, what was the best thing about the film?",
+                    "options": [
+                      {
+                        "label": "A",
+                        "text": "the camerawork"
+                      },
+                      {
+                        "label": "B",
+                        "text": "the soundtrack"
+                      },
+                      {
+                        "label": "C",
+                        "text": "the cast"
+                      }
+                    ],
+                    "answer": "A"
+                  }
+                ]
+              }
+            ],
+            "timing": {
+              "start": 0,
+              "end": 546.4,
+              "checkEnd": 552.4
+            }
+          },
+          {
+            "title": "Paradise Wildlife Park",
+            "instruction": "You will hear part of a lecture. For each question, fill in the missing information in the numbered space. Write **NO MORE THAN ONE WORD** for each answer.",
+            "text": "# Paradise Wildlife Park\n\nProject Life Lion is connected with diseases spread by [[domestic]] dogs.\n\nThe Park has created its own environmental [[management]] system, and other organizations use it.\n\nA wide variety of [[corporate]] events (e.g. barbecues) are held at the Park.\n\nFor charity events, the Park will provide cheap tickets and [[competition]] prizes.\n\nThe Park's sister company gives people a chance to be a [[radio]] presenter.\n\nPeople paying to adopt an animal get a [[certificate]], a photograph, information about the animal and a free ticket for two people.",
+            "blocks": [],
+            "timing": {
+              "start": 552.4,
+              "end": 972.1,
+              "checkEnd": 978.1
+            }
+          }
+        ]
+      }
     }
   ]
 }
